@@ -496,10 +496,12 @@ End Function
 Private Sub mnuTotalCol_Click()
     Dim i As Long, tmp As String, b As Boolean, tot As Long
     On Error Resume Next
-    tmp = InputBox("Enter column index to total (1-" & (lv.ColumnHeaders.Count) & ")")
+    tmp = InputBox("Enter column name or index to total (1-" & (lv.ColumnHeaders.Count) & ")")
     If Len(tmp) = 0 Then Exit Sub
     i = CLng(tmp)
-    If Err.Number <> 0 Then Exit Sub
+    If Err.Number <> 0 Then
+        i = ColIndexForName(tmp) + 1
+    End If
     tot = totalColumn(i, b)
     MsgBox "Total for " & lv.ColumnHeaders(i).Text & " = " & tot & IIf(b, " An error was generated", ""), vbInformation
 End Sub
@@ -525,12 +527,15 @@ End Sub
 
 Private Sub mnuCopyColumn_Click()
     On Error Resume Next
-    Dim X As Long
-    X = InputBox("Enter column index to copy", , 1)
+    Dim X, c As Long
+    X = InputBox("Enter column index or name to copy", , 1)
     If Len(X) = 0 Then Exit Sub
-    X = CLng(X) - 1 'we are 0 based internally..
+    c = CLng(X) - 1 'we are 0 based internally..
+    If Err.Number <> 0 Then
+        c = ColIndexForName(X)
+    End If
     Clipboard.Clear
-    Clipboard.SetText Me.GetAllText(X)
+    Clipboard.SetText Me.GetAllText(c)
 End Sub
 
 Private Sub mnuCopySel_Click()
@@ -551,7 +556,7 @@ Private Sub mnuFilterHelp_Click()
                 "/[index] in the filter textbox and hitting return\n" & _
                 "/t [1-ColCount] | or colName to total column is also supported\n" & _
                 "/d will filter for unique entries only\n" & _
-                "numeric columns support > [index] or < [index] filters\n\n" & _
+                "numeric columns support > [value] or < [value] filters\n\n" & _
                 "Pressing escape in the filter textbox will clear it.\n\n" & _
                 "If the AllowDelete property has been set, you can\n" & _
                 "select list items and press the delete key to remove\n" & _

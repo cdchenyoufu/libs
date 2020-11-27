@@ -58,7 +58,7 @@ Begin VB.Form Form1
    End
    Begin FilterList.ucFilterList lvFilter 
       Height          =   4650
-      Left            =   180
+      Left            =   225
       TabIndex        =   0
       Top             =   135
       Width           =   8520
