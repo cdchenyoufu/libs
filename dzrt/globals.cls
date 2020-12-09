@@ -362,8 +362,8 @@ Function Extract(Value, marker1, marker2, ByRef outVar, _
         outVar = Mid(Value, a, b - a)
     End If
     
-    If includeMarkers Then outVar = marker1 & outVar & marker2
     Extract = Len(outVar)
+    If includeMarkers And Len(outVar) > 0 Then outVar = marker1 & outVar & marker2
     
 End Function
 

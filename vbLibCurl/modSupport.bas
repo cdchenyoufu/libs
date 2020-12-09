@@ -16,30 +16,49 @@ Function c2a(c As Collection) As String()
     c2a = t
 End Function
 
+Function WebFileNameFromPath(fullpath)
+    Dim tmp() As String
+    If InStr(fullpath, "/") > 0 Then
+        tmp = Split(fullpath, "/")
+        WebFileNameFromPath = CStr(tmp(UBound(tmp)))
+    End If
+End Function
+
+Function FolderExists(path As String) As Boolean
+  On Error GoTo hell
+  Dim tmp As String
+  tmp = path & "\"
+  If Len(tmp) = 1 Then Exit Function
+  If Dir(tmp, vbDirectory) <> "" Then FolderExists = True
+  Exit Function
+hell:
+    FolderExists = False
+End Function
+
 Function c2s(c As Collection, Optional delimiter = vbCrLf) As String
     c2s = Join(c2a(c), delimiter)
 End Function
 
-Sub push(ary, Value) 'this modifies parent ary object
+Sub push(ary, value) 'this modifies parent ary object
     On Error GoTo Init
     Dim X
        
     X = UBound(ary)
     ReDim Preserve ary(X + 1)
     
-    If IsObject(Value) Then
-        Set ary(X + 1) = Value
+    If IsObject(value) Then
+        Set ary(X + 1) = value
     Else
-        ary(X + 1) = Value
+        ary(X + 1) = value
     End If
     
     Exit Sub
 Init:
     ReDim ary(0)
-    If IsObject(Value) Then
-        Set ary(0) = Value
+    If IsObject(value) Then
+        Set ary(0) = value
     Else
-        ary(0) = Value
+        ary(0) = value
     End If
 End Sub
 

@@ -19,6 +19,14 @@ Begin VB.Form Form1
    ScaleHeight     =   10995
    ScaleWidth      =   13365
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton Command1 
+      Caption         =   "Bulk Download"
+      Height          =   465
+      Left            =   11610
+      TabIndex        =   21
+      Top             =   1575
+      Width           =   1590
+   End
    Begin VB.CheckBox chkPost 
       Caption         =   "POST demo"
       Height          =   285
@@ -224,6 +232,11 @@ Dim fso As Object 'if they have dzrt.CFileSystem3 then browse button is availabl
 
 Private Sub cmdAbort_Click()
     abort = True
+End Sub
+
+Private Sub Command1_Click()
+    Form2.Show
+    Unload Me
 End Sub
 
 Private Sub curl_Header(obj As CCurlResponse, ByVal msg As String)
