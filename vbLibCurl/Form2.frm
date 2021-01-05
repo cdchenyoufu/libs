@@ -10,6 +10,14 @@ Begin VB.Form Form2
    ScaleHeight     =   9255
    ScaleWidth      =   10455
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton cmdCopyList 
+      Caption         =   "Copy"
+      Height          =   375
+      Left            =   630
+      TabIndex        =   12
+      Top             =   8280
+      Width           =   1365
+   End
    Begin VB.TextBox txtReferrer 
       Height          =   285
       Left            =   765
@@ -143,6 +151,16 @@ Private Sub cmdBrowse_Click()
     
 End Sub
 
+Private Sub cmdCopyList_Click()
+    Dim i, t
+    On Error Resume Next
+    For i = 0 To List1.ListCount
+        t = t & List1.List(i) & vbCrLf
+    Next
+    Clipboard.Clear
+    Clipboard.SetText t
+End Sub
+
 Private Sub curl_Init(obj As CCurlResponse)
     On Error Resume Next
     If obj.DownloadLength > 0 Then pb2.Max = obj.DownloadLength
@@ -164,7 +182,9 @@ End Sub
 
 
 Private Sub Command1_Click()
-
+    
+    Dim fname As String, i As Long
+    
     List1.Clear
     If Not FolderExists(txtSave2) Then
         List1.AddItem "Output folder not exist"
@@ -187,8 +207,14 @@ Private Sub Command1_Click()
     For Each u In tmp
         u = Trim(u)
         If Len(u) > 0 Then
-            List1.AddItem "Downloading: " & u
-            Set resp = curl.Download(CStr(u), txtSave2 & "\" & WebFileNameFromPath(u))
+            i = 1
+            fname = WebFileNameFromPath(u)
+            While FileExists(txtSave2 & "\" & fname)
+                fname = WebFileNameFromPath(u) & "_" & i
+                i = i + 1
+            Wend
+            List1.AddItem "Downloading: " & u & " -> " & fname
+            Set resp = curl.Download(CStr(u), txtSave2 & "\" & fname)
         End If
         If abort Then Exit For
         pb.value = pb.value + 1
