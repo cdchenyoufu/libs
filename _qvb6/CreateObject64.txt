@@ -1,0 +1,79 @@
+Edit: Please see post #24 below for an updated code.
+
+I have done something similar. I had a 64 Bit COM DLL that I wanted to talk to. The way it's done is by calling the API version of CreateObject(), and asks it to use the 64-Bit Dllhost.exe to host the 64-Bit COM DLL, then talk to it. This requires adding a registry entry at install time so Dllhost.exe is used. The value is of type String, and it should be left empty. Here is the registry entry that you need to create:
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Classes\APPID\{AppID_value}
+DllSurrogate=""
+
+To use CreateObject64() below, you call it like this:
+
+Dim o64 As Object
+
+Set o64 = CreateObject64("Project1.Class1")
+
+There is no error handling, but you could add Err.Raise, or add an extra ByRef parameter to return error information. 
+
+
+    Public Type TGUID
+       Data1 As Long
+       Data2 As Integer
+       Data3 As Integer
+       Data4(7) As Byte
+    End Type
+     
+    Public Const CLSCTX_INPROC_SERVER As Long = 1
+    Public Const CLSCTX_INPROC_HANDLER As Long = 2
+    Public Const CLSCTX_LOCAL_SERVER As Long = 4
+    Public Const CLSCTX_ENABLE_AAA As Long = &H10000
+    Public Const CLSCTX_REMOTE_SERVER As Long = 16
+    Public Const CLSCTX_SERVER As Long = (CLSCTX_INPROC_SERVER Or CLSCTX_LOCAL_SERVER)
+    Public Const CLSCTX_ALL As Long = (CLSCTX_INPROC_SERVER Or CLSCTX_INPROC_HANDLER Or CLSCTX_LOCAL_SERVER)
+    Public Const IID_IUnknown As String = "{00000000-0000-0000-C000-000000000046}"
+    Public Const IID_IDispatch As String = "{00020400-0000-0000-C000-000000000046}"
+     
+    Public Declare Function CoCreateInstance Lib "OLE32.DLL" (ByVal rclsid As Long, ByVal punkOuter As Long, ByVal dwClsContext As Long, ByVal riid As Long, ByRef ppv As Any) As Long
+    Public Declare Function CLSIDFromString Lib "OLE32.DLL" (ByVal lpsz As Long, ByRef pCLSID As TGUID) As Long
+    Public Declare Function CLSIDFromProgID Lib "OLE32.DLL" (ByRef TSzProgID As String, ByRef pCLSID As TGUID) As Long
+    Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
+     
+    Public Function CreateObject64(ByRef sObjectName As String) As Object
+        Dim ret As Long
+        Dim pCLSID As TGUID
+        Dim IIDispatch As TGUID
+        Dim ppv As Long
+     
+        ret = CLSIDFromString(StrPtr(IID_IDispatch), IIDispatch)
+        ' Get object by GUID
+        'ret = CLSIDFromString(StrPtr("{11111111-2222-3333-4444-555555555555}"), pCLSID)
+        ' Get object by ProgID
+        ret = CLSIDFromProgID(StrPtr(sObjectName), pCLSID)
+        
+        If ret = 0 Then
+            ' Success
+            
+            ' Create Object
+            ret = CoCreateInstance(VarPtr(pCLSID), 0, CLSCTX_LOCAL_SERVER, VarPtr(IIDispatch), ppv)
+            
+            'Debug.Print "CoCreateInstance returned = " & Hex(ret) & ", ppv = " & Hex(ppv) & ", LastDllError = " & Err.LastDllError
+            
+            If ppv <> 0 Then
+                Set CreateObject64 = ObjFromPtr(ppv)
+            End If
+        Else
+            Debug.Print "CLSIDFromString failed, ret = " & Hex(ret) & ", LastDllError = " & Err.LastDllError
+        End If
+     
+    End Function
+     
+    ' Returns an object given its pointer
+    ' This function reverses the effect of the ObjPtr function
+    Public Function ObjFromPtr(ByVal pObj As Long) As Object
+        Dim obj As Object
+        ' force the value of the pointer into the temporary object variable
+        CopyMemory obj, pObj, 4
+        ' assign to the result (this increments the ref counter)
+        Set ObjFromPtr = obj
+        ' manually destroy the temporary object variable
+        ' (if you omit this step you'll get a GPF!)
+        CopyMemory obj, 0&, 4
+    End Function

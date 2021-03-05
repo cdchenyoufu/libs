@@ -1,0 +1,2 @@
+To identify an object in COM you could use a moniker. Regarding to VB6 you should enable unsafe marshaling as well (HKCU\Software\Microsoft\Visual Basic\6.0\AllowUnsafeObjectPassing)
+All of the above applies to Std-EXE projects or private classes. 

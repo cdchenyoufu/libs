@@ -22,7 +22,7 @@ Private parent As CPEEditor
 
 Public rva As Long
 Public fileOffset As Long
-Public Size As Long
+Public size As Long
 Public hadRecursive As Boolean
 
 Dim hFile As Long
@@ -47,7 +47,7 @@ Function dumpNames(Optional includeSize As Boolean = True) As Collection
 
     For Each e In Entries
         If includeSize Then
-            c.Add rpad(e.Size, 8) & e.path
+            c.Add rpad(e.size, 8) & e.path
         Else
             c.Add e.path
         End If
@@ -57,13 +57,15 @@ End Function
 
 Friend Sub LoadSelf(owner As CPEEditor)
     
+    On Error Resume Next 'error was failing to close handle, then maxing out handle table if processing 1000s of files
+    
     Set parent = owner
         
     rva = owner.OptionalHeader.ddVirtualAddress(Resource_Table)
-    Size = owner.OptionalHeader.ddSize(Resource_Table)
+    size = owner.OptionalHeader.ddSize(Resource_Table)
     fileOffset = owner.RvaToOffset(rva)
     
-    If rva = 0 Or Size = 0 Or fileOffset = 0 Then Exit Sub
+    If rva = 0 Or size = 0 Or fileOffset = 0 Then Exit Sub
     fileOffset = fileOffset + 1
     
     hFile = FreeFile
@@ -80,10 +82,10 @@ Friend Sub LoadSelf(owner As CPEEditor)
 
 End Sub
 
-Private Sub DumpFile(hFile As Long, offset As Long, Optional Size As Long = 16)
+Private Sub DumpFile(hFile As Long, offset As Long, Optional size As Long = 16)
     Dim curPos As Long
     Dim b() As Byte
-    ReDim b(1 To Size)
+    ReDim b(1 To size)
     
     curPos = Seek(hFile)
     Get hFile, offset, b()
@@ -115,9 +117,9 @@ Public Function GetResourceData(path As String, ByRef bArray) As Boolean
     If Not GetResource(path, cre) Then Exit Function
     
     fOffset = parent.RvaToOffset(cre.OffsetToDataRVA)
-    If cre.Size = 0 Or cre.OffsetToDataRVA = 0 Or fOffset = 0 Then Exit Function
+    If cre.size = 0 Or cre.OffsetToDataRVA = 0 Or fOffset = 0 Then Exit Function
     
-    ReDim b(cre.Size - 1)
+    ReDim b(cre.size - 1)
     f = FreeFile
     Open parent.LoadedFile For Binary As f
     Get f, fOffset + 1, b
