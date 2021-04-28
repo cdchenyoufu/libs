@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta name="viewport" content="width=device-width, user-scalable=yes">
+		<meta name="description" content="The PDF417 code">
+    <link rel="shortcut icon" href="http://grandzebu.net/favicon.ico">
+    <title>The PDF417 code</title>
+  </head>
+  <body style="background: rgba(0, 0, 0, 0) url(&quot;/images/piscine.jpg&quot;) repeat scroll 0% 0%; margin-left: 50px;" id="corps">
+    <script language="JavaScript" type="text/javascript">
+  document.body.id='corps';
+  document.body.style.marginLeft='50px';
+  document.body.onmouseover=FermeVolet;
+  Retrait = 220;
+  EnCours = false;
+  function OuvreVolet() {
+    if (! EnCours) timeoutID = setTimeout("Ouverture()", 50);
+    EnCours = true;
+  }
+  function FermeVolet() {
+    if (! EnCours) timeoutID = setTimeout("Fermeture()", 50);
+    EnCours = true;
+  }
+  function Ouverture() { 
+    Pas = 80;
+    ValLeft = parseInt(document.getElementById("volet").style.left);
+    if (Math.abs(ValLeft) < Pas) Pas = Math.abs(ValLeft);
+    document.getElementById("volet").style.left = (ValLeft + Pas) + "px";
+    document.getElementById("corps").style.marginLeft = (parseInt(document.getElementById("corps").style.marginLeft) + Pas) + "px";
+    if (Pas != 0) {
+      setTimeout("Ouverture()",50);
+    } else {
+      EnCours = false;
+    }
+  }
+  function Fermeture() { 
+    Pas = 80;
+    ValLeft = parseInt(document.getElementById("volet").style.left);
+    if (Retrait - Math.abs(ValLeft) < Pas) Pas = Retrait - Math.abs(ValLeft);
+    document.getElementById("volet").style.left = (ValLeft - Pas) + "px";
+    document.getElementById("corps").style.marginLeft = (parseInt(document.getElementById("corps").style.marginLeft) - Pas) + "px";
+    if (Pas != 0) {
+      setTimeout("Fermeture()",50);
+    } else {
+      EnCours = false;
+    }
+  }
+  function IsChildOf(Element, Parent) {  // Vrai si Element est un enfant de Parent
+    if (Element === Parent) return true;
+    if (Element = Element.parentNode) return IsChildOf(Element, Parent);
+  } 
+  function DivOut(Event) {
+    MyDiv = document.getElementById('volet');
+    Target = Event.relatedTarget || Event.toElement;   // toElement pour IE
+    if (! IsChildOf(Target, MyDiv)) {
+      // action si l'�lement provoquant le mouseout n'est pas un enfant de la div
+      FermeVolet();
+    }
+  }
+</script>    
+<div id="volet" name="volet" style="position: absolute; left: -220px; top: 0px;" onmouseover="OuvreVolet()" onmouseout="DivOut(event)">
+  
+        <table cellspacing="1" cellpadding="0" border="0">
+          <tbody><tr>
+            <td width="220" bgcolor="lightgrey">
+              <form action="http://www.x-recherche.com/cgi-bin/trouve.cgi">
+  <table cellpadding="2" border="1" align="center">
+    <tbody><tr>
+      <td colspan="2">
+        <p align="center">
+		  <input type="hidden" name="name" value="grandzebu">
+	      <input type="text" name="MOTS" size="20">
+	      <input type="submit" value="Rechercher" ""="">
+		</p>
+	  </td>
+    </tr>
+    <tr>
+	  <td>
+	    <input type="checkbox" name="SUBSTRING" value="on" checked="checked"><font size="1">Mot exact</font>
+	  </td>
+	  <td align="right">
+	    <select name="nrespp" size="1"> 
+	    <option value="10" selected="selected">10 
+	    </option><option value="25">25 
+	    </option><option value="50">50 
+	    </option><option value="100">100 </option></select><font size="1">Résultats par page</font>
+	  </td>
+    </tr>
+  </tbody></table>
+</form>
+<br>
+<h3 align="center">Index des mots-clés</h3>
+<table align="center"><tbody><tr><td>
+
+<font size="1">
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=accras%3EACCRAS%3C/A%3E%3CBR%3E%3CA%20HREF=" informatique="" php="" scripts.htm"="">AGENDA&nbsp;PERSONNEL</a><br>
+<a href="http://grandzebu.net/informatique/php/scripts.htm">ALBUM&nbsp;PHOTO (Script)</a><br>
+<a href="http://grandzebu.net/informatique/trucs/codagemail.htm">ANTI SPAM</a><br>
+<a href="http://grandzebu.net/nature/nature.htm">APICULTURE</a><br>
+<a href="http://grandzebu.net/recettes/recettes.php?numchap=9">BOISSONS (Recettes)</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=bredele">BREDELE</a><br>
+<a href="http://grandzebu.net/informatique/cpp/progc.htm">C++</a><br>
+<a href="http://grandzebu.net/nature/ruches/cadre.htm">CADRE</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=charlottefruits">CHARLOTTE AUX FRUITS</a><br>
+<a href="http://grandzebu.net/informatique/trucs/codagemail.htm">CODAGE ADRESSES MAIL</a><br>
+<a href="http://grandzebu.net/informatique/codbar/code25I.htm">CODE&nbsp;2&nbsp;DE&nbsp;5&nbsp;ENTRELACE</a><br>
+<a href="http://grandzebu.net/informatique/codbar/code39.htm">CODE&nbsp;3&nbsp;DE&nbsp;9</a><br>
+<a href="http://grandzebu.net/informatique/codbar/code128.htm">CODE&nbsp;128</a><br>
+<a href="http://grandzebu.net/informatique/codbar/pdf417.htm">CODE&nbsp;PDF417</a><br>
+<a href="http://grandzebu.net/informatique/codbar/codbar.htm">CODES&nbsp;BARRE</a><br>
+<a href="http://grandzebu.net/informatique/utiles/files_ut.htm">CODE&nbsp;POSTAL</a><br>
+<a href="http://grandzebu.net/informatique/utiles/files_ut.htm">CODES&nbsp;VIDEOTEXT</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=confitures">CONFITURES</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=bredele#congolais">CONGOLAIS</a><br>
+<a href="http://grandzebu.net/recettes/recettes.php?numchap=10">CONSERVES (Recettes)</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=cornichonsvinaigre">CORNICHONS AU VINAIGRE</a><br>
+<a href="http://grandzebu.net/informatique/php/scripts.htm">COUARAIL</a><br>
+<a href="http://grandzebu.net/recettes/recettes.php?numchap=1">CUISINE (Bases)</a><br>
+<a href="http://grandzebu.net/informatique/php/scripts.htm">CYBERMUT</a><br>
+<a href="http://grandzebu.net/nature/ruches/ruches.htm">DADANT</a><br>
+<a href="http://grandzebu.net/informatique/codbar/datamatrix.htm">DATAMATRIX</a><br>
+<a href="http://grandzebu.net/informatique/vb/progvb.htm">DDE</a><br>
+<a href="http://grandzebu.net/recettes/recettes.php?numchap=8">DESSERTS (Recettes)</a><br>
+<a href="http://grandzebu.net/informatique/trucs/doubleNAT.htm">DOUBLE NAT</a><br>
+<a href="http://grandzebu.net/informatique/cpp/progc.htm">DYNDNSUPDATE</a><br>
+<a href="http://grandzebu.net/informatique/codbar/ean13.htm">EAN&nbsp;13</a><br>
+<a href="http://grandzebu.net/informatique/codbar/code128.htm#eanucc">EAN&nbsp;128<br></a>
+<a href="http://grandzebu.net/electronique/electronique.htm">ELECTRONIQUE</a><br>
+<a href="http://grandzebu.net/recettes/recettes.php?numchap=2">ENTREES (Recettes)</a><br>
+<a href="http://grandzebu.net/informatique/softs/prog.htm">ENVOI&nbsp;DE&nbsp;SMS</a><br>
+<a href="http://grandzebu.net/informatique/php/scripts.htm">ESPACE&nbsp;MEMBRE</a><br>
+<a href="http://grandzebu.net/informatique/softs/prog.htm">EURO</a><br>
+<a href="http://grandzebu.net/informatique/vb/progvb.htm">EXEMPLES&nbsp;VB6</a><br>
+<a href="http://grandzebu.net/sites.htm">FAVORIS</a><br>
+<a href="http://grandzebu.net/informatique/vb/progvb.htm">FONCTIONS</a><br>
+<a href="http://grandzebu.net/informatique/cpp/progc.htm">FONCTIONS EN C++</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=guacamole">GUACAMOLE</a><br>
+<a href="http://grandzebu.net/informatique/vb/progvb.htm">IMPRIMANTES&nbsp;RESEAUX</a><br>
+<a href="http://grandzebu.net/informatique/vb/progvb.htm">INSTANCE&nbsp;UNIQUE</a><br>
+<a href="http://grandzebu.net/informatique/vb4.htm">KIT&nbsp;VB4</a><br>
+<a href="http://grandzebu.net/nature/ruches/ruches.htm">LANGSTROTH</a><br>
+<a href="http://grandzebu.net/recettes/recettes.php?numchap=5">LEGUMES (Recettes)</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=madeleine">MADELEINES</a><br>
+<a href="http://grandzebu.net/maisons/maisons.htm">MAISONS</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=conservemaq">MAQUEREAUX AU VIN BLANC</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=rillettemaq">MAQUEREAUX (Rillettes)</a><br>
+<a href="http://grandzebu.net/informatique/utiles/files_ut.htm">NMEA</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=nougatine">NOUGATINE</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=pain">PAIN</a><br>
+<a href="http://grandzebu.net/informatique/codbar/pdf417.htm">PDF417</a><br>
+<a href="http://grandzebu.net/informatique/php/scripts.htm">PHP</a><br>
+<a href="http://grandzebu.net/electronique/pic/pic.htm">PIC</a><br>
+<a href="http://grandzebu.net/maisons/maisons.htm">PLANS&nbsp;DE&nbsp;MAISON</a><br>
+<a href="http://grandzebu.net/recettes/recettes.php?numchap=0">PATISSERIE (Bases)</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=planteur">PLANTEUR</a><br>
+<a href="http://grandzebu.net/recettes/recettes.php?numchap=7">PLATS COMPLETS (Recettes)</a><br>
+<a href="http://grandzebu.net/recettes/recettes.php?numchap=4">POISSONS (Recettes)</a><br>
+<a href="http://grandzebu.net/informatique/vb/progvb.htm">PROCEDURES</a><br>
+<a href="http://grandzebu.net/informatique/vb/progvb.htm">PROGRAMMATION</a><br>
+<a href="http://grandzebu.net/recettes/recettes.php">RECETTES DE CUISINE</a><br>
+<a href="http://grandzebu.net/informatique/vb/progvb.htm">RESSOURCES&nbsp;RESEAUX</a><br>
+<a href="http://grandzebu.net/informatique/vb/progvb.htm">R.I.B.</a><br>
+<a href="http://grandzebu.net/informatique/vb/progvb.htm">ROUTINES</a><br>
+<a href="http://grandzebu.net/nature/ruches/ruches.htm">RUCHE</a><br>
+<a href="http://grandzebu.net/recettes/recettes.php?numchap=6">SALADES (Recettes)</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=saumoncroute">SAUMON EN CROUTE</a><br>
+<a href="http://grandzebu.net/informatique/php/scripts.htm">SCRIPTS</a><br>
+<a href="http://grandzebu.net/mesliens.htm">SITES</a><br>
+<a href="http://grandzebu.net/informatique/softs/prog.htm">SLICE</a><br>
+<a href="http://grandzebu.net/informatique/softs/prog.htm">SMS</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=soupecourge">SOUPE DE COURGE</a><br>
+<a href="http://grandzebu.net/nature/elements.htm">TABLE&nbsp;PERIODIQUE</a><br>
+<a href="http://grandzebu.net/recettes/ficherecette.php?content=tartetatin">TATIN (Tarte)</a><br>
+<a href="http://grandzebu.net/electronique/usb/usb.htm">USB</a><br>
+<a href="http://grandzebu.net/recettes/recettes.php?numchap=3">VIANDES (Recettes)</a><br>
+<a href="http://grandzebu.net/informatique/utiles/files_ut.htm">VIDEOTEXT</a><br>
+<a href="http://grandzebu.net/informatique/informat.htm">VISUAL&nbsp;BASIC</a><br>
+<a href="http://grandzebu.net/nature/ruches/ruches.htm">VOIRNOT</a><br>
+<a href="http://grandzebu.net/informatique/trucs/monPC.htm">WNTIPCFG</a><br>
+</font>
+</td></tr></tbody></table>
+<br>
+<form action="http://www.x-recherche.com/cgi-bin/trouve.cgi">
+  <table cellpadding="2" border="1" align="center">
+    <tbody><tr>
+      <td colspan="2">
+        <p align="center">
+		  <input type="hidden" name="name" value="grandzebu">
+	      <input type="text" name="MOTS" size="20">
+	      <input type="submit" value="Rechercher" ""="">
+		</p>
+	  </td>
+    </tr>
+    <tr>
+	  <td>
+	    <input type="checkbox" name="SUBSTRING" value="on" checked="checked"><font size="1">Mot exact</font>
+	  </td>
+	  <td align="right">
+	    <select name="nrespp" size="1"> 
+	    <option value="10" selected="selected">10 
+	    </option><option value="25">25 
+	    </option><option value="50">50 
+	    </option><option value="100">100 </option></select><font size="1">Résultats par page</font>
+	  </td>
+    </tr>
+  </tbody></table>
+</form>
+            </td>
+            <td width="30" bgcolor="lightgrey" align="center">
+              <b>I<br>N<br>D<br>E<br>X</b>
+            </td>
+          </tr>
+        </tbody></table>
+
+</div>
+
+    <div style="text-align: center;">
+		  <div>
+        <a href="http://grandzebu.net/informatique/codbar-en/codbar.htm"><img src="The%20PDF417%20code_files/bt_ret.gif" border="0"></a>
+        &nbsp;
+        <a href="http://grandzebu.net/index.htm"><img src="The%20PDF417%20code_files/bt_som.gif" border="0"></a>
+			</div>
+      <h3>The PDF417 code</h3>
+			<div>
+        <img alt="" src="The%20PDF417%20code_files/pdf417.png">
+			</div>
+			<div style="display: flex; align-items: center; justify-content: center;">
+			  <img src="The%20PDF417%20code_files/bluebar.gif" border="0">
+  			<a href="http://grandzebu.net/informatique/codbar/pdf417.htm">
+				  <table><tbody><tr><td>
+  			    <img src="The%20PDF417%20code_files/french%2520flag.html" border="0">
+				  </td></tr><tr><td>
+				    Version francaise
+				  </td></tr></tbody></table>
+				</a>
+			</div>
+    </div>
+		<div style="font-weight: bold;">
+	    This code is part of the family of 2-dimensional codes, it's in fact a code of several lines which can encode
+			up to 2700 bytes what explain its name "Portable Document File". The encoding is done in two
+			stages&nbsp;: first the datas are converted into "codeword" (High level encoding) then those are
+			converted to  bars and spaces patterns. (Low level encoding) In addition, a multi-level error correction system
+			is included, it allows to reconstruct badly printed, erased, fuzzy or torn off datas. In the
+			remainder of this presentation, the expression "codeword" will be shortened to CW and
+			"Reed-Solomon code" to RS.
+			<h3 style="color:red;">The general  structure.</h3>
+      <ul>
+        <li>The width of the finest bar is called the module.</li>
+        <li>Thereafter a bar module is symbolized by "1" and a space module by "0".</li>
+        <li>The code consists of 3 to 90 rows.</li>
+        <li>A line is composed of 1 to 30 columns of datas and its width goes from 90 to 583 modules with the margins.</li>
+        <li>
+				  Maximum number of CW per&nbsp;bar codes&nbsp;: 928 including 925 for datas. (1 for the length
+					descriptor and 2 at least for the correction of errors.)
+				</li>
+        <li>If necessary a mechanism called "Macro PDF417" allows to distribute more datas on several bar codes.</li>
+        <li>There are 929 CW including 900 for the datas, they are numbered from 0 to 928.</li>
+        <li>The errors correction levels goes from 0 to 8. The correction comprises 2 (on level 0) to 512 (on level 8) RS.</li>
+        <li>
+				  The row consists of a start&nbsp;character, a left side CW, 1 to 30 CW of datas, a right side CW
+          and a stop  character. There must be a white margin of  at least 2 modules on each side.
+				</li>
+        <li>
+				  Filling MCs (We will use for example "900") can be inserted between the data MCs and the
+          correction RS, these must be at the end.
+				</li>
+        <li>
+				  The first MC indicates the total number of MCs of the code including
+          the datas, the filling MCs and itself but excluding the correction RSs.
+				</li>
+        <li>
+				  Example of a code with 14 MC of data, a 15th MC to indicate
+          the total, one filling MC and 4 correction RS. (Level 1)
+				</li>
+      </ul>
+      <table bordercolordark="black" bordercolorlight="black" cellspacing="0" border="1" align="center">
+        <tbody><tr>
+          <td rowspan="10" width="100" bgcolor="#CCCCCC">
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p align="center">&nbsp;D</p>
+            <p align="center">&nbsp;é</p>
+            <p align="center">&nbsp;b</p>
+            <p align="center">&nbsp;u</p>
+            <p align="center">&nbsp;t</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+          </td>
+          <td bgcolor="lime" align="center"><p>&nbsp;G1</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D15</p></td>
+          <td bgcolor="blue" align="center"><p>D14</p></td>
+          <td bgcolor="lime" align="center"><p>&nbsp;Dr1</p></td>
+          <td rowspan="10" width="100" bgcolor="#CCCCCC">
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p align="center">&nbsp;F</p>
+            <p align="center">&nbsp;i</p>
+            <p align="center">&nbsp;n</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="lime" align="center"><p>&nbsp;G2</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D13</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D12</p></td>
+          <td bgcolor="lime" align="center"><p>&nbsp;Dr2</p></td>
+        </tr>
+        <tr>
+          <td bgcolor="lime" align="center"><p>&nbsp;G3</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D11</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D10</p></td>
+          <td bgcolor="lime" align="center"><p>&nbsp;Dr3</p></td>
+        </tr>
+        <tr>
+          <td bgcolor="lime" align="center"><p>&nbsp;G4</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D9</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D8</p></td>
+          <td bgcolor="lime" align="center"><p>&nbsp;Dr4</p></td>
+        </tr>
+        <tr>
+          <td bgcolor="lime" align="center"><p>&nbsp;G5</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D7</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D6</p></td>
+          <td bgcolor="lime" align="center"><p>&nbsp;Dr5</p></td>
+        </tr>
+        <tr>
+          <td bgcolor="lime" align="center"><p>&nbsp;G6</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D5</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D4</p></td>
+          <td bgcolor="lime" align="center"><p>&nbsp;Dr6</p></td>
+        </tr>
+        <tr>
+          <td bgcolor="lime" align="center"><p>&nbsp;G7</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D3</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D2</p></td>
+          <td bgcolor="lime" align="center"><p>&nbsp;Dr7</p></td>
+        </tr>
+        <tr>
+          <td bgcolor="lime" align="center"><p>&nbsp;G8</p></td>
+          <td bgcolor="blue" align="center"><p>&nbsp;D1</p></td>
+          <td bgcolor="#00CC00" align="center"><p>&nbsp;D0</p></td>
+          <td bgcolor="lime" align="center"><p>&nbsp;Dr8</p></td>
+        </tr>
+        <tr>
+          <td bgcolor="lime" align="center"><p>&nbsp;G9</p></td>
+          <td bgcolor="#CC6633" align="center"><p>&nbsp;C3</p></td>
+          <td bgcolor="#CC6633" align="center"><p>&nbsp;C2</p></td>
+          <td bgcolor="lime" align="center"><p>&nbsp;Dr9</p></td>
+        </tr>
+        <tr>
+          <td bgcolor="lime" align="center"><p>G10</p></td>
+          <td bgcolor="#CC6633" align="center"><p>C1</p></td>
+          <td bgcolor="#CC6633" align="center"><p>C0</p></td>
+          <td bgcolor="lime" align="center"><p>Dr10</p></td>
+        </tr>
+      </tbody></table>
+			<ul>
+        <li>D15 = length descriptor (16 in this sample)</li>
+		  	<li>D0 = padding</li>
+			  <li>D1 to D14 = datas</li>
+  			<li>G1 to G10 = left side CW</li>
+	  		<li>Dr1 to Dr10 = right side CW</li>
+		  	<li>C0 to C3 = error correction, level 1</li>
+      </ul>
+      <h3 style="color:red;">Low level encoding.</h3>
+      <ul>
+        <li>
+				  Each CW is made of 17 modules, containing  4 bars and 4 spaces (Code name comes from there !) and it
+					start by a  bar. Bars&nbsp;and spaces width is  1 to 6 modules. (Except for start and stop characters)
+					Sample&nbsp;:<br>
+          <div style="text-align: center;">
+					  <img src="The%20PDF417%20code_files/pdf417_MC.html">
+					  <br>
+					  soit la formulation suivante&nbsp;: 111 0 1 0 1 000 111 0000
+					</div>
+				</li>
+				<li>Start character is&nbsp;: 11111111 0 1 0 1 0 1 000</li>
+        <li>Stop character is&nbsp;: 1111111 0 1 000 1 0 1 00 1 (Here there is a 5th bar, thus  18 modules.)</li>
+        <li>There are 3 distinct tables for encoding the 929 CW.</li>
+        <li>The 3 tables giving the patterns of the 929 MC begin like this&nbsp;:</li>
+        <table border="1" bgcolor="#00CCFF" align="center">
+          <tbody><tr>
+            <td><p align="center"><i>First table</i></p></td>
+            <td><p align="center"><i>Second table</i></p></td>
+            <td><p align="center"><i>Third table</i></p></td>
+            <td rowspan="6">
+						  <p align="center">Exhaustive tables file&nbsp;:<br><a href="http://grandzebu.net/informatique/codbar/PDF417_tables.zip"><img src="The%20PDF417%20code_files/bt_charg.gif" border="0"></a></p>
+            </td>
+          </tr>
+          <tr>
+            <td><p align="left">111&nbsp;0&nbsp;1&nbsp;0&nbsp;1&nbsp;0&nbsp;111&nbsp;000000</p></td>
+            <td><p align="left">11111&nbsp;0&nbsp;1&nbsp;0&nbsp;1&nbsp;0&nbsp;11&nbsp;00000</p></td>
+            <td><p align="left">11&nbsp;0&nbsp;1&nbsp;0&nbsp;1&nbsp;0&nbsp;11111&nbsp;00000</p></td>
+          </tr>
+          <tr>
+            <td><p align="left">1111&nbsp;0&nbsp;1&nbsp;0&nbsp;1&nbsp;0&nbsp;1111&nbsp;0000</p></td>
+            <td><p align="left">111111&nbsp;0&nbsp;1&nbsp;0&nbsp;1&nbsp;0&nbsp;111&nbsp;000</p></td>
+            <td><p align="left">111&nbsp;0&nbsp;1&nbsp;0&nbsp;1&nbsp;0&nbsp;111111 000</p></td>
+          </tr>
+          <tr>
+            <td><p align="left">11111&nbsp;0&nbsp;1&nbsp;0&nbsp;1&nbsp;0&nbsp;11111 00</p></td>
+            <td><p align="left">1111&nbsp;0&nbsp;1&nbsp;0&nbsp;1&nbsp;00&nbsp;1&nbsp;000000</p></td>
+            <td><p align="left">1&nbsp;0&nbsp;1&nbsp;0&nbsp;1&nbsp;00&nbsp;1111&nbsp;000000</p></td>
+          </tr>
+          <tr>
+            <td><p align="left">111&nbsp;0&nbsp;1&nbsp;0&nbsp;1&nbsp;00&nbsp;111&nbsp;00000</p></td>
+            <td><p align="left">11111&nbsp;0&nbsp;1&nbsp;0&nbsp;1&nbsp;00&nbsp;11&nbsp;0000</p></td>
+            <td><p align="left">11&nbsp;0&nbsp;1&nbsp;0&nbsp;1&nbsp;00&nbsp;11111&nbsp;0000</p></td>
+          </tr>
+          <tr>
+            <td><p>.....</p></td>
+            <td><p>.....</p></td>
+            <td><p>.....</p></td>
+          </tr>
+        </tbody></table>
+        <li>
+				  Each row use only one encoding table, this table will be used again  3 rows further. Sample&nbsp;: Row 1 --&gt; table 1,
+					row 2 --&gt; table 2, row 3 --&gt; table 3, row 4 --&gt;&nbsp;table 1, .....etc. We have the formula&nbsp;: table number
+					= ( ( row number MOD 3 ) * 3 )
+				</li>
+      </ul>
+      <h3 style="color:red;">High level encoding.</h3>
+      <ul>
+        <li>
+				  Thereafter we'll use operators&nbsp;: + --&gt; addition, x --&gt; multiplication, 
+          \ --&gt; integer division, MOD --&gt; remainder of the integer division.
+				</li>
+        <li>
+				  Datas are compacted into  CW according to 3 modes  which are conceived according to their efficience compared to the
+					datas type. Default mode is "Text" mode.
+				</li>
+        <table border="1" bgcolor="#00CCFF" align="center">
+          <tbody><tr>
+            <td><p align="center"><i>Compaction mode</i></p></td>
+            <td><p align="center"><i>Datas to encode</i></p></td>
+            <td><p align="center"><i>Rate compaction</i></p></td>
+          </tr>
+          <tr>
+            <td><p align="center">"Byte"</p></td>
+            <td>ASCII 0 to 255</td>
+            <td>1,2 byte per CW</td>
+          </tr>
+          <tr>
+            <td><p align="center">"Text"</p></td>
+            <td>ASCII 9, 10, 13 &amp; 32 to 127&nbsp;</td>
+            <td>2 characters per CW</td>
+          </tr>
+          <tr>
+            <td><p align="center">"Numeric"</p></td>
+            <td>Only digits 0 to 9</td>
+            <td>2.9 digits per CW</td>
+          </tr>
+        </tbody></table>
+        <li>
+				  CWs numbered 900 to 928 have a special meaning, some allow switching from one mode to another in order to
+					optimize the code.
+				</li>
+        <table border="1" bgcolor="#00CCFF" align="center">
+          <tbody><tr>
+            <td><p align="center"><i>CW number&nbsp;:</i></p></td>
+            <td><p align="center"><i>Function</i></p></td>
+          </tr>
+          <tr>
+            <td><p align="center">900</p></td>
+            <td><p align="left">Switch to "Text" mode</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">901</p></td>
+            <td><p align="left">Switch to "Byte" mode</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">902</p></td>
+            <td><p align="left">Switch to "Numeric" mode</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">903 à 912</p></td>
+            <td><p align="left">Reserved</p></td>
+          </tr>
+          <tr>
+            <td> <p align="center">913</p></td>
+            <td><p align="left">Switch to "Byte" only for the next CW</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">914 à 920</p></td>
+            <td><p align="left">Reserved</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">921</p></td>
+            <td><p align="left">Initialization</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">922</p></td>
+            <td><p align="left">Block termination for PDF macro</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">923</p></td>
+            <td><p align="left">Field identification sequence in a PDF macro</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">924</p></td>
+            <td><p align="left">Switch to "Byte" mode (If number of bytes multiple of 6)</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">925</p></td>
+            <td><p align="left">ECI custom identifier</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">926</p></td>
+           <td><p align="left">ECI general identifier</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">927</p></td>
+            <td><p align="left">ECI identifier for character set or code page</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">928</p></td>
+            <td><p align="left">Block start for PDF macro</p></td>
+          </tr>
+        </tbody></table>
+        <li>The "Text mode have 4 sub-modes&nbsp;:
+          <ul>
+            <li>Uppercase</li>
+            <li>Lowercase</li>
+            <li>Mixed&nbsp;: Numeric and punctuation</li>
+            <li>Punctuation</li>
+					</ul>
+          <p>
+					  The default  sub-mode is  "Uppercase", in this sub-mode 
+            2 characters are encoded in each CW, here is characters tables&nbsp;:
+					</p>
+          <table border="1" bgcolor="#00CCFF" align="center">
+            <tbody><tr align="center">
+					    <td><i>Value</i></td>
+					    <td><i>Uppercase </i></td>
+					    <td><i>Lowercase </i></td>
+					    <td><i>Mixed</i></td>
+					    <td><i>Punctuation </i></td>
+						</tr>
+						<tr align="center"><td>0</td><td>A</td><td>a</td><td>0</td><td>;</td></tr>
+						<tr align="center"><td>1</td><td>B</td><td>b</td><td>1</td><td>&lt;</td></tr>
+						<tr align="center"><td>2</td><td>C</td><td>c</td><td>2</td><td>&gt;</td></tr>
+						<tr align="center"><td>3</td><td>D</td><td>d</td><td>3</td><td>@</td></tr>
+						<tr align="center"><td>4</td><td>E</td><td>e</td><td>4</td><td>[</td></tr>
+						<tr align="center"><td>5</td><td>F</td><td>f</td><td>5</td><td>\</td></tr>
+						<tr align="center"><td>6</td><td>G</td><td>g</td><td>6</td><td>]</td></tr>
+						<tr align="center"><td>7</td><td>H</td><td>h</td><td>7</td><td>_</td></tr>
+						<tr align="center"><td>8</td><td>I</td><td>i</td><td>8</td><td>` (Quote)</td></tr>
+						<tr align="center"><td>9</td><td>J</td><td>j</td><td>9</td><td>~</td></tr>
+						<tr align="center"><td>10</td><td>K</td><td>k</td><td>&amp;</td><td>!</td></tr>
+						<tr align="center"><td>11</td><td>L</td><td>l</td><td>CR</td><td>CR</td></tr>
+						<tr align="center"><td>12</td><td>M</td><td>m</td><td>HT</td><td>HT</td></tr>
+						<tr align="center"><td>13</td><td>N</td><td>n</td><td>,</td><td>,</td><td></td></tr>
+						<tr align="center"><td>14</td><td>O</td><td>o</td><td>:</td><td>:</td><td></td></tr>
+						<tr align="center"><td>15</td><td>P</td><td>p</td><td>#</td><td>LF</td></tr>
+						<tr align="center"><td>16</td><td>Q</td><td>q</td><td>-</td><td>-</td></tr>
+						<tr align="center"><td>17</td><td>R</td><td>r</td><td>.</td><td>.</td></tr>
+						<tr align="center"><td>18</td><td>S</td><td>s</td><td>$</td><td>$</td></tr>
+						<tr align="center"><td>19</td><td>T</td><td>t</td><td>/</td><td>/</td></tr>
+						<tr align="center"><td>20</td><td>U</td><td>u</td><td>+</td><td>“</td></tr>
+						<tr align="center"><td>21</td><td>V</td><td>v</td><td>%</td><td>|</td></tr>
+						<tr align="center"><td>22</td><td>W</td><td>w</td><td>*</td><td>*</td></tr>
+						<tr align="center"><td>23</td><td>X</td><td>x</td><td>=</td><td>(</td></tr>
+						<tr align="center"><td>24</td><td>Y</td><td>y</td><td>^</td><td>)</td></tr>
+						<tr align="center"><td>25</td><td>Z</td><td>z</td><td>PON</td><td>?</td></tr>
+						<tr align="center"><td>26</td><td>SP</td><td>SP</td><td>SP</td><td>{</td></tr>
+						<tr align="center"><td>27</td><td>MIN</td><td>T_MAJ</td><td>MIN</td><td>}</td></tr>
+						<tr align="center"><td>28</td><td>MIX</td><td>MIX</td><td>MAJ</td><td>' (Apostrophe)</td></tr>
+						<tr align="center"><td>29</td><td>T_PON</td><td>T_PON</td><td>T_PON</td><td>MAJ</td></tr>
+					</tbody></table>
+          6 switchs are included in these tables, they allow to change the sub-mode&nbsp;:<br>
+	        UPP&nbsp;: switch to "Uppercase"<br>
+	        LOW&nbsp;: switch to "Lowercase"<br>
+	        MIX&nbsp;: switch to "Mixed"<br>
+	        PUN&nbsp;: switch to "Punctuation"<br>
+	        T_UPP&nbsp;: switch to "Uppercase" only for next character<br>
+	        T_PUN&nbsp;: switch to "Punctuation" only for next character<br>
+	      	Each CW encode 2 characters&nbsp;; if C<sub>1</sub> and C<sub>2</sub> are the values of the two characters, CW 
+          value is&nbsp;: C<sub>1</sub> x 30 + C<sub>2</sub><br>
+					If it remains an alone character, we add to it a padding switch, for instance T_PUN.
+          <table border="1" align="center">
+            <tbody><tr>
+              <td bgcolor="#00CCFF">
+                <p align="center">Sample, sequence to encode&nbsp;: Super !</p>
+                <p>
+								  S&nbsp;: 18, LOW&nbsp;: 27, u&nbsp;: 20, p&nbsp;: 15, e&nbsp;: 4, r&nbsp;: 17, SPACE&nbsp;: 26, T_PUN&nbsp;:
+									29, !&nbsp;: 10<br>that is 9 characters, we'll add a T_PUN for the padding.<br>CW<sub>1</sub> = 18 x 30 + 27 = 
+                  567<br>CW<sub>2</sub> = 20 x 30 + 15 = 615<br>CW<sub>3</sub> = 4 x 30 + 17 = 137<br>CW<sub>4</sub> = 26 * 30 +
+									29 = 809<br>CW<sub>5</sub> = 10 x 30 + 29 = 329<br>The sequence is consequently&nbsp;: 567, 615, 137, 809, 329
+								</p>
+              </td>
+            </tr>
+          </tbody></table>
+				</li>
+        <li>
+				  The "Byte" mode allow to encode&nbsp;256 different bytes, that is the entire extended ASCII table.<br>
+		      If the byte number is a multiple of 6, we use the CW numbered 924 to switch to "Byte" mode; if the byte
+					number is not a multiple of 9 we use the CW numbered 901 for switching.<br>
+					Coding consists has to transform 6 bytes in  base 256 to 5 CW in base 900. To carry out the conversion&nbsp;:
+          <ul>
+            <li>
+			  		  Take the bytes by group of 6; let X<sub>5</sub> to X<sub>0</sub> their decimal&nbsp;values.
+				  		(X<sub>0</sub> is the less significantcharacter)
+				    </li>
+            <li>
+	    			  Compute the sum  S = X<sub>5</sub> x 256<sup>5</sup> + X<sub>4</sub> x 256<sup>4</sup> + X<sub>3</sub>
+		    			x 256<sup>3</sup> + X<sub>2</sub> x 256<sup>2</sup> + X<sub>1</sub> x 256 + X<sub>0 </sub>
+			    	</li>
+            <li>
+				      Let's compute the CWs&nbsp;: CW<sub>0</sub> = S MOD 900, new value of S&nbsp;: S = S \ 900, CW<sub>1</sub>
+  					  = S MOD 900 ... and so forth to CW4 (CW<sub>0</sub> is the less significant CW)
+  	  			</li>
+            <li>
+		  	  	  Bytes which remains after the conversion of the groups&nbsp;of 6 are taken just as they are&nbsp;&nbsp;:
+			  	  	1 byte = 1 CW of same value.<br>
+				    </li>
+					</ul>
+          <table border="1" align="center">
+            <tbody><tr>
+              <td bgcolor="#00CCFF">
+                <p align="center">Sample 1&nbsp;: word to encode&nbsp;: alcool</p>
+                <p>
+					  		  The sequence of bytes (in ASCII) is&nbsp;: 97, 108, 99, 111, 111, 108<br>
+						  		S = 97 x 256<sup>5</sup> + 108 x 256<sup>4</sup> + 99 x 256<sup>3</sup> 
+                  + 111 x 256<sup>2</sup> + 111 x 256 + 108 = 107 118 152 609 644<br>
+				          CW<sub>0</sub> = 107 118 152 609 644 MOD 900 = 244<br>
+  								S = 107 118 152 609 644 \ 900 = 119 020 169 566<br>
+	  							CW<sub>1</sub> = 119 020 169 566 MOD 900 = 766<br>S = 119 020 169 566 \ 900 = 132 244 632<br>
+		  						CW<sub>2</sub> = 132 244 632 MOD 900 = 432<br>
+			  					S = 132 244 632 \ 900 = 146 938<br>
+				  				CW3 = 146 938 MOD 900 = 238<br>
+					  			S = 146 938 \ 900 = 163<br>
+						  		CW4 = 163 MOD 900 = 163<br>
+							  	The sequence including the switch is consequently&nbsp;: 924,  163, 238, 432, 766, 244
+  							</p>
+                <p align="center">Sample 2&nbsp;: word to encode&nbsp;: alcoolique</p>
+                <p>
+			  				  The sequence of bytes (in ASCII) is&nbsp;: 97, 108, 99, 111, 111, 108, 105, 113, 117, 101<br>
+				  				The first 6 bytes are coded like above and we add 105, 113, 117 and 101<br>
+					  			The sequence including the switch is consequently &nbsp;: 901,  163, 238, 432, 766, 244, 105, 113, 117, 101
+						  	</p>
+              </td>
+            </tr>
+          </tbody></table>
+          </li><li>
+	  	  	  The "Numeric" mode is a conversion from base 10 to base 900<br>
+	          To carry out this  conversion&nbsp;:
+			    </li>
+          <ul>
+            <li>Take the digits by group of 44 (or less for the rest)</li>
+            <li>Add the digit 1 ahead, it will be removed by the decoding procedure</li>
+            <li>Make the change of base like for the "Byte" mode</li>
+            <li>Each&nbsp; group of 44 digits give 15 CWs</li>
+            <li>
+				      The smallest  groups give a number of CW witch is&nbsp;: Number of digits \ 3 + 1<br>
+			        Sample&nbsp;: 10 digits give 10 \ 3 + 1 = 3 + 1 = 4 CWs
+  				  </li>
+	  		  </ul>
+          <table border="1" align="center">
+          <tbody><tr>
+            <td bgcolor="#00CCFF">
+              <p align="center">Sample, sequence to encode&nbsp;: 01234</p>
+              <p>
+					  	  There will be thus 5 \&nbsp;3 + 1 = 2 CW<br>Add a "1" ahead&nbsp;: 101234<br>CW<sub>0</sub> =
+						  	101 234 MOD 900 = 434<br>
+							  S = 101 234 \ 900 = 112<br>CW<sub>1</sub> = 112 MOD 900 = 112<br>The sequence  is consequently&nbsp;: 112, 434
+	  					</p>
+            </td>
+          </tr>
+        </tbody></table>
+        <li>
+			    Left and right side CWs are computed according to the table used 
+          for the current row.<br>To obtain the CW value, make the following calculation&nbsp;: (Row 
+          Number \ 3) x 30 + X with X taken in the following table. (First row is row number 0)
+			  </li>
+        <table border="1" bgcolor="#00CCFF" align="center">
+          <tbody><tr>
+            <td><p align="center"><i>Table used to encode<br>the CWs of this row</i></p></td>
+            <td><p align="center"><i>X for the left side CW</i></p></td>
+            <td><p align="center"><i>X for the right side CW</i></p></td>
+          </tr>
+          <tr>
+            <td><p align="center">1</p></td>
+            <td><p>(Number of rows -1) \ 3</p></td>
+            <td><p>Number of data columns - 1</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">2</p></td>
+            <td><p>(Security level x 3)<br>+ (Number of rows -1)&nbsp;MOD 3</p></td>
+            <td><p>(Number of rows -1) \ 3</p></td>
+          </tr>
+          <tr>
+            <td><p align="center">3</p></td>
+            <td><p>Number of data columns - 1</p></td>
+            <td><p>(Security level x 3)<br>+ (Number of rows -1)&nbsp;MOD 3</p></td>
+          </tr>
+        </tbody></table>
+      </ul>
+      <h3 style="color:red;">Errors detection and correction.</h3>
+<ul>
+    <li>Error detection system use 2 CWs and correction system use some between 2 and 510</li>
+    <li>
+		  The correction system is based on "
+		  <a href="https://fr.wikipedia.org/wiki/Code_de_Reed-Solomon" target="_blank">
+				Reed Solomon codes
+			</a>
+			"  which enjoy the math students and terrify others ...
+		</li>
+    <li>
+		   Number of CWs to add depend of the correction level used, because of the limit to 928 CWs in a bar code
+			 (1 of which for the sum of CWs) the maximum level is limited by the number of data CWs. The number of CWs
+			 that the error correction algorithm can reconstitute is equal to the number of CWs required by the
+			 correction system&nbsp;: this is not magic but it's mathematical ! 
+			</li>
+        <table border="1" bgcolor="#00CCFF" align="center">
+          <tbody><tr>
+            <td>
+              <p align="center"><font size="2"><i>Level</i></font></p>
+            </td>
+            <td>
+              <p align="center">
+							  <font size="2"><i>Number of CWs required by the correction<br>system,  
+                2 of which for the detection ( 2</i><sup><i>level + 1</i></sup><i>)</i></font>
+							</p>
+            </td>
+            <td>
+              <p align="center"><font size="2"><i>Maximum number of data CWs</i></font></p>
+            </td>
+          </tr>
+          <tr>
+            <td><p align="center"><font size="2">0</font></p></td>
+            <td><p align="center"><font size="2">2</font></p></td>
+            <td><p align="center"><font size="2">925</font></p></td>
+          </tr>
+          <tr>
+            <td><p align="center"><font size="2">1</font></p></td>
+            <td><p align="center"><font size="2">4</font></p></td>
+            <td><p align="center"><font size="2">923</font></p></td>
+          </tr>
+          <tr>
+            <td><p align="center"><font size="2">2</font></p></td>
+            <td><p align="center"><font size="2">8</font></p></td>
+            <td><p align="center"><font size="2">919</font></p></td>
+          </tr>
+          <tr>
+            <td><p align="center"><font size="2">3</font></p></td>
+            <td><p align="center"><font size="2">16</font></p></td>
+            <td><p align="center"><font size="2">911</font></p></td>
+          </tr>
+          <tr>
+            <td><p align="center"><font size="2">4</font></p></td>
+            <td><p align="center"><font size="2">32</font></p></td>
+            <td><p align="center"><font size="2">895</font></p></td>
+          </tr>
+          <tr>
+            <td><p align="center"><font size="2">5</font></p></td>
+            <td><p align="center"><font size="2">64</font></p></td>
+            <td><p align="center"><font size="2">863</font></p></td>
+          </tr>
+          <tr>
+            <td><p align="center"><font size="2">6</font></p></td>
+            <td><p align="center"><font size="2">128</font></p></td>
+            <td><p align="center"><font size="2">799</font></p></td>
+          </tr>
+          <tr>
+            <td><p align="center"><font size="2">7</font></p></td>
+            <td><p align="center"><font size="2">256</font></p></td>
+            <td><p align="center"><font size="2">671</font></p></td>
+          </tr>
+          <tr>
+            <td><p align="center"><font size="2">8</font></p></td>
+            <td><p align="center"><font size="2">512</font></p></td>
+            <td><p align="center"><font size="2">415</font></p></td>
+          </tr>
+        </tbody></table>
+				<li>The advisable correction level depend on the number of data CWs&nbsp;:</li>
+				<table border="1" bgcolor="#00CCFF" align="center">
+          <tbody><tr>
+            <td><p><font size="2"><i>Number of data CWs</i></font></p></td>
+            <td><p align="center"><font size="2"><i>Advisable level</i></font></p></td>
+          </tr>
+          <tr>
+            <td><p><font size="2">1 à 40</font></p></td>
+            <td><p align="center"><font size="2">2</font></p></td>
+          </tr>
+          <tr>
+            <td><p><font size="2">41 à 160</font></p></td>
+            <td><p align="center"><font size="2">3</font></p></td>
+          </tr>
+          <tr>
+            <td><p><font size="2">161 à 320</font></p></td>
+            <td><p align="center"><font size="2">4</font></p></td>
+          </tr>
+          <tr>
+            <td><p><font size="2">321 à 863</font></p></td>
+            <td><p align="center"><font size="2">5</font></p></td>
+          </tr>
+        </tbody></table>
+        <li>
+				  Reed Solomon codes are based on a polynomial equation where x power is 2<sup>s+1</sup> with s =
+				  error correction level used. For&nbsp;sample with the level 1 we use an equation like this&nbsp;:
+					a + bx + cx<sup>2</sup> + dx<sup>3</sup> + x<sup>4</sup> The numbers a, b, c and d are the  factors of
+					the  polynomial equation.
+		    </li>
+        <li>
+				  For information the equation is&nbsp;: (x - 3)(x - 3<sup>2</sup>)(x - 3<sup>3</sup>).....(x -
+					3<sup>k</sup>) ( with k = 2<sup>s+1</sup>) We develop the polynomial equation and we apply a MOD 929
+					on each factor. These factors have been pre-computed for the  8 equations corresponding to the 8
+					correction levels. You can see the 
+		      <a href="http://grandzebu.net/informatique/codbar/pdf417coef.txt" target="_blank">factors file</a>.
+					We can also calculate them.
+		    </li>
+				<br>
+        <div align="center">
+				  Here in Basic the algorithm to calculate the coefficients&nbsp;:<br>
+          <img src="The%20PDF417%20code_files/algo_coef_PDF417.png">
+          <br>
+					Let <font size="5" color="red">s</font>&nbsp;the correction level used, <font size="5" color="red">
+					k</font> = 2<sup><font color="red">s</font>+1</sup> the number of RS.
+					<br>
+          Now, still in Basic, the algorithm for calculating RS codes.<br>
+          <img src="The%20PDF417%20code_files/algo_RS_PDF417.png">
+          <br>
+          <br>
+        </div>
+        <table border="1" bgcolor="#00CCFF" align="center">
+          <tbody><tr>
+            <td>
+              Find all the RS code calculations of the different 2D barcodes in Visual Basic 6.<br>
+                It is a ZIP file without installation&nbsp;:
+              <a href="http://grandzebu.net/informatique/codbar/coefRS.zip"><b><img src="The%20PDF417%20code_files/bt_charg.gif" width="123" height="35" border="0"></b></a><b>
+            </b></td>
+          </tr>
+        </tbody></table>
+			</ul>
+			Those who have read and understood the codes of Reed Solomon will find themselves there ; for the few
+			ignorant who have not understood everything (like me!) It will be enough to apply the "recipe" by using
+			the codes obtained in the reverse order (last to first).
+			<br>
+		  <h3 style="color:red;">Bar code making.</h3>
+      Since we can create the bar code pattern it remains us to draw it on the 
+      screen and to print it on a paper sheet. Two approaches are possible&nbsp;:
+      <ul>
+        <li>
+	  			The graphic method where each bar is "drawn" like a solid rectangle. This method makes it possible to
+		  		calculate the width of each bar to the nearest pixel and to work on multiples of the width of a pixel of
+			  	the used device. This gives good accuracy especially if the device has a low density as is the case of
+			    screens and inkjet printers. This method require special programming  routines and does not allow to make
+  			  bar codes with a current software.
+	  	  </li>
+        <li>
+			    The special font in which each character is replaced by a bar code. This method allow the use of any
+			    software like a text processing or a spreadsheet. (For example LibreOffice, the free clone of MSoffice !)
+  			  The scale settings according to the selected size can bring small misshaping of the bar drawing. With
+	  		  a laser printer there's no probs.
+	    	</li>
+      </ul>
+      It seems there is no free font for PDF417 on the net. I've decided consequently to draw this font and to
+			propose it for download.  Because there's 929 CWs with 3 alternatives for each one  obligate us to divide
+			the 17 bits of a CW in several parts. But  divide by 17 ... hmmm ... a trick is necessary. If we considere
+			that the first bit is always  "1" and the last one "0", we can imagine a separator like "01" and the remain
+			is only  15 bits in each CW; we can then divide these 15 bits into 3 parts. There will be then 2<sup>5</sup>
+			= 32 possible groups affected to 32 characters of the font. The encoding software is in charge to transform
+			the 3 groups of each CW into a 3 characters string.<br>The font will contain thus the&nbsp;following
+			characters&nbsp;:
+      <ul>
+        <li>
+	  		  Character A&nbsp;(ASCII&nbsp;: 65) to F&nbsp;(ASCII&nbsp;:70) and a&nbsp;(ASCII 
+          &nbsp;: 97) to z&nbsp;(ASCII&nbsp;:122) for the 32 groups having a formula "00000" to "11111"
+		    </li>
+        <li>Character * (ASCII&nbsp;: 42) for the separator having a formula "01"</li>
+        <li>
+		  	  Character + (ASCII&nbsp;: 43) for the row start character without its last 0, formula
+			  	"11111111 0 1 0 1 0 1 00"
+  			</li>
+        <li>Character - (ASCII&nbsp;: 45) for the end row character without its first 1, formula
+		  	  "111111 0 1 000 1 0 1 00 1"
+			  </li>
+      </ul>
+      The string to send to the printer will look something like this &nbsp;: +*gfA*jhD*BAl*gCt*hjk*- and 
+      this for each row.
+			<br>
+      <h3 style="color:red;">The "pdf417.ttf" font</h3>
+      This font contains the 35 patterns describe above. The start row and end row codes embed a 2 modules
+			margin. The height is equal to 3 modules which is the most usual size.
+      <table cellspacing="10" cellpadding="10" border="0" align="center">
+        <tbody><tr>
+          <td align="center">
+            <a href="http://grandzebu.net/informatique/codbar/pdf417.ttf"><img src="The%20PDF417%20code_files/bt_charg-en.gif" width="123" height="35" border="0"></a>
+            Copy this file<br>
+						in the font directory,<br>
+						often named&nbsp;:<br>C:\WINDOWS\FONTS<p></p>
+          </td>
+        </tr>
+      </tbody></table>
+      <h3 style="color:red;">Encoding a pdf417 bar code</h3>
+      The software will evolve with 4 steps&nbsp;:
+      <ul>
+        <li>Compaction of the datas into the  CWs by using of the different methods and trying to optimize.</li>
+        <li>Calculation of the correction CWs according to the selected security level.</li>
+        <li>Splitting by rows and addition of&nbsp;left side and right side CWs.</li>
+        <li>
+				  Transformation of each&nbsp;CW into a 3 characters string and addition 
+          of separators, start row character, end row character&nbsp;and carriage returns.
+				</li>
+      </ul>
+      Because of the interaction between the different compaction modes and 
+      the  different sub-modes of the "text" mode it's  difficult to make 
+      a 100% optimization. Thus the software will split the string into "parts" 
+      having the type "numeric", "text" or "byte" afterwards 
+      it will change some parts for an other mode if the overload due to switch CWs is 
+      greater than the compaction gain. We'll can't make allowance for all the  parameters 
+      like paddings, gain due to perfect multiple of 6, uni-character&nbsp;switch 
+      or the switchs between the different sub-modes of the text mode&nbsp;: one would need for that
+      several thousands of programming lines.<br>
+      Another difficulty comes from the size of the wielded numbers, for example the "Modulo 900" operation
+			applied on a 44 digits number generate an unavoidable overload error; the software will have to carry out 
+      this calculation step by step.
+			<br>
+      <h3 style="color:red;">A small program to test all that</h3>
+      <table cellspacing="10" cellpadding="10" align="center">
+        <tbody><tr>
+          <td align="center">
+				  	<img src="The%20PDF417%20code_files/snap_pdf417.png" border="0">
+          </td>
+          <td>
+						  Here is a small program<br>
+							written with Visual Basic 6.<br>
+							The setup file copy &nbsp;the<br>
+							program, the Visual Basic<br>
+							dependencies, the source<br>
+							files and the font.
+            <table cellspacing="0" cellpadding="0" align="center">
+              <tbody><tr>
+                <td align="center">
+							    <br>
+                  Setup file&nbsp;:<br>
+							  	<a href="http://grandzebu.net/informatique/codbar/setup_codePDF417.exe">
+								    <img src="The%20PDF417%20code_files/bt_charg.gif" border="0">
+								  </a>
+                </td>
+              </tr>
+              <tr>
+                <td align="center">
+                  ZIP file without setup&nbsp;:<br>
+								  <a href="http://grandzebu.net/informatique/codbar/pdf417.zip">
+								    <img src="The%20PDF417%20code_files/bt_charg.gif" border="0">
+								  </a>
+                </td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+      </tbody></table>
+			The PDF417$ function have about 500 lines, I thus don't reproduce it here, you can retrieve it in the
+			"form1.frm" file which is with the above program&nbsp;; with setup program, the "form1.frm" file is in the
+			program directory, "sources" sub-directory.<br>The function call is like this&nbsp;: <i>result$ =
+			pdf417$(String$, Security%, ColNb%, ErrCode%)<br></i>with the string to encode in String$, correction level
+			in Security%  (-1 = auto.), ColNb% for the number of data columns in a row (&lt;1 = auto.) and ErrCode% for
+			retrieving an eventual error code. these 3 last parameters are not required and are  passed by references&nbsp;;
+			after the function return they contains the really used&nbsp;values. Values of ErrCode% after the function
+			return&nbsp;:
+      <ul>
+        <li>1 &nbsp;: String$ is empty</li>
+        <li>2 &nbsp;: String$ have too many datas, we go beyond the 928 CWs.</li>
+        <li>3 &nbsp;: Number of CWs per row too small, we go beyond  90 rows.</li>
+        <li>
+				  10&nbsp;: The security level has being lowers not to exceed the 928 CWs. (It's 
+          not an error, only a warning.)
+				</li>
+      </ul>
+      It is enough now to display or to print  the chains result$ with the  pdf417 font for example in a text
+			processing. The Word users will be able to even integrate the pdf417$ function  in a macro to automate the
+			treatment. To achieve all the treatments in a single function, I had to use "Gosub"
+		  instead of functions with parameters ; I can already hear the programming esthetes screaming sacrilegious !
+      <br>
+			<table cellspacing="0" cellpadding="0" align="center">
+        <tbody><tr>
+          <td bgcolor="white">
+            <p align="center">
+		          <a href="http://grandzebu.net/informatique/codbar-en/plusloin.php">Do you like this page ?</a>
+			        <a href="http://grandzebu.net/informatique/codbar-en/plusloin.php">
+			          <br>
+                <img src="The%20PDF417%20code_files/coeur28.gif" width="100" height="100" border="0">
+			          <br>
+              </a>
+			        <a href="http://grandzebu.net/informatique/codbar-en/plusloin.php">Is it useful to you ?<br></a>
+		        </p>
+            <h2 align="center"><a href="http://grandzebu.net/informatique/codbar-en/plusloin.php">Click here !</a></h2>
+          </td>
+        </tr>
+      </tbody></table>
+		  <br>
+      <div align="center">
+        <a href="http://grandzebu.net/informatique/codbar-en/codbar.htm"><img src="The%20PDF417%20code_files/bt_ret.gif" border="0"></a>
+        &nbsp;
+        <a href="http://grandzebu.net/index.htm"><img src="The%20PDF417%20code_files/bt_som.gif" border="0"></a>
+      </div>
+		</div>
+  
+</body></html>

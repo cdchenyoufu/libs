@@ -18,6 +18,10 @@ Top As Long
 Right As Long
 Bottom As Long
 End Type
+Private Type POINTAPI
+X As Long
+Y As Long
+End Type
 Private Type BITMAP
 BMType As Long
 BMWidth As Long
@@ -99,9 +103,20 @@ dwFileSubtype As Long
 dwFileDateMS As Long
 dwFileDateLS As Long
 End Type
+Private Type MONITORINFO
+cbSize As Long
+RCMonitor As RECT
+RCWork As RECT
+dwFlags As Long
+End Type
+Private Type FLASHWINFO
+cbSize As Long
+hWnd As Long
+dwFlags As Long
+uCount As Long
+dwTimeout As Long
+End Type
 Private Const LF_FACESIZE As Long = 32
-Private Const FW_NORMAL As Long = 400
-Private Const FW_BOLD As Long = 700
 Private Const DEFAULT_QUALITY As Long = 0
 Private Type LOGFONT
 LFHeight As Long
@@ -121,6 +136,8 @@ LFFaceName(0 To ((LF_FACESIZE * 2) - 1)) As Byte
 End Type
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef Destination As Any, ByRef Source As Any, ByVal Length As Long)
 Private Declare Function ArrPtr Lib "msvbvm60.dll" Alias "VarPtr" (ByRef Var() As Any) As Long
+Private Declare Function lstrlen Lib "kernel32" Alias "lstrlenW" (ByVal lpString As Long) As Long
+Private Declare Function lstrcpy Lib "kernel32" Alias "lstrcpyW" (ByVal lpString1 As Long, ByVal lpString2 As Long) As Long
 Private Declare Function MessageBoxIndirect Lib "user32" Alias "MessageBoxIndirectW" (ByRef lpMsgBoxParams As MSGBOXPARAMS) As Long
 Private Declare Function GetActiveWindow Lib "user32" () As Long
 Private Declare Function GetForegroundWindow Lib "user32" () As Long
@@ -134,11 +151,13 @@ Private Declare Function FileTimeToSystemTime Lib "kernel32" (ByVal lpFileTime A
 Private Declare Function FindFirstFile Lib "kernel32" Alias "FindFirstFileW" (ByVal lpFileName As Long, ByRef lpFindFileData As WIN32_FIND_DATA) As Long
 Private Declare Function FindNextFile Lib "kernel32" Alias "FindNextFileW" (ByVal hFindFile As Long, ByRef lpFindFileData As WIN32_FIND_DATA) As Long
 Private Declare Function FindClose Lib "kernel32" (ByVal hFindFile As Long) As Long
+Private Declare Function GetWindowRect Lib "user32" (ByVal hWnd As Long, ByRef lpRect As RECT) As Long
+Private Declare Function MonitorFromWindow Lib "user32" (ByVal hWnd As Long, ByVal dwFlags As Long) As Long
+Private Declare Function GetMonitorInfo Lib "user32" Alias "GetMonitorInfoW" (ByVal hMonitor As Long, ByRef lpMI As MONITORINFO) As Long
 Private Declare Function GetVolumePathName Lib "kernel32" Alias "GetVolumePathNameW" (ByVal lpFileName As Long, ByVal lpVolumePathName As Long, ByVal cch As Long) As Long
 Private Declare Function GetVolumeInformation Lib "kernel32" Alias "GetVolumeInformationW" (ByVal lpRootPathName As Long, ByVal lpVolumeNameBuffer As Long, ByVal nVolumeNameSize As Long, ByRef lpVolumeSerialNumber As Long, ByRef lpMaximumComponentLength As Long, ByRef lpFileSystemFlags As Long, ByVal lpFileSystemNameBuffer As Long, ByVal nFileSystemNameSize As Long) As Long
 Private Declare Function CreateDirectory Lib "kernel32" Alias "CreateDirectoryW" (ByVal lpPathName As Long, ByVal lpSecurityAttributes As Long) As Long
 Private Declare Function RemoveDirectory Lib "kernel32" Alias "RemoveDirectoryW" (ByVal lpPathName As Long) As Long
-Private Declare Function GetCurrentDirectory Lib "kernel32" Alias "GetCurrentDirectoryW" (ByVal nBufferLength As Long, ByVal lpBuffer As Long) As Long
 Private Declare Function GetFileVersionInfo Lib "Version" Alias "GetFileVersionInfoW" (ByVal lpFileName As Long, ByVal dwHandle As Long, ByVal dwLen As Long, ByVal lpData As Long) As Long
 Private Declare Function GetFileVersionInfoSize Lib "Version" Alias "GetFileVersionInfoSizeW" (ByVal lpFileName As Long, ByVal lpdwHandle As Long) As Long
 Private Declare Function VerQueryValue Lib "Version" Alias "VerQueryValueW" (ByVal lpBlock As Long, ByVal lpSubBlock As Long, ByRef lplpBuffer As Long, ByRef puLen As Long) As Long
@@ -163,6 +182,11 @@ Private Declare Function GetSystemWindowsDirectory Lib "kernel32" Alias "GetSyst
 Private Declare Function GetSystemDirectory Lib "kernel32" Alias "GetSystemDirectoryW" (ByVal lpBuffer As Long, ByVal nSize As Long) As Long
 Private Declare Function GetSystemMetrics Lib "user32" (ByVal nIndex As Long) As Long
 Private Declare Function GetMenu Lib "user32" (ByVal hWnd As Long) As Long
+Private Declare Function GetCursorPos Lib "user32" (ByRef lpPoint As POINTAPI) As Long
+Private Declare Function WindowFromPoint Lib "user32" (ByVal X As Long, ByVal Y As Long) As Long
+Private Declare Function GetCapture Lib "user32" () As Long
+Private Declare Function GetWindowThreadProcessId Lib "user32" (ByVal hWnd As Long, ByVal lpdwProcessId As Long) As Long
+Private Declare Function FlashWindowEx Lib "user32" (ByRef pFWI As FLASHWINFO) As Long
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageW" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Any) As Long
 Private Declare Function RedrawWindow Lib "user32" (ByVal hWnd As Long, ByVal lprcUpdate As Long, ByVal hrgnUpdate As Long, ByVal fuRedraw As Long) As Long
 Private Declare Function GetObjectAPI Lib "gdi32" Alias "GetObjectW" (ByVal hObject As Long, ByVal nCount As Long, ByRef lpObject As Any) As Long
@@ -520,20 +544,19 @@ End Function
 
 Public Function GetClipboardText() As String
 Const CF_UNICODETEXT As Long = 13
-Dim lpText As Long, Length As Long
-Dim hMem As Long, lpMem As Long
+Dim lpText As Long, lpMem As Long, Length As Long
 If OpenClipboard(0) <> 0 Then
     If IsClipboardFormatAvailable(CF_UNICODETEXT) <> 0 Then
         lpText = GetClipboardData(CF_UNICODETEXT)
         If lpText <> 0 Then
-            Length = GlobalSize(lpText)
-            If Length > 0 Then
-                lpMem = GlobalLock(lpText)
-                If lpMem <> 0 Then
-                    GetClipboardText = String((Length \ 2) - 1, vbNullChar)
-                    CopyMemory ByVal StrPtr(GetClipboardText), ByVal lpMem, Length
-                    GlobalUnlock lpMem
+            lpMem = GlobalLock(lpText)
+            If lpMem <> 0 Then
+                Length = lstrlen(lpMem)
+                If Length > 0 Then
+                    GetClipboardText = String(Length, vbNullChar)
+                    lstrcpy StrPtr(GetClipboardText), lpMem
                 End If
+                GlobalUnlock lpMem
             End If
         End If
     End If
@@ -681,6 +704,20 @@ Select Case MousePointer
 End Select
 End Function
 
+Public Sub RefreshMousePointer(Optional ByVal hWndFallback As Long)
+Const WM_SETCURSOR As Long = &H20, WM_NCHITTEST As Long = &H84, WM_MOUSEMOVE As Long = &H200
+Dim P As POINTAPI, hWndCursor As Long
+GetCursorPos P
+hWndCursor = GetCapture()
+If hWndCursor = 0 Then hWndCursor = WindowFromPoint(P.X, P.Y)
+If hWndCursor <> 0 Then
+    If GetWindowThreadProcessId(hWndCursor, 0) <> App.ThreadID Then hWndCursor = hWndFallback
+Else
+    hWndCursor = hWndFallback
+End If
+If hWndCursor <> 0 Then SendMessage hWndCursor, WM_SETCURSOR, hWndCursor, ByVal MakeDWord(SendMessage(hWndCursor, WM_NCHITTEST, 0, ByVal Make_XY_lParam(P.X, P.Y)), WM_MOUSEMOVE)
+End Sub
+
 Public Function OLEFontIsEqual(ByVal Font As StdFont, ByVal FontOther As StdFont) As Boolean
 If Font Is Nothing Then
     If FontOther Is Nothing Then OLEFontIsEqual = True
@@ -694,28 +731,16 @@ Else
 End If
 End Function
 
-Public Function CreateGDIFontFromOLEFont(ByVal Font As StdFont) As Long
-Dim LF As LOGFONT, FontName As String
-With LF
-FontName = Left$(Font.Name, LF_FACESIZE)
-CopyMemory .LFFaceName(0), ByVal StrPtr(FontName), LenB(FontName)
-.LFHeight = -MulDiv(CLng(Font.Size), DPI_Y(), 72)
-If Font.Bold = True Then .LFWeight = FW_BOLD Else .LFWeight = FW_NORMAL
-If Font.Italic = True Then .LFItalic = 1 Else .LFItalic = 0
-If Font.Strikethrough = True Then .LFStrikeOut = 1 Else .LFStrikeOut = 0
-If Font.Underline = True Then .LFUnderline = 1 Else .LFUnderline = 0
-.LFQuality = DEFAULT_QUALITY
-.LFCharset = CByte(Font.Charset And &HFF)
-End With
+Public Function CreateGDIFontFromOLEFont(ByVal Font As IFont) As Long
+If Font Is Nothing Then Exit Function
+Dim LF As LOGFONT
+' hFont will be cleared when the IFont reference goes out of scope or is set to nothing.
+GetObjectAPI Font.hFont, LenB(LF), LF
 CreateGDIFontFromOLEFont = CreateFontIndirect(LF)
 End Function
 
 Public Function CloneOLEFont(ByVal Font As IFont) As StdFont
-Font.Clone CloneOLEFont
-End Function
-
-Public Function GDIFontFromOLEFont(ByVal Font As IFont) As Long
-GDIFontFromOLEFont = Font.hFont
+If Not Font Is Nothing Then Font.Clone CloneOLEFont
 End Function
 
 Public Function GetNumberGroupDigit() As String
@@ -750,6 +775,36 @@ Buffer = String(256, vbNullChar)
 RetVal = GetClassName(hWnd, StrPtr(Buffer), Len(Buffer))
 If RetVal <> 0 Then GetWindowClassName = Left$(Buffer, RetVal)
 End Function
+
+Public Sub CenterFormToScreen(ByVal Form As VB.Form, Optional ByVal RefForm As VB.Form)
+Const MONITOR_DEFAULTTOPRIMARY As Long = &H1
+If RefForm Is Nothing Then Set RefForm = Form
+Dim hMonitor As Long, MI As MONITORINFO, WndRect As RECT
+hMonitor = MonitorFromWindow(RefForm.hWnd, MONITOR_DEFAULTTOPRIMARY)
+MI.cbSize = LenB(MI)
+GetMonitorInfo hMonitor, MI
+GetWindowRect Form.hWnd, WndRect
+If TypeOf Form Is VB.MDIForm Then
+    Dim MDIForm As VB.MDIForm
+    Set MDIForm = Form
+    MDIForm.Move (MI.RCMonitor.Left + (((MI.RCMonitor.Right - MI.RCMonitor.Left) - (WndRect.Right - WndRect.Left)) \ 2)) * (1440 / DPI_X()), (MI.RCMonitor.Top + (((MI.RCMonitor.Bottom - MI.RCMonitor.Top) - (WndRect.Bottom - WndRect.Top)) \ 2)) * (1440 / DPI_Y())
+Else
+    Form.Move (MI.RCMonitor.Left + (((MI.RCMonitor.Right - MI.RCMonitor.Left) - (WndRect.Right - WndRect.Left)) \ 2)) * (1440 / DPI_X()), (MI.RCMonitor.Top + (((MI.RCMonitor.Bottom - MI.RCMonitor.Top) - (WndRect.Bottom - WndRect.Top)) \ 2)) * (1440 / DPI_Y())
+End If
+End Sub
+
+Public Sub FlashForm(ByVal Form As VB.Form)
+Const FLASHW_CAPTION As Long = &H1, FLASHW_TRAY As Long = &H2, FLASHW_TIMERNOFG As Long = &HC
+Dim FWI As FLASHWINFO
+With FWI
+.cbSize = LenB(FWI)
+.dwFlags = FLASHW_CAPTION Or FLASHW_TRAY Or FLASHW_TIMERNOFG
+.hWnd = Form.hWnd
+.dwTimeout = 0 ' Default cursor blink rate
+.uCount = 0
+End With
+FlashWindowEx FWI
+End Sub
 
 Public Function GetFormTitleBarHeight(ByVal Form As VB.Form) As Single
 Const SM_CYCAPTION As Long = 4, SM_CYMENU As Long = 15
@@ -923,6 +978,25 @@ Get_Y_lParam = (lParam And &H7FFF0000) \ &H10000
 If lParam And &H80000000 Then Get_Y_lParam = Get_Y_lParam Or &HFFFF8000
 End Function
 
+Public Function Make_XY_lParam(ByVal X As Long, ByVal Y As Long) As Long
+Make_XY_lParam = LoWord(X) Or (&H10000 * LoWord(Y))
+End Function
+
+Public Function UTF32CodePoint_To_UTF16(ByVal CodePoint As Long) As String
+If CodePoint >= &HFFFF8000 And CodePoint <= &H10FFFF Then
+    Dim HW As Integer, LW As Integer
+    If CodePoint < &H10000 Then
+        HW = 0
+        LW = CUIntToInt(CodePoint And &HFFFF&)
+    Else
+        CodePoint = CodePoint - &H10000
+        HW = (CodePoint \ &H400) + &HD800
+        LW = (CodePoint Mod &H400) + &HDC00
+    End If
+    If HW = 0 Then UTF32CodePoint_To_UTF16 = ChrW(LW) Else UTF32CodePoint_To_UTF16 = ChrW(HW) & ChrW(LW)
+End If
+End Function
+
 Public Function UTF16_To_UTF8(ByRef Source As String) As Byte()
 Const CP_UTF8 As Long = 65001
 Dim Length As Long, Pointer As Long, Size As Long
@@ -972,6 +1046,10 @@ End Function
 
 Public Function UnsignedAdd(ByVal Start As Long, ByVal Incr As Long) As Long
 UnsignedAdd = ((Start Xor &H80000000) + Incr) Xor &H80000000
+End Function
+
+Public Function UnsignedSub(ByVal Start As Long, ByVal Decr As Long) As Long
+UnsignedSub = ((Start And &H7FFFFFFF) - (Decr And &H7FFFFFFF)) Xor ((Start Xor Decr) And &H80000000)
 End Function
 
 Public Function CUIntToInt(ByVal Value As Long) As Integer

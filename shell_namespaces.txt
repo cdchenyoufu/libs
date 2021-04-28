@@ -1,0 +1,154 @@
+ dilettante
+
+	Option Explicit
+
+	Private Sub Main()
+		Const ssfDESKTOP = 0
+
+		With CreateObject("Shell.Application").NameSpace(ssfDESKTOP)
+			MsgBox .ParseName("Shell:::{D20EA4E1-3957-11d2-A40B-0C5020524153}").Path
+			MsgBox .ParseName("Shell:::{59031a47-3f72-44a7-89c5-5595fe6b30ee}").Path
+			MsgBox .ParseName("Shell:Common Desktop").Path
+			MsgBox .ParseName("Shell:Templates").Path
+		End With
+	End Sub
+
+
+
+wqweto
+	Option Explicit
+
+	Private Sub Form_Load()
+		Const ssfDESKTOP = 0
+
+		With CreateObject("Shell.Application")
+			pvDump .NameSpace(ssfDESKTOP), "shell:AccountPictures"
+			pvDump .NameSpace(ssfDESKTOP), "shell:AddNewProgramsFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Administrative Tools"
+			pvDump .NameSpace(ssfDESKTOP), "shell:AppData"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Application Shortcuts"
+			pvDump .NameSpace(ssfDESKTOP), "shell:AppsFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:AppUpdatesFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Cache"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Camera Roll"
+			pvDump .NameSpace(ssfDESKTOP), "shell:CD Burning"
+			pvDump .NameSpace(ssfDESKTOP), "shell:ChangeRemoveProgramsFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Common Administrative Tools"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Common AppData"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Common Desktop"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Common Documents"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Common Programs"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Common Start Menu"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Common Startup"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Common Templates"
+			pvDump .NameSpace(ssfDESKTOP), "shell:CommonDownloads"
+			pvDump .NameSpace(ssfDESKTOP), "shell:CommonMusic"
+			pvDump .NameSpace(ssfDESKTOP), "shell:CommonPictures"
+			pvDump .NameSpace(ssfDESKTOP), "shell:CommonRingtones"
+			pvDump .NameSpace(ssfDESKTOP), "shell:CommonVideo"
+			pvDump .NameSpace(ssfDESKTOP), "shell:ConflictFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:ConnectionsFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Contacts"
+			pvDump .NameSpace(ssfDESKTOP), "shell:ControlPanelFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Cookies"
+			pvDump .NameSpace(ssfDESKTOP), "shell:CredentialManager"
+			pvDump .NameSpace(ssfDESKTOP), "shell:CryptoKeys"
+			pvDump .NameSpace(ssfDESKTOP), "shell:CSCFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Desktop"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Device Metadata Store"
+			pvDump .NameSpace(ssfDESKTOP), "shell:DocumentsLibrary"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Downloads"
+			pvDump .NameSpace(ssfDESKTOP), "shell:DpapiKeys"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Favorites"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Fonts"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Games"
+			pvDump .NameSpace(ssfDESKTOP), "shell:GameTasks"
+			pvDump .NameSpace(ssfDESKTOP), "shell:History"
+			pvDump .NameSpace(ssfDESKTOP), "shell:HomeGroupCurrentUserFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:HomeGroupFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:ImplicitAppShortcuts"
+			pvDump .NameSpace(ssfDESKTOP), "shell:InternetFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Libraries"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Links"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Local AppData"
+			pvDump .NameSpace(ssfDESKTOP), "shell:LocalAppDataLow"
+			pvDump .NameSpace(ssfDESKTOP), "shell:LocalizedResourcesDir"
+			pvDump .NameSpace(ssfDESKTOP), "shell:MAPIFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:MusicLibrary"
+			pvDump .NameSpace(ssfDESKTOP), "shell:My Music"
+			pvDump .NameSpace(ssfDESKTOP), "shell:My Pictures"
+			pvDump .NameSpace(ssfDESKTOP), "shell:My Video"
+			pvDump .NameSpace(ssfDESKTOP), "shell:MyComputerFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:NetHood"
+			pvDump .NameSpace(ssfDESKTOP), "shell:NetworkPlacesFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:OEM Links"
+			pvDump .NameSpace(ssfDESKTOP), "shell:OneDrive"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Original Images"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Personal"
+			pvDump .NameSpace(ssfDESKTOP), "shell:PhotoAlbums"
+			pvDump .NameSpace(ssfDESKTOP), "shell:PicturesLibrary"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Playlists"
+			pvDump .NameSpace(ssfDESKTOP), "shell:PrintersFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:PrintHood"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Profile"
+			pvDump .NameSpace(ssfDESKTOP), "shell:ProgramFiles"
+			pvDump .NameSpace(ssfDESKTOP), "shell:ProgramFilesCommon"
+			pvDump .NameSpace(ssfDESKTOP), "shell:ProgramFilesCommonX64"
+			pvDump .NameSpace(ssfDESKTOP), "shell:ProgramFilesCommonX86"
+			pvDump .NameSpace(ssfDESKTOP), "shell:ProgramFilesX64"
+			pvDump .NameSpace(ssfDESKTOP), "shell:ProgramFilesX86"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Programs"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Public"
+			pvDump .NameSpace(ssfDESKTOP), "shell:PublicAccountPictures"
+			pvDump .NameSpace(ssfDESKTOP), "shell:PublicGameTasks"
+			pvDump .NameSpace(ssfDESKTOP), "shell:PublicLibraries"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Quick Launch"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Recent"
+			pvDump .NameSpace(ssfDESKTOP), "shell:RecordedTVLibrary"
+			pvDump .NameSpace(ssfDESKTOP), "shell:RecycleBinFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:ResourceDir"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Retail Demo"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Ringtones"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Roamed Tile Images"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Roaming Tiles"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SavedGames"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Screenshots"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Searches"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SearchHistoryFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SearchHomeFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SearchTemplatesFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SendTo"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SkyDriveCameraRoll"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SkyDriveDocuments"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SkyDriveMusic"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SkyDrivePictures"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Start Menu"
+			pvDump .NameSpace(ssfDESKTOP), "shell:StartMenuAllPrograms"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Startup"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SyncCenterFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SyncResultsFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SyncSetupFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:System"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SystemCertificates"
+			pvDump .NameSpace(ssfDESKTOP), "shell:SystemX86"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Templates"
+			pvDump .NameSpace(ssfDESKTOP), "shell:ThisPCDesktopFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:User Pinned"
+			pvDump .NameSpace(ssfDESKTOP), "shell:UserProfiles"
+			pvDump .NameSpace(ssfDESKTOP), "shell:UserProgramFiles"
+			pvDump .NameSpace(ssfDESKTOP), "shell:UserProgramFilesCommon"
+			pvDump .NameSpace(ssfDESKTOP), "shell:UsersFilesFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:UsersLibrariesFolder"
+			pvDump .NameSpace(ssfDESKTOP), "shell:VideosLibrary"
+			pvDump .NameSpace(ssfDESKTOP), "shell:Windows"
+		End With
+	End Sub
+
+	Private Sub pvDump(oNameSpace As Object, sLocation As String)
+		Dim sPath           As String
+		
+		On Error Resume Next
+		sPath = oNameSpace.ParseName(sLocation).Path
+		On Error GoTo 0
+		Debug.Print sLocation; " -> "; sPath
+	End Sub

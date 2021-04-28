@@ -1,0 +1,29 @@
+Try this function
+
+Code:
+
+Public Sub ConsolePrint(sText As String)
+    Const InIde         As Boolean = False '-- make this a function
+    Const StdOut        As Long = 1
+    Static oStdOut      As Object
+    
+    If InIde Then
+        Debug.Print sText;
+    Else
+        If oStdOut Is Nothing Then
+            With CreateObject("Scripting.FileSystemObject")
+                Set oStdOut = .GetStandardStream(StdOut)
+            End With
+        End If
+        oStdOut.Write sText
+    End If
+End Sub
+
+This will work only if you project has
+
+Code:
+
+[VBCompiler]
+LinkSwitches=/SUBSYSTEM:CONSOLE
+
+. . . manually added to the .vbp file.

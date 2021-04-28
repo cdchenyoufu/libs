@@ -1,7 +1,6 @@
 Attribute VB_Name = "sqlite3win32stubs"
 Option Explicit
 Private Declare Function sqlite3_aggregate_context Lib "sqlite3win32.dll" (ByVal pCtx As Long, ByVal nBytes As Long) As Long
-Private Declare Function sqlite3_aggregate_count Lib "sqlite3win32.dll" (ByVal pCtx As Long) As Long
 Private Declare Function sqlite3_auto_extension Lib "sqlite3win32.dll" (ByVal xEntryPoint As Long) As Long
 Private Declare Function sqlite3_backup_finish Lib "sqlite3win32.dll" (ByVal pBak As Long) As Long
 Private Declare Function sqlite3_backup_init Lib "sqlite3win32.dll" (ByVal pDest As Long, ByVal pzDestName As Long, ByVal pSrc As Long, ByVal pzSrcName As Long) As Long
@@ -69,11 +68,14 @@ Private Declare Function sqlite3_context_db_handle Lib "sqlite3win32.dll" (ByVal
 Private Declare Function sqlite3_create_collation Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzName As Long, ByVal eTextRep As Long, ByVal pArg As Long, ByVal lpfnCompare As Long) As Long
 Private Declare Function sqlite3_create_collation_v2 Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzName As Long, ByVal eTextRep As Long, ByVal pArg As Long, ByVal lpfnCompare As Long, ByVal lpfnDestroy As Long) As Long
 Private Declare Function sqlite3_create_collation16 Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzName As Long, ByVal eTextRep As Long, ByVal pArg As Long, ByVal lpfnCompare As Long) As Long
+Private Declare Function sqlite3_create_filename Lib "sqlite3win32.dll" (ByVal pzDB As Long, ByVal pzJournal As Long, ByVal pzWal As Long, ByVal nParam As Long, ByVal azParam As Long) As Long
 Private Declare Function sqlite3_create_function Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzFunc As Long, ByVal nArg As Long, ByVal eTextRep As Long, ByVal pApp As Long, ByVal lpfnFunc As Long, ByVal lpfnStep As Long, ByVal lpfnFinal As Long) As Long
 Private Declare Function sqlite3_create_function_v2 Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzFunc As Long, ByVal nArg As Long, ByVal eTextRep As Long, ByVal pApp As Long, ByVal lpfnFunc As Long, ByVal lpfnStep As Long, ByVal lpfnFinal As Long, ByVal lpfnDestroy As Long) As Long
 Private Declare Function sqlite3_create_function16 Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzFunctionName As Long, ByVal nArg As Long, ByVal eTextRep As Long, ByVal pApp As Long, ByVal lpfnFunc As Long, ByVal lpfnStep As Long, ByVal lpfnFinal As Long) As Long
 Private Declare Function sqlite3_create_module Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzName As Long, ByVal pModule As Long, ByVal pAux As Long) As Long
 Private Declare Function sqlite3_create_module_v2 Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzName As Long, ByVal pModule As Long, ByVal pAux As Long, ByVal lpfnDestroy As Long) As Long
+Private Declare Function sqlite3_create_window_function Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzFunctionName As Long, ByVal nArg As Long, ByVal eTextRep As Long, ByVal pApp As Long, ByVal lpfnStep As Long, ByVal lpfnFinal As Long, ByVal lpfnValue As Long, ByVal lpfnInverse As Long, ByVal lpfnDestroy As Long) As Long
+Private Declare Function sqlite3_database_file_object Lib "sqlite3win32.dll" (ByVal pzName As Long) As Long
 Private Declare Function sqlite3_data_count Lib "sqlite3win32.dll" (ByVal hStmt As Long) As Long
 Private Declare Function sqlite3_db_cacheflush Lib "sqlite3win32.dll" (ByVal hDB As Long) As Long
 Private Declare Function sqlite3_db_filename Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzDbName As Long) As Long
@@ -83,6 +85,8 @@ Private Declare Function sqlite3_db_readonly Lib "sqlite3win32.dll" (ByVal hDB A
 Private Declare Function sqlite3_db_release_memory Lib "sqlite3win32.dll" (ByVal hDB As Long) As Long
 Private Declare Function sqlite3_db_status Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal StatusOpt As Long, ByVal pCurrent As Long, ByVal pHighwater As Long, ByVal ResetFlag As Long) As Long
 Private Declare Function sqlite3_declare_vtab Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzCreateTable As Long) As Long
+Private Declare Function sqlite3_deserialize Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzSchema As Long, ByVal pData As Long, ByVal szDB As Currency, ByVal szBuffer As Currency, ByVal Flags As Long) As Long
+Private Declare Function sqlite3_drop_modules Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal azKeep As Long) As Long
 Private Declare Function sqlite3_enable_load_extension Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal iOnOff As Long) As Long
 Private Declare Function sqlite3_enable_shared_cache Lib "sqlite3win32.dll" (ByVal fEnable As Long) As Long
 Private Declare Function sqlite3_errcode Lib "sqlite3win32.dll" (ByVal hDB As Long) As Long
@@ -91,17 +95,20 @@ Private Declare Function sqlite3_errmsg16 Lib "sqlite3win32.dll" (ByVal hDB As L
 Private Declare Function sqlite3_errstr Lib "sqlite3win32.dll" (ByVal ResultCode As Long) As Long
 Private Declare Function sqlite3_exec Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzSQL As Long, ByVal lpfnCallback As Long, ByVal pArg As Long, ByVal pzErrMsg As Long) As Long
 Private Declare Function sqlite3_expanded_sql Lib "sqlite3win32.dll" (ByVal hStmt As Long) As Long
-Private Declare Function sqlite3_expired Lib "sqlite3win32.dll" (ByVal hStmt As Long) As Long
 Private Declare Function sqlite3_extended_errcode Lib "sqlite3win32.dll" (ByVal hDB As Long) As Long
 Private Declare Function sqlite3_extended_result_codes Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal iOnOff As Long) As Long
 Private Declare Function sqlite3_file_control Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzDbName As Long, ByVal Code As Long, ByVal pArg As Long) As Long
+Private Declare Function sqlite3_filename_database Lib "sqlite3win32.dll" (ByVal pzFilename As Long) As Long
+Private Declare Function sqlite3_filename_journal Lib "sqlite3win32.dll" (ByVal pzFilename As Long) As Long
+Private Declare Function sqlite3_filename_wal Lib "sqlite3win32.dll" (ByVal pzFilename As Long) As Long
 Private Declare Function sqlite3_finalize Lib "sqlite3win32.dll" (ByVal hStmt As Long) As Long
 Private Declare Function sqlite3_free Lib "sqlite3win32.dll" (ByVal pMem As Long) As Long
+Private Declare Function sqlite3_free_filename Lib "sqlite3win32.dll" (ByVal pzPath As Long) As Long
 Private Declare Function sqlite3_free_table Lib "sqlite3win32.dll" (ByVal azResult As Long) As Long
 Private Declare Function sqlite3_get_autocommit Lib "sqlite3win32.dll" (ByVal hDB As Long) As Long
 Private Declare Function sqlite3_get_auxdata Lib "sqlite3win32.dll" (ByVal pCtx As Long, ByVal iArg As Long) As Long
 Private Declare Function sqlite3_get_table Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzSQL As Long, ByVal pazResult As Long, ByVal pnRow As Long, ByVal pnColumn As Long, ByVal pzErrMsg As Long) As Long
-Private Declare Function sqlite3_global_recover Lib "sqlite3win32.dll" () As Long
+Private Declare Function sqlite3_hard_heap_limit64 Lib "sqlite3win32.dll" (ByVal n As Currency) As Currency
 Private Declare Function sqlite3_initialize Lib "sqlite3win32.dll" () As Long
 Private Declare Function sqlite3_interrupt Lib "sqlite3win32.dll" (ByVal hDB As Long) As Long
 Private Declare Function sqlite3_keyword_check Lib "sqlite3win32.dll" (ByVal pzName As Long, ByVal pnName As Long) As Long
@@ -114,7 +121,6 @@ Private Declare Function sqlite3_limit Lib "sqlite3win32.dll" (ByVal hDB As Long
 Private Declare Function sqlite3_load_extension Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzFile As Long, ByVal pzProc As Long, ByVal pzErrMsg As Long) As Long
 Private Declare Function sqlite3_malloc Lib "sqlite3win32.dll" (ByVal n As Long) As Long
 Private Declare Function sqlite3_malloc64 Lib "sqlite3win32.dll" (ByVal n As Currency) As Long
-Private Declare Function sqlite3_memory_alarm Lib "sqlite3win32.dll" (ByVal lpfnCallback As Long, ByVal pArg As Long, ByVal iThreshold As Currency) As Long
 Private Declare Function sqlite3_memory_highwater Lib "sqlite3win32.dll" (ByVal ResetFlag As Long) As Currency
 Private Declare Function sqlite3_memory_used Lib "sqlite3win32.dll" () As Currency
 Private Declare Function sqlite3_msize Lib "sqlite3win32.dll" (ByVal pMem As Long) As Currency
@@ -124,6 +130,7 @@ Private Declare Function sqlite3_mutex_free Lib "sqlite3win32.dll" (ByVal pMtx A
 Private Declare Function sqlite3_mutex_leave Lib "sqlite3win32.dll" (ByVal pMtx As Long) As Long
 Private Declare Function sqlite3_mutex_try Lib "sqlite3win32.dll" (ByVal pMtx As Long) As Long
 Private Declare Function sqlite3_next_stmt Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal hStmt As Long) As Long
+Private Declare Function sqlite3_normalized_sql Lib "sqlite3win32.dll" (ByVal hStmt As Long) As Long
 Private Declare Function sqlite3_open Lib "sqlite3win32.dll" (ByVal pzFilename As Long, ByRef hDB As Long) As Long
 Private Declare Function sqlite3_open_v2 Lib "sqlite3win32.dll" (ByVal pzFilename As Long, ByRef hDB As Long, ByVal Flags As Long, ByVal pzVfs As Long) As Long
 Private Declare Function sqlite3_open16 Lib "sqlite3win32.dll" (ByVal pzFilename As Long, ByRef hDB As Long) As Long
@@ -136,7 +143,6 @@ Private Declare Function sqlite3_prepare_v3 Lib "sqlite3win32.dll" (ByVal hDB As
 Private Declare Function sqlite3_prepare16 Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzSQL As Long, ByVal nByte As Long, ByRef hStmt As Long, ByVal pzTail As Long) As Long
 Private Declare Function sqlite3_prepare16_v2 Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzSQL As Long, ByVal nByte As Long, ByRef hStmt As Long, ByVal pzTail As Long) As Long
 Private Declare Function sqlite3_prepare16_v3 Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzSQL As Long, ByVal nByte As Long, ByVal PrepFlags As Long, ByRef hStmt As Long, ByVal pzTail As Long) As Long
-Private Declare Function sqlite3_profile Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal lpfnProfile As Long, ByVal pArg As Long) As Long
 Private Declare Function sqlite3_progress_handler Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal nOps As Long, ByVal lpfnProgress As Long, ByVal pArg As Long) As Long
 Private Declare Function sqlite3_randomness Lib "sqlite3win32.dll" (ByVal n As Long, ByVal pBuf As Long) As Long
 Private Declare Function sqlite3_realloc Lib "sqlite3win32.dll" (ByVal pOld As Long, ByVal n As Long) As Long
@@ -166,6 +172,7 @@ Private Declare Function sqlite3_result_pointer Lib "sqlite3win32.dll" (ByVal pC
 Private Declare Function sqlite3_result_zeroblob Lib "sqlite3win32.dll" (ByVal pCtx As Long, ByVal n As Long) As Long
 Private Declare Function sqlite3_result_zeroblob64 Lib "sqlite3win32.dll" (ByVal pCtx As Long, ByVal n As Currency) As Long
 Private Declare Function sqlite3_rollback_hook Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal lpfnCallback As Long, ByVal pArg As Long) As Long
+Private Declare Function sqlite3_serialize Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzSchema As Long, ByVal piSize As Long, ByVal Flags As Long) As Long
 Private Declare Function sqlite3_rtree_geometry_callback Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzGeom As Long, ByVal lpfnGeom As Long, ByVal pContext As Long) As Long
 Private Declare Function sqlite3_rtree_query_callback Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzQueryFunc As Long, ByVal lpfnQueryFunc As Long, ByVal pContext As Long, ByVal lpfnDestroy As Long) As Long
 Private Declare Function sqlite3_set_authorizer Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal xAuth As Long, ByVal pArg As Long) As Long
@@ -191,6 +198,7 @@ Private Declare Function sqlite3_status Lib "sqlite3win32.dll" (ByVal Code As Lo
 Private Declare Function sqlite3_status64 Lib "sqlite3win32.dll" (ByVal Code As Long, ByVal pCurrent As Long, ByVal pHighwater As Long, ByVal ResetFlag As Long) As Long
 Private Declare Function sqlite3_step Lib "sqlite3win32.dll" (ByVal hStmt As Long) As Long
 Private Declare Function sqlite3_stmt_busy Lib "sqlite3win32.dll" (ByVal hStmt As Long) As Long
+Private Declare Function sqlite3_stmt_isexplain Lib "sqlite3win32.dll" (ByVal hStmt As Long) As Long
 Private Declare Function sqlite3_stmt_readonly Lib "sqlite3win32.dll" (ByVal hStmt As Long) As Long
 Private Declare Function sqlite3_stmt_status Lib "sqlite3win32.dll" (ByVal hStmt As Long, ByVal Code As Long, ByVal ResetFlag As Long) As Long
 Private Declare Function sqlite3_strglob Lib "sqlite3win32.dll" (ByVal pzGlobPattern As Long, ByVal pzString As Long) As Long
@@ -199,15 +207,14 @@ Private Declare Function sqlite3_strlike Lib "sqlite3win32.dll" (ByVal pzPattern
 Private Declare Function sqlite3_strnicmp Lib "sqlite3win32.dll" (ByVal pzLeft As Long, ByVal pzRight As Long, ByVal n As Long) As Long
 Private Declare Function sqlite3_system_errno Lib "sqlite3win32.dll" () As Long
 Private Declare Function sqlite3_table_column_metadata Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzDbName As Long, ByVal pzTableName As Long, ByVal pzColumnName As Long, ByVal pzDataType As Long, ByVal pzCollSeq As Long, ByVal pNotNull As Long, ByVal pPrimaryKey As Long, ByVal pAutoinc As Long) As Long
-Private Declare Function sqlite3_thread_cleanup Lib "sqlite3win32.dll" () As Long
 Private Declare Function sqlite3_threadsafe Lib "sqlite3win32.dll" () As Long
 Private Declare Function sqlite3_total_changes Lib "sqlite3win32.dll" (ByVal hDB As Long) As Long
-Private Declare Function sqlite3_trace Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal lpfnTrace As Long, ByVal pArg As Long) As Long
 Private Declare Function sqlite3_trace_v2 Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal uMask As Long, ByVal lpfnCallback As Long, ByVal pCtx As Long) As Long
-Private Declare Function sqlite3_transfer_bindings Lib "sqlite3win32.dll" (ByVal hStmtFrom As Long, ByVal hStmtTo As Long) As Long
+Private Declare Function sqlite3_txn_state Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal pzSchema As Long) As Long
 Private Declare Function sqlite3_update_hook Lib "sqlite3win32.dll" (ByVal hDB As Long, ByVal lpfnCallback As Long, ByVal pArg As Long) As Long
 Private Declare Function sqlite3_uri_boolean Lib "sqlite3win32.dll" (ByVal pzFilename As Long, ByVal pzParam As Long, ByVal bDefault As Long) As Long
 Private Declare Function sqlite3_uri_int64 Lib "sqlite3win32.dll" (ByVal pzFilename As Long, ByVal pzParam As Long, ByVal bDefault As Currency) As Currency
+Private Declare Function sqlite3_uri_key Lib "sqlite3win32.dll" (ByVal pzFilename As Long, ByVal n As Long) As Long
 Private Declare Function sqlite3_uri_parameter Lib "sqlite3win32.dll" (ByVal pzFilename As Long, ByVal pzParam As Long) As Long
 Private Declare Function sqlite3_user_data Lib "sqlite3win32.dll" (ByVal pCtx As Long) As Long
 Private Declare Function sqlite3_value_blob Lib "sqlite3win32.dll" (ByVal pValue As Long) As Long
@@ -216,6 +223,7 @@ Private Declare Function sqlite3_value_bytes16 Lib "sqlite3win32.dll" (ByVal pVa
 Private Declare Function sqlite3_value_double Lib "sqlite3win32.dll" (ByVal pValue As Long) As Double
 Private Declare Function sqlite3_value_dup Lib "sqlite3win32.dll" (ByVal pOrig As Long) As Long
 Private Declare Function sqlite3_value_free Lib "sqlite3win32.dll" (ByVal pOld As Long) As Long
+Private Declare Function sqlite3_value_frombind Lib "sqlite3win32.dll" (ByVal pValue As Long) As Long
 Private Declare Function sqlite3_value_int Lib "sqlite3win32.dll" (ByVal pValue As Long) As Long
 Private Declare Function sqlite3_value_int64 Lib "sqlite3win32.dll" (ByVal pValue As Long) As Currency
 Private Declare Function sqlite3_value_pointer Lib "sqlite3win32.dll" (ByVal pValue As Long, ByVal pzPType As Long) As Long
@@ -250,10 +258,6 @@ Private Declare Function sqlite3_win32_write_debug Lib "sqlite3win32.dll" (ByVal
 
 Public Function stub_sqlite3_aggregate_context(ByVal pCtx As Long, ByVal nBytes As Long) As Long
 stub_sqlite3_aggregate_context = sqlite3_aggregate_context(pCtx, nBytes)
-End Function
-
-Public Function stub_sqlite3_aggregate_count(ByVal pCtx As Long) As Long
-stub_sqlite3_aggregate_count = sqlite3_aggregate_count(pCtx)
 End Function
 
 Public Function stub_sqlite3_auto_extension(ByVal xEntryPoint As Long) As Long
@@ -524,6 +528,10 @@ Public Function stub_sqlite3_create_collation16(ByVal hDB As Long, ByVal pzName 
 stub_sqlite3_create_collation16 = sqlite3_create_collation16(hDB, pzName, eTextRep, pArg, lpfnCompare)
 End Function
 
+Public Function stub_sqlite3_create_filename(ByVal pzDB As Long, ByVal pzJournal As Long, ByVal pzWal As Long, ByVal nParam As Long, ByVal azParam As Long) As Long
+stub_sqlite3_create_filename = sqlite3_create_filename(pzDB, pzJournal, pzWal, nParam, azParam)
+End Function
+
 Public Function stub_sqlite3_create_function(ByVal hDB As Long, ByVal pzFunc As Long, ByVal nArg As Long, ByVal eTextRep As Long, ByVal pApp As Long, ByVal lpfnFunc As Long, ByVal lpfnStep As Long, ByVal lpfnFinal As Long) As Long
 stub_sqlite3_create_function = sqlite3_create_function(hDB, pzFunc, nArg, eTextRep, pApp, lpfnFunc, lpfnStep, lpfnFinal)
 End Function
@@ -542,6 +550,14 @@ End Function
 
 Public Function stub_sqlite3_create_module_v2(ByVal hDB As Long, ByVal pzName As Long, ByVal pModule As Long, ByVal pAux As Long, ByVal lpfnDestroy As Long) As Long
 stub_sqlite3_create_module_v2 = sqlite3_create_module_v2(hDB, pzName, pModule, pAux, lpfnDestroy)
+End Function
+
+Public Function stub_sqlite3_create_window_function(ByVal hDB As Long, ByVal pzFunctionName As Long, ByVal nArg As Long, ByVal eTextRep As Long, ByVal pApp As Long, ByVal lpfnStep As Long, ByVal lpfnFinal As Long, ByVal lpfnValue As Long, ByVal lpfnInverse As Long, ByVal lpfnDestroy As Long) As Long
+stub_sqlite3_create_window_function = sqlite3_create_window_function(hDB, pzFunctionName, nArg, eTextRep, pApp, lpfnStep, lpfnFinal, lpfnValue, lpfnInverse, lpfnDestroy)
+End Function
+
+Public Function stub_sqlite3_database_file_object(ByVal pzName As Long) As Long
+stub_sqlite3_database_file_object = sqlite3_database_file_object(pzName)
 End Function
 
 Public Function stub_sqlite3_data_count(ByVal hStmt As Long) As Long
@@ -580,6 +596,14 @@ Public Function stub_sqlite3_declare_vtab(ByVal hDB As Long, ByVal pzCreateTable
 stub_sqlite3_declare_vtab = sqlite3_declare_vtab(hDB, pzCreateTable)
 End Function
 
+Public Function stub_sqlite3_deserialize(ByVal hDB As Long, ByVal pzSchema As Long, ByVal pData As Long, ByVal szDB As Currency, ByVal szBuffer As Currency, ByVal Flags As Long) As Long
+stub_sqlite3_deserialize = sqlite3_deserialize(hDB, pzSchema, pData, szDB, szBuffer, Flags)
+End Function
+
+Public Function stub_sqlite3_drop_modules(ByVal hDB As Long, ByVal azKeep As Long) As Long
+stub_sqlite3_drop_modules = sqlite3_drop_modules(hDB, azKeep)
+End Function
+
 Public Function stub_sqlite3_enable_load_extension(ByVal hDB As Long, ByVal iOnOff As Long) As Long
 stub_sqlite3_enable_load_extension = sqlite3_enable_load_extension(hDB, iOnOff)
 End Function
@@ -612,10 +636,6 @@ Public Function stub_sqlite3_expanded_sql(ByVal hStmt As Long) As Long
 stub_sqlite3_expanded_sql = sqlite3_expanded_sql(hStmt)
 End Function
 
-Public Function stub_sqlite3_expired(ByVal hStmt As Long) As Long
-stub_sqlite3_expired = sqlite3_expired(hStmt)
-End Function
-
 Public Function stub_sqlite3_extended_errcode(ByVal hDB As Long) As Long
 stub_sqlite3_extended_errcode = sqlite3_extended_errcode(hDB)
 End Function
@@ -628,12 +648,28 @@ Public Function stub_sqlite3_file_control(ByVal hDB As Long, ByVal pzDbName As L
 stub_sqlite3_file_control = sqlite3_file_control(hDB, pzDbName, Code, pArg)
 End Function
 
+Public Function stub_sqlite3_filename_database(ByVal pzFilename As Long) As Long
+stub_sqlite3_filename_database = sqlite3_filename_database(pzFilename)
+End Function
+
+Public Function stub_sqlite3_filename_journal(ByVal pzFilename As Long) As Long
+stub_sqlite3_filename_journal = sqlite3_filename_journal(pzFilename)
+End Function
+
+Public Function stub_sqlite3_filename_wal(ByVal pzFilename As Long) As Long
+stub_sqlite3_filename_wal = sqlite3_filename_wal(pzFilename)
+End Function
+
 Public Function stub_sqlite3_finalize(ByVal hStmt As Long) As Long
 stub_sqlite3_finalize = sqlite3_finalize(hStmt)
 End Function
 
 Public Function stub_sqlite3_free(ByVal pMem As Long) As Long
 stub_sqlite3_free = sqlite3_free(pMem)
+End Function
+
+Public Function stub_sqlite3_free_filename(ByVal pzPath As Long) As Long
+stub_sqlite3_free_filename = sqlite3_free_filename(pzPath)
 End Function
 
 Public Function stub_sqlite3_free_table(ByVal azResult As Long) As Long
@@ -652,8 +688,8 @@ Public Function stub_sqlite3_get_table(ByVal hDB As Long, ByVal pzSQL As Long, B
 stub_sqlite3_get_table = sqlite3_get_table(hDB, pzSQL, pazResult, pnRow, pnColumn, pzErrMsg)
 End Function
 
-Public Function stub_sqlite3_global_recover() As Long
-stub_sqlite3_global_recover = sqlite3_global_recover()
+Public Function stub_sqlite3_hard_heap_limit64(ByVal n As Currency) As Currency
+stub_sqlite3_hard_heap_limit64 = sqlite3_hard_heap_limit64(n)
 End Function
 
 Public Function stub_sqlite3_initialize() As Long
@@ -704,10 +740,6 @@ Public Function stub_sqlite3_malloc64(ByVal n As Currency) As Long
 stub_sqlite3_malloc64 = sqlite3_malloc64(n)
 End Function
 
-Public Function stub_sqlite3_memory_alarm(ByVal lpfnCallback As Long, ByVal pArg As Long, ByVal iThreshold As Currency) As Long
-stub_sqlite3_memory_alarm = sqlite3_memory_alarm(lpfnCallback, pArg, iThreshold)
-End Function
-
 Public Function stub_sqlite3_memory_highwater(ByVal ResetFlag As Long) As Currency
 stub_sqlite3_memory_highwater = sqlite3_memory_highwater(ResetFlag)
 End Function
@@ -742,6 +774,10 @@ End Function
 
 Public Function stub_sqlite3_next_stmt(ByVal hDB As Long, ByVal hStmt As Long) As Long
 stub_sqlite3_next_stmt = sqlite3_next_stmt(hDB, hStmt)
+End Function
+
+Public Function stub_sqlite3_normalized_sql(ByVal hStmt As Long) As Long
+stub_sqlite3_normalized_sql = sqlite3_normalized_sql(hStmt)
 End Function
 
 Public Function stub_sqlite3_open(ByVal pzFilename As Long, ByRef hDB As Long) As Long
@@ -790,10 +826,6 @@ End Function
 
 Public Function stub_sqlite3_prepare16_v3(ByVal hDB As Long, ByVal pzSQL As Long, ByVal nByte As Long, ByVal PrepFlags As Long, ByRef hStmt As Long, ByVal pzTail As Long) As Long
 stub_sqlite3_prepare16_v3 = sqlite3_prepare16_v3(hDB, pzSQL, nByte, PrepFlags, hStmt, pzTail)
-End Function
-
-Public Function stub_sqlite3_profile(ByVal hDB As Long, ByVal lpfnProfile As Long, ByVal pArg As Long) As Long
-stub_sqlite3_profile = sqlite3_profile(hDB, lpfnProfile, pArg)
 End Function
 
 Public Function stub_sqlite3_progress_handler(ByVal hDB As Long, ByVal nOps As Long, ByVal lpfnProgress As Long, ByVal pArg As Long) As Long
@@ -912,6 +944,10 @@ Public Function stub_sqlite3_rollback_hook(ByVal hDB As Long, ByVal lpfnCallback
 stub_sqlite3_rollback_hook = sqlite3_rollback_hook(hDB, lpfnCallback, pArg)
 End Function
 
+Public Function stub_sqlite3_serialize(ByVal hDB As Long, ByVal pzSchema As Long, ByVal piSize As Long, ByVal Flags As Long) As Long
+stub_sqlite3_serialize = sqlite3_serialize(hDB, pzSchema, piSize, Flags)
+End Function
+
 Public Function stub_sqlite3_rtree_geometry_callback(ByVal hDB As Long, ByVal pzGeom As Long, ByVal lpfnGeom As Long, ByVal pContext As Long) As Long
 stub_sqlite3_rtree_geometry_callback = sqlite3_rtree_geometry_callback(hDB, pzGeom, lpfnGeom, pContext)
 End Function
@@ -972,6 +1008,10 @@ Public Function stub_sqlite3_stmt_busy(ByVal hStmt As Long) As Long
 stub_sqlite3_stmt_busy = sqlite3_stmt_busy(hStmt)
 End Function
 
+Public Function stub_sqlite3_stmt_isexplain(ByVal hStmt As Long) As Long
+stub_sqlite3_stmt_isexplain = sqlite3_stmt_isexplain(hStmt)
+End Function
+
 Public Function stub_sqlite3_stmt_readonly(ByVal hStmt As Long) As Long
 stub_sqlite3_stmt_readonly = sqlite3_stmt_readonly(hStmt)
 End Function
@@ -1004,10 +1044,6 @@ Public Function stub_sqlite3_table_column_metadata(ByVal hDB As Long, ByVal pzDb
 stub_sqlite3_table_column_metadata = sqlite3_table_column_metadata(hDB, pzDbName, pzTableName, pzColumnName, pzDataType, pzCollSeq, pNotNull, pPrimaryKey, pAutoinc)
 End Function
 
-Public Function stub_sqlite3_thread_cleanup() As Long
-stub_sqlite3_thread_cleanup = sqlite3_thread_cleanup()
-End Function
-
 Public Function stub_sqlite3_threadsafe() As Long
 stub_sqlite3_threadsafe = sqlite3_threadsafe()
 End Function
@@ -1016,16 +1052,12 @@ Public Function stub_sqlite3_total_changes(ByVal hDB As Long) As Long
 stub_sqlite3_total_changes = sqlite3_total_changes(hDB)
 End Function
 
-Public Function stub_sqlite3_trace(ByVal hDB As Long, ByVal lpfnTrace As Long, ByVal pArg As Long) As Long
-stub_sqlite3_trace = sqlite3_trace(hDB, lpfnTrace, pArg)
-End Function
-
 Public Function stub_sqlite3_trace_v2(ByVal hDB As Long, ByVal uMask As Long, ByVal lpfnCallback As Long, ByVal pCtx As Long) As Long
 stub_sqlite3_trace_v2 = sqlite3_trace_v2(hDB, uMask, lpfnCallback, pCtx)
 End Function
 
-Public Function stub_sqlite3_transfer_bindings(ByVal hStmtFrom As Long, ByVal hStmtTo As Long) As Long
-stub_sqlite3_transfer_bindings = sqlite3_transfer_bindings(hStmtFrom, hStmtTo)
+Public Function stub_sqlite3_txn_state(ByVal hDB As Long, ByVal pzSchema As Long) As Long
+stub_sqlite3_txn_state = sqlite3_txn_state(hDB, pzSchema)
 End Function
 
 Public Function stub_sqlite3_update_hook(ByVal hDB As Long, ByVal lpfnCallback As Long, ByVal pArg As Long) As Long
@@ -1038,6 +1070,10 @@ End Function
 
 Public Function stub_sqlite3_uri_int64(ByVal pzFilename As Long, ByVal pzParam As Long, ByVal bDefault As Currency) As Currency
 stub_sqlite3_uri_int64 = sqlite3_uri_int64(pzFilename, pzParam, bDefault)
+End Function
+
+Public Function stub_sqlite3_uri_key(ByVal pzFilename As Long, ByVal n As Long) As Long
+stub_sqlite3_uri_key = sqlite3_uri_key(pzFilename, n)
 End Function
 
 Public Function stub_sqlite3_uri_parameter(ByVal pzFilename As Long, ByVal pzParam As Long) As Long
@@ -1070,6 +1106,10 @@ End Function
 
 Public Function stub_sqlite3_value_free(ByVal pOld As Long) As Long
 stub_sqlite3_value_free = sqlite3_value_free(pOld)
+End Function
+
+Public Function stub_sqlite3_value_frombind(ByVal pValue As Long) As Long
+stub_sqlite3_value_frombind = sqlite3_value_frombind(pValue)
 End Function
 
 Public Function stub_sqlite3_value_int(ByVal pValue As Long) As Long

@@ -167,6 +167,54 @@ Private mWhitespace As Boolean 'True to use indenting and newlines on JSON Get.
 Private mWhitespaceIndent As Integer 'Number of spaces per level for whitespace indenting.
 Private mWhitespaceNewLine As String
 
+'dzzie additions
+'-------------------------------------
+Function GetPath(path As String) As Variant
+
+    Dim tmp() As String, o2 As JsonBag, isLast As Boolean
+    
+    If InStr(path, ".") < 1 Then
+        If Me.ItemIsJSON(path) Then
+            Set GetPath = Me.Item(path)
+        Else
+            GetPath = Me.Item(path)
+        End If
+        Exit Function
+    End If
+    
+    Set o2 = Me
+    tmp = Split(path, ".")
+    For i = 0 To UBound(tmp)
+        If i = UBound(tmp) Then isLast = True
+        If o2.ItemIsJSON(tmp(i)) Then
+            Set o2 = o2.Item(tmp(i))
+            If isLast Then Set GetPath = o2
+        Else
+            If Not isLast Then Err.Raise 2121, "GetPath", "Object path terminates at " & tmp(i)
+            GetPath = o2.Item(tmp(i))
+        End If
+    Next
+    
+End Function
+
+Function ToArray() As Variant()
+    If Not Me.IsArray Then Exit Function
+    
+    Dim ret()
+    For i = 1 To Me.Count
+        'If TypeName(o(I)) = "JsonBag" Then
+        '    ReDim Preserve ret(UBound(ret) + 1)
+        '    Set ret(UBound(ret)) = o(I)
+        'Else
+            push ret, Me(i)
+        'End If
+    Next
+    
+    ToArray = ret
+End Function
+
+
+
 '=== Public Properties =================================================================
 
 Public Property Get CloneItem(ByVal Key As Variant) As Variant
@@ -388,7 +436,7 @@ Public Property Get ItemJSON(ByVal Key As Variant) As String
         
         If ExistsStr(Key) Then
             If IsObject(Values.Item(PrefixedKey)) Then
-                ItemJSON = Values.Item(PrefixedKey).JSON
+                ItemJSON = Values.Item(PrefixedKey).json
             Else
                 Error990A
             End If
@@ -397,7 +445,7 @@ Public Property Get ItemJSON(ByVal Key As Variant) As String
         End If
     Else
         If IsObject(Values.Item(Key)) Then
-            ItemJSON = Values.Item(Key).JSON
+            ItemJSON = Values.Item(Key).json
         Else
             Error990A
         End If
@@ -419,22 +467,22 @@ Attribute ItemJSON.VB_Description = "Retrieve a JsonBag Item's JSON by Key or In
             .WhitespaceIndent = mWhitespaceIndent
             .WhitespaceNewLine = mWhitespaceNewLine
         #End If
-        .JSON = RHS
+        .json = RHS
     End With
     Item(Key) = JsonBag
 End Property
 
-Public Property Get JSON() As String
-Attribute JSON.VB_Description = "A string representing the serialized contents of the object."
+Public Property Get json() As String
+Attribute json.VB_Description = "A string representing the serialized contents of the object."
     CursorOut = 1
     SerializeItem vbNullString, Me
-    JSON = Left$(TextOut, CursorOut - 1)
+    json = Left$(TextOut, CursorOut - 1)
     
     'Clear for next reuse.  Do it here to reclaim space.
     TextOut = vbNullString
 End Property
 
-Public Property Let JSON(ByRef RHS As String)
+Public Property Let json(ByRef RHS As String)
     Clear
     
     CursorIn = 1
@@ -558,7 +606,7 @@ End Sub
 
 Public Function Clone() As JsonBag
 Attribute Clone.VB_Description = "Returns a deep-copy clione of the JsonBag instance."
-    Dim I As Long
+    Dim i As Long
 
     Set Clone = New JsonBag
     With Clone
@@ -570,12 +618,12 @@ Attribute Clone.VB_Description = "Returns a deep-copy clione of the JsonBag inst
         #End If
         If IsArray Then
             .IsArray = True
-            For I = 1 To Count
-                .Item(I) = CloneItem(I)
+            For i = 1 To Count
+                .Item(i) = CloneItem(i)
             Next
         Else
-            For I = 1 To Count
-                .Item(Name(I)) = CloneItem(I)
+            For i = 1 To Count
+                .Item(Name(i)) = CloneItem(i)
             Next
         End If
     End With
@@ -613,7 +661,7 @@ Attribute Remove.VB_Description = "Removes Item specified by Key or Index."
     'Allow remove by Key or Index (only by Index for arrays).  If the item
     'does not exist return silently.
     
-    Dim I As Long
+    Dim i As Long
     
     If VarType(Key) = vbString Then
         If mIsArray Then Err.Raise &H8004991C, TypeNameOfMe, "Must remove by index for arrays"
@@ -626,11 +674,11 @@ Attribute Remove.VB_Description = "Removes Item specified by Key or Index."
         If 1 <= Key And Key <= Values.Count Then
             Values.Remove Key
             If IsArray Then
-                For I = Names.Count To Key Step -1
-                    Names.Remove I
+                For i = Names.Count To Key Step -1
+                    Names.Remove i
                 Next
-                For I = Key To Values.Count
-                    Names.Add I, CStr(I)
+                For i = Key To Values.Count
+                    Names.Add i, CStr(i)
                 Next
             Else
                 Names.Remove Key
@@ -663,9 +711,9 @@ Friend Sub ParseArray( _
                 CursorIn = CursorIn + 1
                 FoundValue = False
             Case RBRACKET_W
-                If Not FoundValue Then
-                    Err.Raise &H80049920, TypeNameOfMe, "Empty value at character " & CStr(CursorIn - 1)
-                End If
+                'If Not FoundValue Then
+                '    Err.Raise &H80049920, TypeNameOfMe, "Empty value at character " & CStr(CursorIn - 1)
+                'End If
                 CursorIn = CursorIn + 1
                 Exit Do
             Case Else
@@ -674,6 +722,7 @@ Friend Sub ParseArray( _
                 Names.Add Values.Count
                 FoundValue = True
         End Select
+        DoEvents
     Loop
     StartCursor = CursorIn
 End Sub
@@ -715,6 +764,7 @@ Friend Sub ParseObject( _
             Case Else
                 Error99A0 ", or }", CursorIn - 1
         End Select
+        DoEvents
     Loop
     StartCursor = CursorIn
 End Sub
@@ -884,6 +934,7 @@ Private Function ParseString(ByRef Text As String) As String
     LenParseString = BUILD_CHUNK
     
     For CursorIn = CursorIn To LengthIn
+        DoEvents
         Char = Mid$(Text, CursorIn, 1)
         Select Case AscW(Char)
             Case QUOTE_W
@@ -996,6 +1047,9 @@ Private Sub ParseValue(ByRef Text As String, ByRef Value As Variant)
                     Token = LCase$(Mid$(Text, CursorIn, 5))
                     If Token = "false" Then
                         Value = False
+                        CursorIn = CursorIn + 5
+                    ElseIf Token = "none," Then
+                        Value = Empty
                         CursorIn = CursorIn + 5
                     Else
                         Err.Raise &H8004993C, TypeNameOfMe, "Bad value at character " & CStr(CursorIn)
