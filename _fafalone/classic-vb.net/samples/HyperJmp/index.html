@@ -1,0 +1,369 @@
+
+<!-- ************************************************************* -->
+
+<!-- ************************************************************* -->
+<html>
+
+
+<!-- Mirrored from vb.mvps.org/samples/HyperJmp/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 17 May 2015 12:10:31 GMT -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Karl E. Peterson's Classic VB Code: HyperJmp</title>
+<meta name="description" content="Classic VB: HyperJmp: ShellExecute any URL to open a website in the default browser.">
+<meta name="keywords" content="Classic VB, Karl E. Peterson, VB5, VB6, Visual Basic, HyperJmp, RegCloseKey, RegOpenKeyEx, RegQueryValueEx, ShellExecute">
+<link rel="stylesheet" href="http://vb.mvps.org/_includes/main.css" type="text/css">
+</head>
+
+<body>
+
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" width=160 rowspan="2"><img border="0" src="http://vb.mvps.org/images/ClassicVB-150-vb.gif" width="150" height="130"></td>
+    <td align="right"><a href="http://classicvb.org/petition" title="Sign the petition!"><img src="http://vb.mvps.org/images/petitionbanner12f.gif" border="0"></a></td>
+    <td align="right">
+    <a href="../index.html" title="Click here to go straight to the Classic VB Code Samples!"><img border="0" src="http://vb.mvps.org/images/ClassicVB-100-of.gif" width="100" height="89"></a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+    <table border="0" width="100%" cellspacing="5">
+  <tr>
+    <td align="right" class="navtop">
+      <a href="../../index.html">Home</a> |
+      <a href="../../news.html" title="Recent updates and changes.">News</a> |
+      <a href="../index.html" title="Downloads!">Code&nbsp;Samples</a> | 
+      <a href="../../tools/index.html" title="Some tools I've built for my own use, that you might also enjoy.">Tools</a> |
+      <a href="../../articles/index.html" title="Many of the programming articles I've written over the years.">Articles</a> |
+      <a href="../../tips/index.html" title="A few random tips, some good whitepapers, and an occassional rant.">Tips</a> |
+      <a href="../../feedback.html" title="Lay it on me!">Feedback</a> |
+      <a href="../../links.html">Links</a> |
+      <a href="../../donate.html">Donations</a>&nbsp;&nbsp;
+    </td>
+  </tr>
+</table>
+
+
+    </td>
+  </tr>
+</table>
+
+
+
+<table border="0" width="100%" cellspacing="15">
+	<tr>
+		<td class="headline">HyperJmp</td>
+	</tr>
+	<tr>
+		<td class="padded">
+			<table border="0" align="right">
+
+
+				<tr><td>
+					<img border="0" src="http://vb.mvps.org/images/logo-vba4.gif" align="right" hspace="5" title="VBA-Ready!">
+				</td></tr>
+    
+				<tr><td>
+					<table cellpadding="10" cellspacing="0" align="right">
+  <tr>
+    <td>
+    <table border="0">
+      <tr>
+        <td width=30>&nbsp;</td>
+        <td>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 125;
+google_ad_height = 125;
+google_ad_format = "125x125_as_rimg";
+google_cpa_choice = "CAAQo-aZzgEaCM3CU97Siy5UKK2293M";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+
+
+<br><br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 120;
+google_ad_height = 90;
+google_ad_format = "120x90_0ads_al";
+google_ad_channel ="";
+google_color_border = "FDFFCA";
+google_color_bg = "FDFFCA";
+google_color_link = "0000CC";
+google_color_url = "008000.html";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt"></script>
+
+
+<br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 120;
+google_ad_height = 600;
+google_ad_format = "120x600_as";
+google_ad_type = "text";
+google_ad_channel ="";
+google_color_border = "FDFFCA";
+google_color_bg = "FDFFCA";
+google_color_link = "0000CC";
+google_color_url = "008000.html";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+
+
+<br><br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 125;
+google_ad_height = 125;
+google_ad_format = "125x125_as_rimg";
+google_cpa_choice = "CAAQh7yazgEaCCMiotM2K7TZKJ_D93M";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+</table>
+
+
+				</td></tr>
+			</table>
+
+
+<h3>Description</h3>
+<blockquote>
+  <p>Would you like to put a hyperlink to your own web page right on the About box for your app? It's really much simpler than most folks might guess. One call to ShellExecute, passing the desired URL, fires up the default browser and jumps to the requested page. Below is an example that turns a Label control named lblLink into a hyperlink. One click on it by the user and they're whisked off to your (well, actually my ;-) page on the internet. Of course, this technique isn't limited to Label controls. You could call the HyperJump routine from the Click event of any control, or anywhere else in your code that it makes sense.</p>
+  <blockquote>
+    <pre><span class="key">Option Explicit</span>
+
+<span class="key">Private Declare Function</span> ShellExecute <span class="key">Lib</span> <span class="str">&quot;shell32.dll&quot;</span> _
+   <span class="key">Alias</span> <span class="str">&quot;ShellExecuteA&quot;</span> <span class="par">(</span><span class="key">ByVal</span> hWnd <span class="key">As Long</span>, <span class="key">ByVal</span> lpOperation _
+   <span class="key">As String</span>, <span class="key">ByVal</span> lpFile <span class="key">As String</span>, <span class="key">ByVal</span> lpParameters <span class="key">As String</span>, _
+   <span class="key">ByVal</span> lpDirectory <span class="key">As String</span>, <span class="key">ByVal</span> nShowCmd <span class="key">As Long</span><span class="par">)</span> <span class="key">As Long</span>
+
+<span class="key">Private Sub</span> Form_Load<span class="par">()</span>
+   <span class="key">With</span> lblLink
+      .AutoSize = <span class="key">True</span>
+      .Caption = <span class="str">&quot;http://vb.mvps.org/&quot;</span>
+      .ForeColor = vbBlue
+      .Font.Underline = <span class="key">True</span>
+   <span class="key">End With</span>
+<span class="key">End Sub</span>
+
+<span class="key">Private Sub</span> lblLink_Click<span class="par">()</span>
+   <span class="key">Call</span> HyperJump<span class="par">(</span>lblLink.Caption<span class="par">)</span>
+<span class="key">End Sub</span>
+
+<span class="key">Private Sub</span> HyperJump<span class="par">(</span><span class="key">ByVal</span> URL <span class="key">As String</span><span class="par">)</span>
+   <span class="key">Call</span> ShellExecute<span class="par">(</span>0&amp;, vbNullString, URL, vbNullString, _
+                     vbNullString, vbNormalFocus<span class="par">)</span>
+<span class="key">End Sub</span></pre>
+
+  </blockquote>
+  <p>ShellExecute is amazingly flexible. For example, would you like to print a
+  document using the application it's associated with?&nbsp;</p>
+  <blockquote>
+    <pre><span class="key">Public Function</span> PrintDoc<span class="par">(</span><span class="key">ByVal</span> DocFile <span class="key">As String</span><span class="par">)</span> <span class="key">As Long</span>
+   <span class="rem">' Uses the &quot;print&quot; verb as defined in the registry</span>
+   PrintDoc = ShellExecute<span class="par">(</span>0&amp;, <span class="str">&quot;print&quot;</span>, DocFile, vbNullString, vbNullString, vbNormalFocus<span class="par">)</span>
+<span class="key">End Function</span></pre>
+  </blockquote>
+  <p>This sample project also shows how simple it is to make a Label
+  control look and act like a standard hyperlink, and includes a handy-dandy pointing finger icon that you can set into the control's MouseIcon property to give it that full effect seen in popular browsers.&nbsp;
+  </p>
+  <blockquote>
+    <p><img border="0" src="hyperjmp1.gif" hspace="10" vspace="10" ">
+  </p>
+  </blockquote>
+  <p>Another useful option offered is the ability to always open a document in a
+  new window, rather than the last window used. This is accomplished by calling
+  ShellExecute and passing the actual executable filename of the workstation's
+  default web browser. Which means I also provide code to extract that from the
+  registry.&nbsp;
+  </p>
+  <p>And, finally, to accomplish some of this more easily, a native VB5 version
+  of the InStrRev was needed.
+  </p>
+  <blockquote>
+    <pre><span class="rem">' **********************************************************</span>
+<span class="rem">' This function should be commented out if running in VB6!</span>
+<span class="key">Private Function InStrRev</span><span class="par">(</span><span class="key">ByVal</span> StringCheck <span class="key">As String</span>, _
+                          <span class="key">ByVal</span> StringMatch <span class="key">As String</span>, _
+                          Optional Start <span class="key">As Long</span> = -1, _
+                          Optional Compare <span class="key">As</span> VbCompareMethod = vbBinaryCompare<span class="par">)</span> _
+                          <span class="key">As Long</span>
+   <span class="key">Dim</span> nPos <span class="key">As Long</span>
+
+   <span class="rem">' Start from end if negative.</span>
+   <span class="key">If</span> Start &lt; 0 <span class="key">Then</span>
+      Start = <span class="key">Len</span><span class="par">(</span>StringCheck<span class="par">)</span>
+   <span class="key">End If</span>
+
+   <span class="rem">' Truncate StringCheck to maximum possible position.</span>
+   <span class="key">If</span> Start &lt; <span class="key">Len</span><span class="par">(</span>StringCheck<span class="par">)</span> <span class="key">Then</span>
+      StringCheck = <span class="key">Left$</span><span class="par">(</span>StringCheck, Start<span class="par">)</span>
+   <span class="key">End If</span>
+
+   <span class="rem">' Find last occurance of StringMatch.</span>
+   nPos = <span class="key">InStr</span><span class="par">(</span>1, StringCheck, StringMatch, Compare<span class="par">)</span>
+   <span class="key">Do While</span> nPos
+      <span class="key">InStrRev</span> = nPos
+      nPos = <span class="key">InStr</span><span class="par">(</span>nPos + 1, StringCheck, StringMatch, Compare<span class="par">)</span>
+   <span class="key">Loop</span>
+<span class="key">End Function</span>
+<span class="rem">' **********************************************************</span></pre></blockquote><p><i>Lots of bonus material with this one!</i>
+  </p>
+</blockquote>
+
+<a name="Published"></a>
+<h3>Published</h3>
+<blockquote>
+
+  <p>This sample hasn't been published anywhere except here on this website, but first rights to such publication are jealously guarded - you <i>have</i> been warned. &lt;g&gt;</p>
+
+</blockquote>
+
+
+
+
+<a name="APIs"></a>
+<h3>APIs Usage</h3>
+<blockquote>
+
+	<p>This sample uses the following API calls:</p>
+	<table border="1" cellpadding="5" width="80%" rules="rows" frame="below" bordercolor="#C00000">
+		<tr>
+			<th width="34%" align="left">Module</th>
+			<th width="33%" align="left">Library</th>
+			<th width="33%" align="left">Function</th>
+		</tr>
+    
+		<tr>
+			<td valign="top"><b>MHyperJump.bas</b></td>
+			<td valign="top">advapi32<br><br><br>shell32</td>
+			<td>RegCloseKey<br>RegOpenKeyEx<br>RegQueryValueEx<br>ShellExecute</td>
+		</tr>
+  
+	</table>
+	<p align="center">Don't see what you're looking for? Here's a
+	<a href="../apixref.html">complete API cross-reference</a>.</p>
+
+</blockquote>
+
+
+
+
+<a name="Download"></a>
+<h3>Download</h3>
+<blockquote>
+
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			
+			<td valign="top">
+				<a href="../HyperJmp5771.zip?id=HyperJmp">
+				<img border="0" src="http://vb.mvps.org/images/download-zip.gif" alt="Download HyperJmp.zip" width="66" height="78"></a>
+			</td>
+			<td valign="top" width="10">&nbsp;</td>
+			<td valign="top">Please, enjoy and learn from this sample. Include its code within your own projects, if you wish. But, in order to insure only the most recent code is available to all, I ask that you 
+				<a href="../../license.html">don't share</a> the sample by any form of mass distribution.
+				<p><a href="../HyperJmp5771.zip?id=HyperJmp">Download HyperJmp.zip</a>,
+				<i>9Kb, Last Updated: Tuesday, August 03, 2004</i></p>
+			</td>
+		</tr>
+	</table>
+
+</blockquote>
+
+
+
+
+<a name="SeeAlso"></a>
+
+<h3>See Also</h3>
+<blockquote>
+	<p>The following resources may also be of interest:</p>
+	<ul>
+  
+		<li><b><a href="../HyperLabel/index.html">HyperLabel</a></b> - UserControl that provides hyperlink capabilities to either text or images; highlights based on when mouse enters and leaves.</li>
+
+	</ul>
+</blockquote>
+
+
+
+
+<p align="center"><a href="../index.html" class="img"><img border="0" src="http://vb.mvps.org/images/ClassicVB-150-ofw.gif" width="150" height="138" title="Click here to return to the full list of Classic VB Code Samples!"></a></p>
+
+    </td>
+  </tr>
+</table>
+<div class="footer">
+<table border="0" width="100%" cellspacing="0" cellpadding="5">
+	<tr><td class="copyright"><p align="center">Copyright ©1995-2015, 
+<a href="mailto:karl@mvps.org?subject=Copyright%20Permission">Karl E. Peterson</a>, All Rights Reserved Worldwide.<br>
+Nothing on this web site may be reproduced, in any form,<br>
+without express written permission.</p>
+<p align="center"><a href="../../license.html">Complete Licensing and Redistribution Information</a></p>
+</td></tr>
+	<tr><td align="center" class="footer">&nbsp;</td></tr>
+	<tr><td align="center" class="footer"><div align="center">
+	<table border="0" cellpadding="10">
+	<tr>
+		<td align="right" valign="middle" class="footer">
+			<a href='http://www.mozilla.com/?from=sfx&amp;uid=0&amp;t=554' target="_blank"><img src='../../../sfx-images.mozilla.org/firefox/3.6/110x32_best_orange.html' alt='Spread Firefox Affiliate Button' border='0' /></a>
+		</td>
+		<td valign="middle" class="footer">      
+			This site has been designed for <a target="_blank" href="http://www.mozilla.com/?from=sfx&amp;uid=261538&amp;t=305">Firefox</a>.<br>It may work in Internet Explorer as well.
+		</td>
+	</tr>
+</table>
+</div>
+
+</td></tr>
+	<tr><td align="center" class="footer">&nbsp;</td></tr>
+	<tr><td align="center" class="footer"><table border="0" align="center" cellpadding="5">
+  <tr>
+    <td align="right" valign="middle" class="footer">
+Make a <a href="https://www.paypal.com/xclick/business=karl@mvps.org&amp;item_name=Donation&amp;no_note=1&amp;tax=0&amp;currency_code=USD" target="_blank">donation</a> 
+today, to support more Classic VB Code <br>
+additions and updates to this site. <a href="../../donate.html">  More information...</a>
+    </td>
+    <td valign="middle">
+<!--    
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="karl@mvps.org">
+<input type="hidden" name="item_name" value="Donation">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="tax" value="0"><a href="http://" target="_blank"><input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" width="73" height="44">
+</a>
+</form>
+-->
+<a href="https://www.paypal.com/xclick/business=karl@mvps.org&amp;item_name=Donation&amp;no_note=1&amp;tax=0&amp;currency_code=USD" target="_blank">
+<img src="../../../www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" alt="Make payments with PayPal - it's fast, free and secure!" width="73" height="44">
+</a>
+    </td>
+  </tr>
+</table>
+</td></tr>
+	<tr><td align="center"><img border="0" src="http://vb.mvps.org/images/ClassicVB-600.gif" width="600" height="290"></td></tr>
+</table>
+</div>
+
+
+</body>
+
+
+<!-- Mirrored from vb.mvps.org/samples/HyperJmp/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 17 May 2015 12:10:32 GMT -->
+</html>

@@ -1,0 +1,513 @@
+
+<!-- ************************************************************* -->
+
+<!-- ************************************************************* -->
+<html>
+
+
+<!-- Mirrored from vb.mvps.org/samples/Monitors/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 17 May 2015 12:07:50 GMT -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Karl E. Peterson's Classic VB Code: Monitors</title>
+<meta name="description" content="Classic VB: Monitors: Provides a collection of objects representing each monitor on the system, and a module of functions for monitor tricks.">
+<meta name="keywords" content="Classic VB, Karl E. Peterson, VB5, VB6, Visual Basic, Monitors, EnumDisplayDevices, EnumDisplayMonitors, EqualRect, GetCursorPos, GetMonitorInfo, GetSystemMetrics, GetVersionEx, GetWindowRect, IntersectRect, MonitorFromPoint, MonitorFromRect, MonitorFromWindow, MoveWindow, OffsetRect, RtlMoveMemory, RtlZeroMemory, SystemParametersInfo, UnionRect, VarPtr">
+<link rel="stylesheet" href="http://vb.mvps.org/_includes/main.css" type="text/css">
+</head>
+
+<body>
+
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" width=160 rowspan="2"><img border="0" src="http://vb.mvps.org/images/ClassicVB-150-vb.gif" width="150" height="130"></td>
+    <td align="right"><a href="http://classicvb.org/petition" title="Sign the petition!"><img src="http://vb.mvps.org/images/petitionbanner13a.gif" border="0"></a></td>
+    <td align="right">
+    <a href="../index.html" title="Click here to go straight to the Classic VB Code Samples!"><img border="0" src="http://vb.mvps.org/images/ClassicVB-100-of.gif" width="100" height="89"></a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+    <table border="0" width="100%" cellspacing="5">
+  <tr>
+    <td align="right" class="navtop">
+      <a href="../../index.html">Home</a> |
+      <a href="../../news.html" title="Recent updates and changes.">News</a> |
+      <a href="../index.html" title="Downloads!">Code&nbsp;Samples</a> | 
+      <a href="../../tools/index.html" title="Some tools I've built for my own use, that you might also enjoy.">Tools</a> |
+      <a href="../../articles/index.html" title="Many of the programming articles I've written over the years.">Articles</a> |
+      <a href="../../tips/index.html" title="A few random tips, some good whitepapers, and an occassional rant.">Tips</a> |
+      <a href="../../feedback.html" title="Lay it on me!">Feedback</a> |
+      <a href="../../links.html">Links</a> |
+      <a href="../../donate.html">Donations</a>&nbsp;&nbsp;
+    </td>
+  </tr>
+</table>
+
+
+    </td>
+  </tr>
+</table>
+
+
+
+<table border="0" width="100%" cellspacing="15">
+	<tr>
+		<td class="headline">Monitors</td>
+	</tr>
+	<tr>
+		<td class="padded">
+			<table border="0" align="right">
+
+
+				<tr><td>
+					<img border="0" src="http://vb.mvps.org/images/logo-vba4.gif" align="right" hspace="5" title="VBA-Ready!">
+				</td></tr>
+    
+				<tr><td>
+					<table cellpadding="10" cellspacing="0" align="right">
+  <tr>
+    <td>
+    <table border="0">
+      <tr>
+        <td width=30>&nbsp;</td>
+        <td>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 125;
+google_ad_height = 125;
+google_ad_format = "125x125_as_rimg";
+google_cpa_choice = "CAAQo-aZzgEaCM3CU97Siy5UKK2293M";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+
+
+<br><br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 120;
+google_ad_height = 90;
+google_ad_format = "120x90_0ads_al";
+google_ad_channel ="";
+google_color_border = "FDFFCA";
+google_color_bg = "FDFFCA";
+google_color_link = "0000CC";
+google_color_url = "008000.html";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt"></script>
+
+
+<br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 120;
+google_ad_height = 600;
+google_ad_format = "120x600_as";
+google_ad_type = "text";
+google_ad_channel ="";
+google_color_border = "FDFFCA";
+google_color_bg = "FDFFCA";
+google_color_link = "0000CC";
+google_color_url = "008000.html";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+
+
+<br><br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 125;
+google_ad_height = 125;
+google_ad_format = "125x125_as_rimg";
+google_cpa_choice = "CAAQh7yazgEaCCMiotM2K7TZKJ_D93M";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+</table>
+
+
+				</td></tr>
+			</table>
+
+
+<h3>Description</h3>
+<blockquote>
+<p>Here's a little sample that provides you with a means to enumerate all the 
+available monitors on a system. Do you, perhaps, need to cover the entire screen 
+with a single form? No problem! Drop the two provided modules, MMonitors.bas and 
+CMonitor.cls, into your project and then add code something like this:</p>
+
+<blockquote>
+<table border="0" align="right"><tr><td><a href="../../tools/vbMarkUp/index.html" title="Color-coded with vbMarkUp - try it today!"><img border="0" src="http://vb.mvps.org/images/vbMarkUp2.gif" width="98" height="29" alt="Color-coded with vbMarkUp - try it today!"></a></td></tr></table>
+<pre><span class="key">Private Sub</span> cmdCoverScreen_Click<span class="par">()</span>
+   <span class="rem">' Need to refresh collection at least once.</span>
+   <span class="key">Call</span> MonitorsRefresh
+   <span class="key">With</span> Monitors<span class="par">(</span><span class="str">&quot;0&quot;</span><span class="par">)</span>
+      .PixelsToTwips = <span class="key">True</span>
+      Me.Move .Left, .Top, .Width, .Height
+   <span class="key">End With</span>
+<span class="key">End Sub</span></pre>
+</blockquote>
+
+<p>The Monitors collection is keyed using the same values Windows uses to 
+describe each monitor in the Display Properties dialog Settings tab. The astute 
+among you will now be asking about Monitor Zero? That's a special one I added to 
+the collection that represents the entire virtual desktop, so it therefore 
+enables the call above to cover the entire screen. </p>
+<p>Windows will also provide information about pseudo display devices, which are 
+generally invisible and are often not part of the desktop. These critters are 
+used by applications like Net Meeting to provide a display-like surface, and can 
+generally be ignored for most application purposes. Nonetheless, you will find 
+those at Key values higher than the number of actual physical monitors present 
+on the system, and identifiable through the Visible and/or AttachedToDesktop 
+properties of the CMonitor class.</p>
+<p>I recently added some new functions that will facilitate repositioning a 
+window where it was when the application was last shutdown. They go the extra 
+mile of validating the coordinates, to be sure the user hasn't resized the 
+display or changed the number of active monitors, and sliding an offscreen 
+window back into visible space if desired. Also provided a very simple means of 
+moving a window to the monitor where the mouse is, which may be a nice touch at 
+application startup time?</p>
+<blockquote>
+<table border="0" align="right"><tr><td><a href="../../tools/vbMarkUp/index.html" title="Color-coded with vbMarkUp - try it today!"><img border="0" src="http://vb.mvps.org/images/vbMarkUp2.gif" width="98" height="29" alt="Color-coded with vbMarkUp - try it today!"></a></td></tr></table>
+<pre>   <span class="rem">' Make sure form first appears on the monitor that</span>
+   <span class="rem">' the mouse is over.</span>
+   <span class="key">Call</span> WindowSwitchMonitor<span class="par">(</span>Me.hWnd, MonitorFromMouse<span class="par">())</span>
+</pre>
+</blockquote>
+
+<h4>CMonitor Properties</h4>
+<blockquote>
+<table border="1" cellpadding="4" frame="hsides" rules="rows">
+	<tr>
+		<td>Handle</td>
+		<td>The hMonitor value returned by EnumDisplayMonitors, MonitorFromPoint, MonitorFromRect, or MonitorFromWindow.</td>
+	</tr>
+	<tr>
+		<td>Index</td>
+		<td>Long value that matches the Key used when building collection as well as how Windows identifies this monitor.</td>
+	</tr>
+	<tr>
+		<td>PixelsToTwips</td>
+		<td>Boolean value that sets whether or not Pixel values are returned as Twips instead.</td>
+	</tr>
+	<tr>
+		<td>AttachedToDesktop</td>
+		<td><i>Read only:</i> Boolean value that indicates whether this display is part of the desktop.</td>
+	</tr>
+	<tr>
+		<td>Device</td>
+		<td><i>Read only:</i> String that represents the device name.</td>
+	</tr>
+	<tr>
+		<td>DeviceKey</td>
+		<td><i>Read only:</i> String that represents the device key.</td>
+	</tr>
+	<tr>
+		<td>DeviceString</td>
+		<td><i>Read only:</i> String that represents the device string.</td>
+	</tr>
+	<tr>
+		<td>DiminishedWorkspace</td>
+		<td><i>Read only:</i> Workspace is reduced by taskbar(s) to size smaller than monitor.</td>
+	</tr>
+	<tr>
+		<td>MultiMonitorSupport</td>
+		<td><i>Read only:</i> Boolean that indicates operating system support for multiple monitors.</td>
+	</tr>
+	<tr>
+		<td>Primary</td>
+		<td><i>Read only:</i> Boolean that indicates whether or not this is the primary monitor.</td>
+	</tr>
+	<tr>
+		<td>Removable</td>
+		<td><i>Read only:</i> Indicates whether the device is removeable.</td>
+	</tr>
+	<tr>
+		<td>VgaCompatible</td>
+		<td><i>Read only:</i> Indicates whether the device is VBA compatible.</td>
+	</tr>
+	<tr>
+		<td>Visible</td>
+		<td><i>Read only:</i> Interprets whether the device is visible based on the inverse of the DISPLAY_DEVICE_MIRRORING_DRIVER flag.</td>
+	</tr>
+	<tr>
+		<td>Bottom, WorkBottom</td>
+		<td><i>Read only:</i> Bottom coordinate for the display or 
+		work area.</td>
+	</tr>
+	<tr>
+		<td>Height, WorkHeight</td>
+		<td><i>Read only:</i> Height of the display or work area.</td>
+	</tr>
+	<tr>
+		<td>Left, WorkLeft</td>
+		<td><i>Read only:</i> Left coordinate for the display or 
+		work area.</td>
+	</tr>
+	<tr>
+		<td>Right, WorkRight</td>
+		<td><i>Read only:</i> Right coordinate for the display or 
+		work area.</td>
+	</tr>
+	<tr>
+		<td>Top, WorkTop</td>
+		<td><i>Read only:</i> Top coordinate for the display or 
+		work area.</td>
+	</tr>
+	<tr>
+		<td>Width, WorkWidth</td>
+		<td><i>Read only:</i> Width of the display or work area.</td>
+	</tr>
+</table>
+</blockquote>
+
+<h4>CMonitor Methods</h4>
+<blockquote>
+<table border="1" cellpadding="4" frame="hsides" rules="rows">
+	<tr>
+		<td>Refresh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+		<td>Refreshes all cached information about this particular display device.</td>
+	</tr>
+</table>
+</blockquote>
+
+<h4>MMonitor Methods</h4>
+<blockquote>
+<table border="1" cellpadding="4" frame="hsides" rules="rows">
+	<tr>
+		<td>MonitorCount</td>
+		<td>Returns the number of physical monitors on the system.</td>
+	</tr>
+	<tr>
+		<td>MonitorSupport</td>
+		<td>Indicates operating system support for multiple monitors.  Effectively whether this system is Windows 98/2000 or better.</td>
+	</tr>
+	<tr>
+		<td>MonitorFromMouse</td>
+		<td>Returns the number of the monitor that's under the mouse cursor.</td>
+	</tr>
+	<tr>
+		<td>MonitorFromPoint</td>
+		<td>Returns the number of the monitor that's under the point (logical pixels) specified.</td>
+	</tr>
+	<tr>
+		<td>MonitorFromRect</td>
+		<td>Returns the number of the monitor that the majority of the passed rectangle falls upon.</td>
+	</tr>
+	<tr>
+		<td>MonitorFromWindow</td>
+		<td>Returns the number of the monitor that the majority of the passed window falls upon.</td>
+	</tr>
+	<tr>
+		<td>MonitorRect</td>
+		<td>Returns a RECT structure that represents the display coordinates of the specified monitor number.</td>
+	</tr>
+	<tr>
+		<td>MonitorWorkRect</td>
+		<td>Returns a RECT structure that represents the work area coordinates of the specified monitor number.</td>
+	</tr>
+	<tr>
+		<td>MonitorsRefresh</td>
+		<td>Refreshes the global Monitors collection. Must be called at least once per application before accessing the collection directly.</td>
+	</tr>
+	<tr>
+		<td>FormatRect</td>
+		<td>Returns cartesian coordinate display of rectangle coordinates. eg, &quot;(0,0)-(1024,768)&quot;</td>
+	</tr>
+	<tr>
+		<td>WindowMove</td>
+		<td>Simple wrapper that accepts a RECT rather than individual coordinates around MoveWindow API.</td>
+	</tr>
+	<tr>
+		<td>WindowOffscreen</td>
+		<td>Tests whether a window is wholly or partially offscreen, and optionally slides it back to nearest onscreen position if so.</td>
+	</tr>
+	<tr>
+		<td>WindowSwitchMonitor</td>
+		<td>Moves a window from one monitor to the exact same coordinates on another monitor.</td>
+	</tr>
+	<tr>
+		<td>WindowRectAbsolute</td>
+		<td>Simple wrapper around GetWindowRect API, which returns absolute window coordinates.</td>
+	</tr>
+	<tr>
+		<td>WindowRectRelative</td>
+		<td>Returns coordinates of window relative to the monitor it principally occupies.</td>
+	</tr>
+</table>
+</blockquote>
+
+</blockquote>
+<a name="Published"></a>
+<h3>Published</h3>
+<blockquote>
+
+  <p>This sample, or the one from which it originally derived, was published (or at least 
+	peripherally mentioned) in the following article(s):</p>
+  <ul>
+
+    <li><b><a href="../../articles/vsm20090302.pdf">Working with Multiple Monitors</a></b>, Classic VB Corner, <cite>VSM Online</cite>, March 2009</li>
+
+    <li><b><a href="../../articles/vsm20090825.pdf">Thoughtful UI Tweaks Can Make All the Difference</a></b>, Classic VB Corner, <cite>VSM Online</cite>, August 2009</li>
+  
+  </ul>
+
+</blockquote>
+
+
+
+
+<a name="APIs"></a>
+<h3>APIs Usage</h3>
+<blockquote>
+
+	<p>This sample uses the following API calls:</p>
+	<table border="1" cellpadding="5" width="80%" rules="rows" frame="below" bordercolor="#C00000">
+		<tr>
+			<th width="34%" align="left">Module</th>
+			<th width="33%" align="left">Library</th>
+			<th width="33%" align="left">Function</th>
+		</tr>
+        
+		<tr>
+			<td valign="top"><b>CMonitor.cls</b></td>
+			<td valign="top">kernel32<br><br>user32<br><br><br><br></td>
+			<td>GetVersionEx<br>RtlZeroMemory<br>EnumDisplayDevices<br>EqualRect<br>GetMonitorInfo<br>GetSystemMetrics<br>SystemParametersInfo</td>
+		</tr>
+        
+		<tr>
+			<td valign="top"><b>CStringBuilder.cls</b></td>
+			<td valign="top">kernel32<br>msvbvm60</td>
+			<td>RtlMoveMemory<br>VarPtr</td>
+		</tr>
+    
+		<tr>
+			<td valign="top"><b>MMonitors.bas</b></td>
+			<td valign="top">user32<br><br><br><br><br><br><br><br><br><br><br></td>
+			<td>EnumDisplayMonitors<br>EqualRect<br>GetCursorPos<br>GetSystemMetrics<br>GetWindowRect<br>IntersectRect<br>MonitorFromPoint<br>MonitorFromRect<br>MonitorFromWindow<br>MoveWindow<br>OffsetRect<br>UnionRect</td>
+		</tr>
+  
+	</table>
+	<p align="center">Don't see what you're looking for? Here's a
+	<a href="../apixref.html">complete API cross-reference</a>.</p>
+
+</blockquote>
+
+
+
+
+<a name="Download"></a>
+<h3>Download</h3>
+<blockquote>
+
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			
+			<td valign="top">
+				<a href="../Monitors3f19.zip?id=Monitors">
+				<img border="0" src="http://vb.mvps.org/images/download-zip.gif" alt="Download Monitors.zip" width="66" height="78"></a>
+			</td>
+			<td valign="top" width="10">&nbsp;</td>
+			<td valign="top">Please, enjoy and learn from this sample. Include its code within your own projects, if you wish. But, in order to insure only the most recent code is available to all, I ask that you 
+				<a href="../../license.html">don't share</a> the sample by any form of mass distribution.
+				<p><a href="../Monitors3f19.zip?id=Monitors">Download Monitors.zip</a>,
+				<i>27Kb, Last Updated: Friday, August 07, 2009</i></p>
+			</td>
+		</tr>
+	</table>
+
+</blockquote>
+
+
+
+
+<a name="SeeAlso"></a>
+
+<h3>See Also</h3>
+<blockquote>
+	<p>The following resources may also be of interest:</p>
+	<ul>
+  
+		<li><b><a href="../SnapDialog/index.html">SnapDialog</a></b> - Snap dialogs to the edges of screen. Supports multiple monitors and taskbar avoidance. Uses native subclassing.</li>
+
+	</ul>
+</blockquote>
+
+
+
+
+<p align="center"><a href="../index.html" class="img"><img border="0" src="http://vb.mvps.org/images/ClassicVB-150-ofw.gif" width="150" height="138" title="Click here to return to the full list of Classic VB Code Samples!"></a></p>
+
+    </td>
+  </tr>
+</table>
+<div class="footer">
+<table border="0" width="100%" cellspacing="0" cellpadding="5">
+	<tr><td class="copyright"><p align="center">Copyright ©1995-2015, 
+<a href="mailto:karl@mvps.org?subject=Copyright%20Permission">Karl E. Peterson</a>, All Rights Reserved Worldwide.<br>
+Nothing on this web site may be reproduced, in any form,<br>
+without express written permission.</p>
+<p align="center"><a href="../../license.html">Complete Licensing and Redistribution Information</a></p>
+</td></tr>
+	<tr><td align="center" class="footer">&nbsp;</td></tr>
+	<tr><td align="center" class="footer"><div align="center">
+	<table border="0" cellpadding="10">
+	<tr>
+		<td align="right" valign="middle" class="footer">
+			<a href='http://www.mozilla.com/?from=sfx&amp;uid=0&amp;t=554' target="_blank"><img src='../../../sfx-images.mozilla.org/firefox/3.6/110x32_best_orange.html' alt='Spread Firefox Affiliate Button' border='0' /></a>
+		</td>
+		<td valign="middle" class="footer">      
+			This site has been designed for <a target="_blank" href="http://www.mozilla.com/?from=sfx&amp;uid=261538&amp;t=305">Firefox</a>.<br>It may work in Internet Explorer as well.
+		</td>
+	</tr>
+</table>
+</div>
+
+</td></tr>
+	<tr><td align="center" class="footer">&nbsp;</td></tr>
+	<tr><td align="center" class="footer"><table border="0" align="center" cellpadding="5">
+  <tr>
+    <td align="right" valign="middle" class="footer">
+Make a <a href="https://www.paypal.com/xclick/business=karl@mvps.org&amp;item_name=Donation&amp;no_note=1&amp;tax=0&amp;currency_code=USD" target="_blank">donation</a> 
+today, to support more Classic VB Code <br>
+additions and updates to this site. <a href="../../donate.html">  More information...</a>
+    </td>
+    <td valign="middle">
+<!--    
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="karl@mvps.org">
+<input type="hidden" name="item_name" value="Donation">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="tax" value="0"><a href="http://" target="_blank"><input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" width="73" height="44">
+</a>
+</form>
+-->
+<a href="https://www.paypal.com/xclick/business=karl@mvps.org&amp;item_name=Donation&amp;no_note=1&amp;tax=0&amp;currency_code=USD" target="_blank">
+<img src="../../../www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" alt="Make payments with PayPal - it's fast, free and secure!" width="73" height="44">
+</a>
+    </td>
+  </tr>
+</table>
+</td></tr>
+	<tr><td align="center"><img border="0" src="http://vb.mvps.org/images/ClassicVB-600.gif" width="600" height="290"></td></tr>
+</table>
+</div>
+
+
+</body>
+
+
+<!-- Mirrored from vb.mvps.org/samples/Monitors/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 17 May 2015 12:07:56 GMT -->
+</html>

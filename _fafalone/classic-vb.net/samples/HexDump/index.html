@@ -1,0 +1,361 @@
+
+<!-- ************************************************************* -->
+
+<!-- ************************************************************* -->
+<html>
+
+
+<!-- Mirrored from vb.mvps.org/samples/HexDump/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 17 May 2015 12:11:20 GMT -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Karl E. Peterson's Classic VB Code: HexDump</title>
+<meta name="description" content="Classic VB: HexDump: Functions to dump a hex view of any memory address and dereference pointers to strings (ANSI or Unicode) and Dword values.">
+<meta name="keywords" content="Classic VB, Karl E. Peterson, VB5, VB6, Visual Basic, HexDump, lstrlen, RtlMoveMemory">
+<link rel="stylesheet" href="http://vb.mvps.org/_includes/main.css" type="text/css">
+</head>
+
+<body>
+
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" width=160 rowspan="2"><img border="0" src="http://vb.mvps.org/images/ClassicVB-150-vb.gif" width="150" height="130"></td>
+    <td align="right"><a href="http://classicvb.org/petition" title="Sign the petition!"><img src="http://vb.mvps.org/images/petitionbanner15d.gif" border="0"></a></td>
+    <td align="right">
+    <a href="../index.html" title="Click here to go straight to the Classic VB Code Samples!"><img border="0" src="http://vb.mvps.org/images/ClassicVB-100-of.gif" width="100" height="89"></a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+    <table border="0" width="100%" cellspacing="5">
+  <tr>
+    <td align="right" class="navtop">
+      <a href="../../index.html">Home</a> |
+      <a href="../../news.html" title="Recent updates and changes.">News</a> |
+      <a href="../index.html" title="Downloads!">Code&nbsp;Samples</a> | 
+      <a href="../../tools/index.html" title="Some tools I've built for my own use, that you might also enjoy.">Tools</a> |
+      <a href="../../articles/index.html" title="Many of the programming articles I've written over the years.">Articles</a> |
+      <a href="../../tips/index.html" title="A few random tips, some good whitepapers, and an occassional rant.">Tips</a> |
+      <a href="../../feedback.html" title="Lay it on me!">Feedback</a> |
+      <a href="../../links.html">Links</a> |
+      <a href="../../donate.html">Donations</a>&nbsp;&nbsp;
+    </td>
+  </tr>
+</table>
+
+
+    </td>
+  </tr>
+</table>
+
+
+
+<table border="0" width="100%" cellspacing="15">
+	<tr>
+		<td class="headline">HexDump</td>
+	</tr>
+	<tr>
+		<td class="padded">
+			<table border="0" align="right">
+
+
+				<tr><td>
+					<img border="0" src="http://vb.mvps.org/images/logo-vba4.gif" align="right" hspace="5" title="VBA-Ready!">
+				</td></tr>
+    
+				<tr><td>
+					<table cellpadding="10" cellspacing="0" align="right">
+  <tr>
+    <td>
+    <table border="0">
+      <tr>
+        <td width=30>&nbsp;</td>
+        <td>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 125;
+google_ad_height = 125;
+google_ad_format = "125x125_as_rimg";
+google_cpa_choice = "CAAQo-aZzgEaCM3CU97Siy5UKK2293M";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+
+
+<br><br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 120;
+google_ad_height = 90;
+google_ad_format = "120x90_0ads_al";
+google_ad_channel ="";
+google_color_border = "FDFFCA";
+google_color_bg = "FDFFCA";
+google_color_link = "0000CC";
+google_color_url = "008000.html";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt"></script>
+
+
+<br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 120;
+google_ad_height = 600;
+google_ad_format = "120x600_as";
+google_ad_type = "text";
+google_ad_channel ="";
+google_color_border = "FDFFCA";
+google_color_bg = "FDFFCA";
+google_color_link = "0000CC";
+google_color_url = "008000.html";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+
+
+<br><br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 125;
+google_ad_height = 125;
+google_ad_format = "125x125_as_rimg";
+google_cpa_choice = "CAAQh7yazgEaCCMiotM2K7TZKJ_D93M";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+</table>
+
+
+				</td></tr>
+			</table>
+
+
+<h3>Description</h3>
+<blockquote>
+<p>Not much of a demo here, just a really useful module you can add to your
+projects when you need to pick apart memory your process is using. The core
+function, HexDump(lpBuffer, Length), provides a common &quot;hex editor
+view&quot; of that location in memory by printing it out directly to the
+Immediate window. For example, if an API returns a pointer to a structure, and
+you want to see exactly what's within that structure as you try to decode the
+SDK docs from C to VB, passing that pointer to HexDump would give you something like this:</p>
+<blockquote>
+<pre>=================================================================================
+lpBuffer = &amp;h1AC998   nBytes = 256
+001AC998  0000  C8 C9 1A 00 F0 C9 1A 00-02 00 00 00 23 BD CA 99  ............#...
+001AC9A8  0010  DC 1D D3 11 BD 80 00 10-4B 7A 56 08 08 CA 1A 00  ........KzV.....
+001AC9B8  0020  18 CA 1A 00 7D 01 00 E0-28 CA 1A 00 00 00 00 00  ....}...(.......
+001AC9C8  0030  5C 00 5C 00 4E 00 54 00-35 00 30 00 2D 00 53 00  \.\.N.T.5.0.-.S.
+001AC9D8  0040  56 00 52 00 2E 00 6C 00-6A 00 2E 00 68 00 6F 00  V.R...l.j...h.o.
+001AC9E8  0050  6D 00 65 00 00 00 00 00-5C 00 5C 00 4E 00 54 00  m.e.....\.\.N.T.
+001AC9F8  0060  35 00 30 00 2D 00 53 00-56 00 52 00 00 00 44 00  5.0.-.S.V.R...D.
+001ACA08  0070  6C 00 6A 00 2E 00 68 00-6F 00 6D 00 65 00 00 00  l.j...h.o.m.e...
+001ACA18  0080  6C 00 6A 00 2E 00 68 00-6F 00 6D 00 65 00 00 00  l.j...h.o.m.e...
+001ACA28  0090  44 00 65 00 66 00 61 00-75 00 6C 00 74 00 2D 00  D.e.f.a.u.l.t.-.
+001ACA38  00A0  46 00 69 00 72 00 73 00-74 00 2D 00 53 00 69 00  F.i.r.s.t.-.S.i.
+001ACA48  00B0  74 00 65 00 2D 00 4E 00-61 00 6D 00 65 00 00 00  t.e.-.N.a.m.e...
+001ACA58  00C0  4C 4D 45 4D 98 C9 1A 00-00 00 00 00 00 00 00 00  LMEM............
+001ACA68  00D0  0C 00 1B 00 00 01 08 00-02 00 00 00 03 00 00 00  ................
+001ACA78  00E0  00 00 00 00 00 00 00 00-03 00 00 00 D0 D0 1A 00  ................
+001ACA88  00F0  B0 4D 1A 00 D0 35 B3 77-15 7E 00 00 59 1F 1D 27  .M...5.w.~..Y..'
+=================================================================================</pre>
+</blockquote>
+<p>Also included in this module are three functions that can be used to
+dereference string (both Unicode and ANSI) and DWORD pointers to normal VB
+variables:</p>
+<blockquote>
+<table border="0" align="right"><tr><td><a href="../../tools/vbMarkUp/index.html" title="Color-coded with vbMarkUp - try it today!"><img border="0" src="http://vb.mvps.org/images/vbMarkUp2.gif" width="98" height="29" alt="Color-coded with vbMarkUp - try it today!"></a></td></tr></table>
+<pre><span class="key">Public Function</span> PointerToStringA<span class="par">(</span><span class="key">ByVal</span> lpStringA <span class="key">As Long</span><span class="par">)</span> <span class="key">As String</span>
+   <span class="key">Dim</span> Buffer<span class="par">()</span> <span class="key">As Byte</span>
+   <span class="key">Dim</span> nLen <span class="key">As Long</span>
+
+   <span class="key">If</span> lpStringA <span class="key">Then</span>
+      nLen = lstrlenA<span class="par">(</span><span class="key">ByVal</span> lpStringA<span class="par">)</span>
+      <span class="key">If</span> nLen <span class="key">Then</span>
+         <span class="key">ReDim</span> Buffer<span class="par">(</span>0 To <span class="par">(</span>nLen - 1<span class="par">))</span> <span class="key">As Byte</span>
+         CopyMemory Buffer<span class="par">(</span>0<span class="par">)</span>, <span class="key">ByVal</span> lpStringA, nLen
+         PointerToStringA = <span class="key">StrConv</span><span class="par">(</span>Buffer, vbUnicode<span class="par">)</span>
+      <span class="key">End If</span>
+   <span class="key">End If</span>
+<span class="key">End Function</span>
+
+<span class="key">Public Function</span> PointerToStringW<span class="par">(</span><span class="key">ByVal</span> lpStringW <span class="key">As Long</span><span class="par">)</span> <span class="key">As String</span>
+   <span class="key">Dim</span> Buffer<span class="par">()</span> <span class="key">As Byte</span>
+   <span class="key">Dim</span> nLen <span class="key">As Long</span>
+
+   <span class="key">If</span> lpStringW <span class="key">Then</span>
+      nLen = lstrlenW<span class="par">(</span>lpStringW<span class="par">)</span> * 2
+      <span class="key">If</span> nLen <span class="key">Then</span>
+         <span class="key">ReDim</span> Buffer<span class="par">(</span>0 To <span class="par">(</span>nLen - 1<span class="par">))</span> <span class="key">As Byte</span>
+         CopyMemory Buffer<span class="par">(</span>0<span class="par">)</span>, <span class="key">ByVal</span> lpStringW, nLen
+         PointerToStringW = Buffer
+      <span class="key">End If</span>
+   <span class="key">End If</span>
+<span class="key">End Function</span>
+
+<span class="key">Public Function</span> PointerToDWord<span class="par">(</span><span class="key">ByVal</span> lpDWord <span class="key">As Long</span><span class="par">)</span> <span class="key">As Long</span>
+   <span class="key">Dim</span> nRet <span class="key">As Long</span>
+   <span class="key">If</span> lpDWord <span class="key">Then</span>
+      CopyMemory nRet, <span class="key">ByVal</span> lpDWord, 4
+      PointerToDWord = nRet
+   <span class="key">End If</span>
+<span class="key">End Function</span></pre>
+</blockquote>
+<p>Hardly a project goes by when I don't find the need for one or more of those.
+A great many SDK structures are made up of a series of pointers, followed by a
+buffer of regions that are pointed to. This combo will help you decode any odd
+results you encounter.</p>
+</blockquote>
+
+<a name="Published"></a>
+<h3>Published</h3>
+<blockquote>
+
+  <p>This sample, or the one from which it originally derived, was published (or at least 
+	peripherally mentioned) in the following article(s):</p>
+  <ul>
+
+    <li><b><a href="../../articles/ap200102.html">Look Into Raw Memory Contents</a></b>, Ask the VB Pro, <cite>VBPJ</cite>, February 2001</li>
+
+    <li><b><a href="../../articles/dd200111.html">Let Me Count the Ways</a></b>, Desktop Developer, <cite>VSM</cite>, November 2001</li>
+
+    <li><b><a href="../../articles/vsm20100406.pdf">Customizing the Ride (Part 1)</a></b>, Classic VB Corner, <cite>VSM Online</cite>, April 2010</li>
+  
+  </ul>
+
+</blockquote>
+
+
+
+
+<a name="APIs"></a>
+<h3>APIs Usage</h3>
+<blockquote>
+
+	<p>This sample uses the following API calls:</p>
+	<table border="1" cellpadding="5" width="80%" rules="rows" frame="below" bordercolor="#C00000">
+		<tr>
+			<th width="34%" align="left">Module</th>
+			<th width="33%" align="left">Library</th>
+			<th width="33%" align="left">Function</th>
+		</tr>
+    
+		<tr>
+			<td valign="top"><b>MHexDump.bas</b></td>
+			<td valign="top">kernel32<br><br></td>
+			<td>lstrlen<br>lstrlen<br>RtlMoveMemory</td>
+		</tr>
+  
+	</table>
+	<p align="center">Don't see what you're looking for? Here's a
+	<a href="../apixref.html">complete API cross-reference</a>.</p>
+
+</blockquote>
+
+
+
+
+<a name="Download"></a>
+<h3>Download</h3>
+<blockquote>
+
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			
+			<td valign="top">
+				<a href="../HexDump5d1b.zip?id=HexDump">
+				<img border="0" src="http://vb.mvps.org/images/download-zip.gif" alt="Download HexDump.zip" width="66" height="78"></a>
+			</td>
+			<td valign="top" width="10">&nbsp;</td>
+			<td valign="top">Please, enjoy and learn from this sample. Include its code within your own projects, if you wish. But, in order to insure only the most recent code is available to all, I ask that you 
+				<a href="../../license.html">don't share</a> the sample by any form of mass distribution.
+				<p><a href="../HexDump5d1b.zip?id=HexDump">Download HexDump.zip</a>,
+				<i>3Kb, Last Updated: Wednesday, December 06, 2000</i></p>
+			</td>
+		</tr>
+	</table>
+
+</blockquote>
+
+
+
+
+<a name="SeeAlso"></a>
+
+
+
+
+<p align="center"><a href="../index.html" class="img"><img border="0" src="http://vb.mvps.org/images/ClassicVB-150-ofw.gif" width="150" height="138" title="Click here to return to the full list of Classic VB Code Samples!"></a></p>
+
+    </td>
+  </tr>
+</table>
+<div class="footer">
+<table border="0" width="100%" cellspacing="0" cellpadding="5">
+	<tr><td class="copyright"><p align="center">Copyright ©1995-2015, 
+<a href="mailto:karl@mvps.org?subject=Copyright%20Permission">Karl E. Peterson</a>, All Rights Reserved Worldwide.<br>
+Nothing on this web site may be reproduced, in any form,<br>
+without express written permission.</p>
+<p align="center"><a href="../../license.html">Complete Licensing and Redistribution Information</a></p>
+</td></tr>
+	<tr><td align="center" class="footer">&nbsp;</td></tr>
+	<tr><td align="center" class="footer"><div align="center">
+	<table border="0" cellpadding="10">
+	<tr>
+		<td align="right" valign="middle" class="footer">
+			<a href='http://www.mozilla.com/?from=sfx&amp;uid=0&amp;t=554' target="_blank"><img src='../../../sfx-images.mozilla.org/firefox/3.6/110x32_best_orange.html' alt='Spread Firefox Affiliate Button' border='0' /></a>
+		</td>
+		<td valign="middle" class="footer">      
+			This site has been designed for <a target="_blank" href="http://www.mozilla.com/?from=sfx&amp;uid=261538&amp;t=305">Firefox</a>.<br>It may work in Internet Explorer as well.
+		</td>
+	</tr>
+</table>
+</div>
+
+</td></tr>
+	<tr><td align="center" class="footer">&nbsp;</td></tr>
+	<tr><td align="center" class="footer"><table border="0" align="center" cellpadding="5">
+  <tr>
+    <td align="right" valign="middle" class="footer">
+Make a <a href="https://www.paypal.com/xclick/business=karl@mvps.org&amp;item_name=Donation&amp;no_note=1&amp;tax=0&amp;currency_code=USD" target="_blank">donation</a> 
+today, to support more Classic VB Code <br>
+additions and updates to this site. <a href="../../donate.html">  More information...</a>
+    </td>
+    <td valign="middle">
+<!--    
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="karl@mvps.org">
+<input type="hidden" name="item_name" value="Donation">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="tax" value="0"><a href="http://" target="_blank"><input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" width="73" height="44">
+</a>
+</form>
+-->
+<a href="https://www.paypal.com/xclick/business=karl@mvps.org&amp;item_name=Donation&amp;no_note=1&amp;tax=0&amp;currency_code=USD" target="_blank">
+<img src="../../../www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" alt="Make payments with PayPal - it's fast, free and secure!" width="73" height="44">
+</a>
+    </td>
+  </tr>
+</table>
+</td></tr>
+	<tr><td align="center"><img border="0" src="http://vb.mvps.org/images/ClassicVB-600.gif" width="600" height="290"></td></tr>
+</table>
+</div>
+
+
+</body>
+
+
+<!-- Mirrored from vb.mvps.org/samples/HexDump/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 17 May 2015 12:11:22 GMT -->
+</html>

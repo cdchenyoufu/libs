@@ -1,0 +1,287 @@
+
+<!-- ************************************************************* -->
+
+<!-- ************************************************************* -->
+<html>
+
+
+<!-- Mirrored from vb.mvps.org/samples/Shell32/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 17 May 2015 12:13:00 GMT -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Karl E. Peterson's Classic VB Code: Shell32</title>
+<meta name="description" content="Classic VB: Shell32: Several techniques to "Shell and Wait" on Win32 systems.">
+<meta name="keywords" content="Classic VB, Karl E. Peterson, VB5, VB6, Visual Basic, Shell32, CloseHandle, CreateProcess, EnumWindows, FindWindow, GetExitCodeProcess, GetParent, GetWindow, GetWindowText, GetWindowThreadProcessId, IsWindow, OpenProcess, SendMessage, Sleep, WaitForSingleObject">
+<link rel="stylesheet" href="http://vb.mvps.org/_includes/main.css" type="text/css">
+</head>
+
+<body>
+
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" width=160 rowspan="2"><img border="0" src="http://vb.mvps.org/images/ClassicVB-150-vb.gif" width="150" height="130"></td>
+    <td align="right"><a href="http://classicvb.org/petition" title="Sign the petition!"><img src="http://vb.mvps.org/images/petitionbanner15d.gif" border="0"></a></td>
+    <td align="right">
+    <a href="../index.html" title="Click here to go straight to the Classic VB Code Samples!"><img border="0" src="http://vb.mvps.org/images/ClassicVB-100-of.gif" width="100" height="89"></a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+    <table border="0" width="100%" cellspacing="5">
+  <tr>
+    <td align="right" class="navtop">
+      <a href="../../index.html">Home</a> |
+      <a href="../../news.html" title="Recent updates and changes.">News</a> |
+      <a href="../index.html" title="Downloads!">Code&nbsp;Samples</a> | 
+      <a href="../../tools/index.html" title="Some tools I've built for my own use, that you might also enjoy.">Tools</a> |
+      <a href="../../articles/index.html" title="Many of the programming articles I've written over the years.">Articles</a> |
+      <a href="../../tips/index.html" title="A few random tips, some good whitepapers, and an occassional rant.">Tips</a> |
+      <a href="../../feedback.html" title="Lay it on me!">Feedback</a> |
+      <a href="../../links.html">Links</a> |
+      <a href="../../donate.html">Donations</a>&nbsp;&nbsp;
+    </td>
+  </tr>
+</table>
+
+
+    </td>
+  </tr>
+</table>
+
+
+
+<table border="0" width="100%" cellspacing="15">
+	<tr>
+		<td class="headline">Shell32</td>
+	</tr>
+	<tr>
+		<td class="padded">
+			<table border="0" align="right">
+
+
+				<tr><td>
+					<img border="0" src="http://vb.mvps.org/images/logo-vba4.gif" align="right" hspace="5" title="VBA-Ready!">
+				</td></tr>
+    
+				<tr><td>
+					<table cellpadding="10" cellspacing="0" align="right">
+  <tr>
+    <td>
+    <table border="0">
+      <tr>
+        <td width=30>&nbsp;</td>
+        <td>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 125;
+google_ad_height = 125;
+google_ad_format = "125x125_as_rimg";
+google_cpa_choice = "CAAQo-aZzgEaCM3CU97Siy5UKK2293M";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+
+
+<br><br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 120;
+google_ad_height = 90;
+google_ad_format = "120x90_0ads_al";
+google_ad_channel ="";
+google_color_border = "FDFFCA";
+google_color_bg = "FDFFCA";
+google_color_link = "0000CC";
+google_color_url = "008000.html";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt"></script>
+
+
+<br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 120;
+google_ad_height = 600;
+google_ad_format = "120x600_as";
+google_ad_type = "text";
+google_ad_channel ="";
+google_color_border = "FDFFCA";
+google_color_bg = "FDFFCA";
+google_color_link = "0000CC";
+google_color_url = "008000.html";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+
+
+<br><br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 125;
+google_ad_height = 125;
+google_ad_format = "125x125_as_rimg";
+google_cpa_choice = "CAAQh7yazgEaCCMiotM2K7TZKJ_D93M";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+</table>
+
+
+				</td></tr>
+			</table>
+
+
+<h3>Description</h3>
+<blockquote>
+<p><i>Short story:</i> Several techniques to "Shell and Wait" on Win32 systems.</p>
+<p><i>Longer description from old site:</i> <a href="../descriptions.html#Shell32">click here</a>.</p>
+<p><i>To be edited...</i></p>
+</blockquote>
+
+<a name="Published"></a>
+<h3>Published</h3>
+<blockquote>
+
+  <p>This sample, or the one from which it originally derived, was published (or at least 
+	peripherally mentioned) in the following article(s):</p>
+  <ul>
+
+    <li><b><a href="../../articles/ap199802.pdf">Spool, Shell, and Hook</a></b>, Ask the VB Pro, <cite>VBPJ</cite>, February 1998</li>
+  
+  </ul>
+
+</blockquote>
+
+
+
+
+<a name="APIs"></a>
+<h3>APIs Usage</h3>
+<blockquote>
+
+	<p>This sample uses the following API calls:</p>
+	<table border="1" cellpadding="5" width="80%" rules="rows" frame="below" bordercolor="#C00000">
+		<tr>
+			<th width="34%" align="left">Module</th>
+			<th width="33%" align="left">Library</th>
+			<th width="33%" align="left">Function</th>
+		</tr>
+    
+		<tr>
+			<td valign="top"><b>Shell32.bas</b></td>
+			<td valign="top">kernel32<br><br><br><br><br><br>user32<br><br><br><br><br><br><br></td>
+			<td>CloseHandle<br>CreateProcess<br>GetExitCodeProcess<br>OpenProcess<br>Sleep<br>WaitForSingleObject<br>EnumWindows<br>FindWindow<br>GetParent<br>GetWindow<br>GetWindowText<br>GetWindowThreadProcessId<br>IsWindow<br>SendMessage</td>
+		</tr>
+  
+	</table>
+	<p align="center">Don't see what you're looking for? Here's a
+	<a href="../apixref.html">complete API cross-reference</a>.</p>
+
+</blockquote>
+
+
+
+
+<a name="Download"></a>
+<h3>Download</h3>
+<blockquote>
+
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			
+			<td valign="top">
+				<a href="../Shell32654b.zip?id=Shell32">
+				<img border="0" src="http://vb.mvps.org/images/download-zip.gif" alt="Download Shell32.zip" width="66" height="78"></a>
+			</td>
+			<td valign="top" width="10">&nbsp;</td>
+			<td valign="top">Please, enjoy and learn from this sample. Include its code within your own projects, if you wish. But, in order to insure only the most recent code is available to all, I ask that you 
+				<a href="../../license.html">don't share</a> the sample by any form of mass distribution.
+				<p><a href="../Shell32654b.zip?id=Shell32">Download Shell32.zip</a>,
+				<i>11Kb, Last Updated: Saturday, June 09, 2007</i></p>
+			</td>
+		</tr>
+	</table>
+
+</blockquote>
+
+
+
+
+<a name="SeeAlso"></a>
+
+
+
+
+<p align="center"><a href="../index.html" class="img"><img border="0" src="http://vb.mvps.org/images/ClassicVB-150-ofw.gif" width="150" height="138" title="Click here to return to the full list of Classic VB Code Samples!"></a></p>
+
+    </td>
+  </tr>
+</table>
+<div class="footer">
+<table border="0" width="100%" cellspacing="0" cellpadding="5">
+	<tr><td class="copyright"><p align="center">Copyright ©1995-2015, 
+<a href="mailto:karl@mvps.org?subject=Copyright%20Permission">Karl E. Peterson</a>, All Rights Reserved Worldwide.<br>
+Nothing on this web site may be reproduced, in any form,<br>
+without express written permission.</p>
+<p align="center"><a href="../../license.html">Complete Licensing and Redistribution Information</a></p>
+</td></tr>
+	<tr><td align="center" class="footer">&nbsp;</td></tr>
+	<tr><td align="center" class="footer"><div align="center">
+	<table border="0" cellpadding="10">
+	<tr>
+		<td align="right" valign="middle" class="footer">
+			<a href='http://www.mozilla.com/?from=sfx&amp;uid=0&amp;t=554' target="_blank"><img src='../../../sfx-images.mozilla.org/firefox/3.6/110x32_best_orange.html' alt='Spread Firefox Affiliate Button' border='0' /></a>
+		</td>
+		<td valign="middle" class="footer">      
+			This site has been designed for <a target="_blank" href="http://www.mozilla.com/?from=sfx&amp;uid=261538&amp;t=305">Firefox</a>.<br>It may work in Internet Explorer as well.
+		</td>
+	</tr>
+</table>
+</div>
+
+</td></tr>
+	<tr><td align="center" class="footer">&nbsp;</td></tr>
+	<tr><td align="center" class="footer"><table border="0" align="center" cellpadding="5">
+  <tr>
+    <td align="right" valign="middle" class="footer">
+Make a <a href="https://www.paypal.com/xclick/business=karl@mvps.org&amp;item_name=Donation&amp;no_note=1&amp;tax=0&amp;currency_code=USD" target="_blank">donation</a> 
+today, to support more Classic VB Code <br>
+additions and updates to this site. <a href="../../donate.html">  More information...</a>
+    </td>
+    <td valign="middle">
+<!--    
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="karl@mvps.org">
+<input type="hidden" name="item_name" value="Donation">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="tax" value="0"><a href="http://" target="_blank"><input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" width="73" height="44">
+</a>
+</form>
+-->
+<a href="https://www.paypal.com/xclick/business=karl@mvps.org&amp;item_name=Donation&amp;no_note=1&amp;tax=0&amp;currency_code=USD" target="_blank">
+<img src="../../../www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" alt="Make payments with PayPal - it's fast, free and secure!" width="73" height="44">
+</a>
+    </td>
+  </tr>
+</table>
+</td></tr>
+	<tr><td align="center"><img border="0" src="http://vb.mvps.org/images/ClassicVB-600.gif" width="600" height="290"></td></tr>
+</table>
+</div>
+
+
+</body>
+
+
+<!-- Mirrored from vb.mvps.org/samples/Shell32/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 17 May 2015 12:13:00 GMT -->
+</html>

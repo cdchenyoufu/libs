@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
 Begin VB.Form Form1 
    Caption         =   "vbLibCurl Demo"
    ClientHeight    =   10995
@@ -19,6 +19,14 @@ Begin VB.Form Form1
    ScaleHeight     =   10995
    ScaleWidth      =   13365
    StartUpPosition =   2  'CenterScreen
+   Begin VB.TextBox txtUA 
+      Height          =   360
+      Left            =   1740
+      TabIndex        =   23
+      Text            =   "vbLibCurl Test Edition"
+      Top             =   1740
+      Width           =   3315
+   End
    Begin VB.CommandButton Command1 
       Caption         =   "Bulk Download"
       Height          =   465
@@ -125,6 +133,14 @@ Begin VB.Form Form1
       Top             =   540
       Width           =   11040
    End
+   Begin VB.Label Label10 
+      Caption         =   "User Agent"
+      Height          =   315
+      Left            =   180
+      TabIndex        =   22
+      Top             =   1800
+      Width           =   1635
+   End
    Begin VB.Label Label9 
       Caption         =   "Sent"
       Height          =   330
@@ -137,9 +153,9 @@ Begin VB.Form Form1
       Caption         =   "Note: VB file commands have 2gb max file size limit switch to API if necessary"
       ForeColor       =   &H00FF0000&
       Height          =   330
-      Left            =   1125
+      Left            =   1020
       TabIndex        =   16
-      Top             =   1935
+      Top             =   2100
       Width           =   11220
    End
    Begin VB.Label Label7 
@@ -303,14 +319,14 @@ Private Sub cmdDl_Click()
 
     On Error GoTo hell
     Set curl = New CCurlDownload
-    curl.Configure "vbLibCurl Test Edition", , totalTimeout, connectTimeout, List1
-    curl.Referrer = "http://test.edition/yaBoy?" & curl.escape("this is my escape test!!")
-    curl.Cookie = "monster:true;"
+    curl.Configure txtUA, , totalTimeout, connectTimeout, List1
+    'curl.Referrer = "http://test.edition/yaBoy?" & curl.escape("this is my escape test!!")
+    'curl.Cookie = "monster:true;"
     
-    curl.AddHeader "X-MyHeader: Works"
-    curl.AddHeader "X-LibCurl: Rocks"
+    'curl.AddHeader "X-MyHeader: Works"
+    'curl.AddHeader "X-LibCurl: Rocks"
     curl.AddHeader "Accept:" 'this will remove the automatic Accept header we could also override it here
-    curl.AddHeader Array("X-Ary1: 1", "X-Ary2: 2")
+    'curl.AddHeader Array("X-Ary1: 1", "X-Ary2: 2")
     
     'todo a simple post:
     'vbcurl_easy_setopt curl.hCurl, CURLOPT_POSTFIELDS, "m-address=your@mail.com"
@@ -354,6 +370,8 @@ Private Sub Form_Load()
         List1.AddItem "SSL Version: " & sslVersion()
     End If
     
+    txtUA = GetSetting("vbLibCurl", "Settings", "UA", "vbLibCurl Demo")
+    
     cboUrl.AddItem "http://sandsprite.com/tools.php"
     cboUrl.AddItem "https://postman-echo.com/get"
     cboUrl.AddItem "https://postman-echo.com/post"
@@ -394,6 +412,10 @@ Private Sub Form_Load()
     End If
     
 
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+       Call SaveSetting("vbLibCurl", "Settings", "UA", txtUA)
 End Sub
 
 Private Sub List1_DblClick()

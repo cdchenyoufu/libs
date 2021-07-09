@@ -14,7 +14,7 @@ Attribute VB_Exposed = True
 
 Option Explicit
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 Private Declare Function GetShortPathName Lib "kernel32" Alias "GetShortPathNameA" (ByVal lpszLongPath As String, ByVal lpszShortPath As String, ByVal cchBuffer As Long) As Long
 Private Declare Function GetModuleFileName Lib "kernel32" Alias "GetModuleFileNameA" (ByVal hModule As Long, ByVal lpFileName As String, ByVal nSize As Long) As Long
 Private Declare Function GetModuleHandle Lib "kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Long
@@ -33,7 +33,7 @@ Private startTime As Long
 Private Declare Function GetTickCount_ Lib "kernel32" Alias "GetTickCount" () As Long
 Private Declare Function LoadLibrary_ Lib "kernel32" Alias "LoadLibraryA" (ByVal lpLibFileName As String) As Long
 Private Declare Function FreeLibrary_ Lib "kernel32" (ByVal hLibModule As Long) As Long
-Private Declare Function SendMessage_ Lib "user32.dll" Alias "SendMessageA" (ByVal hwnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Private Declare Function SendMessage_ Lib "user32.dll" Alias "SendMessageA" (ByVal hWnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 Private Declare Sub Sleep_ Lib "kernel32" Alias "Sleep" (ByVal dwMilliseconds As Long)
  
 Private Declare Sub vc_srand Lib "utypes.dll" (ByVal v1 As Long)
@@ -163,20 +163,20 @@ End Sub
 
 Function ExpandEnvStr(str) As String
 
-    Dim buf As String
+    Dim Buf As String
     Dim sz As Long
     
     If InStr(str, "%") < 1 Then GoTo errHandler
     
-    sz = ExpandEnvironmentStrings(str, ByVal buf, 0)
+    sz = ExpandEnvironmentStrings(str, ByVal Buf, 0)
     If sz = 0 Then GoTo errHandler
     
-    buf = Space(sz + 100)
-    sz = ExpandEnvironmentStrings(str, ByVal buf, Len(buf))
+    Buf = Space(sz + 100)
+    sz = ExpandEnvironmentStrings(str, ByVal Buf, Len(Buf))
     If sz = 0 Then GoTo errHandler
     
-    buf = Left(buf, sz - 1)
-    ExpandEnvStr = buf
+    Buf = Left(Buf, sz - 1)
+    ExpandEnvStr = Buf
     
 Exit Function
 errHandler: ExpandEnvStr = str
@@ -255,8 +255,8 @@ End Function
      CopyMemory ByVal Destination, ByVal Source, Length
  End Sub
  
- Function SendMessage(ByVal hwnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-    SendMessage = SendMessage_(hwnd, msg, wParam, lParam)
+ Function SendMessage(ByVal hWnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+    SendMessage = SendMessage_(hWnd, msg, wParam, lParam)
  End Function
 
 Property Get MAX_LONG() As Long
@@ -298,12 +298,12 @@ Function EndBenchMark(Optional ByRef t As Long = -111) As String
     EndBenchMark = loadTime / 1000 & " seconds"
 End Function
 
-Public Function FileSize(fPath As String) As String
+Public Function FileSize(fpath As String) As String
     Dim fsize As Long
     Dim szName As String
     On Error GoTo hell
     
-    fsize = FileLen(fPath)
+    fsize = FileLen(fpath)
     
     szName = " bytes"
     If fsize > 1024 Then
@@ -381,7 +381,7 @@ Function TopMost(frm As Object, Optional ontop As Boolean = True)
     On Error Resume Next
     Dim s
     s = IIf(ontop, HWND_TOPMOST, HWND_NOTOPMOST)
-    SetWindowPos frm.hwnd, s, frm.Left / 15, frm.Top / 15, frm.Width / 15, frm.Height / 15, 0
+    SetWindowPos frm.hWnd, s, frm.Left / 15, frm.Top / 15, frm.Width / 15, frm.Height / 15, 0
 End Function
 
 Public Function GetShortName(ByVal sFile As String) As String
@@ -781,7 +781,7 @@ Function ado_BuildConnectionString(dbServer As dbServers, dbName As String, Opti
         Case db_mysql
             baseString = "Driver={mySQL};Server=" & server & ";Port=" & Port & ";Stmt=;Option=16834;Database=____;User=" & User & ";Password=" & pass & ";"
         Case db_mysql5
-            baseString = "Driver={MySQL ODBC 5.1 Driver};Server=" & server & ";Database=____;User=" & User & ";Password=" & pass & ";Option=3;"
+            baseString = "Driver={MySQL ODBC 5.1 Driver};Server=" & server & ";Port=" & Port & ";Database=____;User=" & User & ";Password=" & pass & ";Option=3;"
         Case db_MsSql2k
             baseString = "Driver={SQL Server};Server=" & server & ";Database=____;"
         Case db_JetAccess2k
@@ -1549,7 +1549,7 @@ Function cjoin(a As Collection, b As Collection) As Collection
 End Function
 
 Function isIn(needle, haystack, Optional ByRef index) As Boolean
-    Dim t As String, j As String, X
+    Dim t As String, J As String, X
     Dim i As Long
     
     On Error GoTo hell
@@ -1565,8 +1565,8 @@ Function isIn(needle, haystack, Optional ByRef index) As Boolean
         If index > 0 Then isIn = True
     ElseIf InStr(t, "()") > 0 Then 'its an array
         For i = LBound(haystack) To UBound(haystack)
-            j = TypeName(haystack(i))
-            If j = "String" Or t = "Variant" Then
+            J = TypeName(haystack(i))
+            If J = "String" Or t = "Variant" Then
                  index = InStr(1, haystack(i), needle, vbTextCompare)
                  If index > 0 Then
                     isIn = True
@@ -1585,14 +1585,14 @@ Function isIn(needle, haystack, Optional ByRef index) As Boolean
         i = 0
         For Each X In haystack
             i = i + 1
-            j = TypeName(X)
+            J = TypeName(X)
             If IsObject(needle) And IsObject(X) Then
                  If ObjPtr(needle) = ObjPtr(X) Then
                     isIn = True
                     index = i
                     Exit For
                  End If
-            ElseIf j = "String" Or t = "Variant" Then
+            ElseIf J = "String" Or t = "Variant" Then
                  index = InStr(1, haystack(i), needle, vbTextCompare)
                  If index > 0 Then
                     isIn = True
@@ -1731,7 +1731,7 @@ Function cast(varIn, varOut, Optional allowFilePaths As Boolean = False) As Bool
     Dim d() As Double
     
     Dim sz As Long
-    Dim bytes As Long
+    Dim Bytes As Long
     
     On Error GoTo hell
     
@@ -1747,47 +1747,47 @@ Function cast(varIn, varOut, Optional allowFilePaths As Boolean = False) As Bool
     End If
         
     b() = LoadData(varIn, allowFilePaths)
-    bytes = UBound(b) + 1
+    Bytes = UBound(b) + 1
     
     If TypeName(varOut) = "String" Or TypeName(varOut) = "Variant" Then
         varOut = StrConv(b, vbUnicode, LANG_US)
     ElseIf TypeName(varOut) = "Byte()" Then
         varOut = b()
     ElseIf TypeName(varOut) = "Integer()" Then
-        If bytes Mod 2 <> 0 Then
-            sz = bytes + 2 - (bytes Mod 2)
+        If Bytes Mod 2 <> 0 Then
+            sz = Bytes + 2 - (Bytes Mod 2)
             ReDim Preserve b(sz)
-            bytes = sz
+            Bytes = sz
         End If
-        ReDim i((bytes / 2) - 1)
-        CopyMemory ByVal VarPtr(i(0)), ByVal VarPtr(b(0)), bytes
+        ReDim i((Bytes / 2) - 1)
+        CopyMemory ByVal VarPtr(i(0)), ByVal VarPtr(b(0)), Bytes
         varOut = i()
     ElseIf TypeName(varOut) = "Long()" Then
-        If bytes Mod 4 <> 0 Then
-            sz = bytes + 4 - (bytes Mod 4)
+        If Bytes Mod 4 <> 0 Then
+            sz = Bytes + 4 - (Bytes Mod 4)
             ReDim Preserve b(sz)
-            bytes = sz
+            Bytes = sz
         End If
-        ReDim L((bytes / 4) - 1)
-        CopyMemory ByVal VarPtr(L(0)), ByVal VarPtr(b(0)), bytes
+        ReDim L((Bytes / 4) - 1)
+        CopyMemory ByVal VarPtr(L(0)), ByVal VarPtr(b(0)), Bytes
         varOut = L()
     ElseIf TypeName(varOut) = "Double()" Then
-        If bytes Mod 8 <> 0 Then
-            sz = bytes + 8 - (bytes Mod 8)
+        If Bytes Mod 8 <> 0 Then
+            sz = Bytes + 8 - (Bytes Mod 8)
             ReDim Preserve b(sz)
-            bytes = sz
+            Bytes = sz
         End If
-        ReDim d((bytes / 8) - 1)
-        CopyMemory ByVal VarPtr(d(0)), ByVal VarPtr(b(0)), bytes
+        ReDim d((Bytes / 8) - 1)
+        CopyMemory ByVal VarPtr(d(0)), ByVal VarPtr(b(0)), Bytes
         varOut = d()
     ElseIf TypeName(varOut) = "Currency()" Then
-        If bytes Mod 8 <> 0 Then
-            sz = bytes + 8 - (bytes Mod 8)
+        If Bytes Mod 8 <> 0 Then
+            sz = Bytes + 8 - (Bytes Mod 8)
             ReDim Preserve b(sz)
-            bytes = sz
+            Bytes = sz
         End If
-        ReDim c((bytes / 8) - 1)
-        CopyMemory ByVal VarPtr(c(0)), ByVal VarPtr(b(0)), bytes
+        ReDim c((Bytes / 8) - 1)
+        CopyMemory ByVal VarPtr(c(0)), ByVal VarPtr(b(0)), Bytes
         varOut = c()
     Else
         varOut = Empty
@@ -1909,15 +1909,15 @@ End Function
 
 Function toBinary(ByVal val As Long, Optional maxBits As Long = 32) As String
     
-    Dim ret As String, j, i
+    Dim ret As String, J, i
     
     If maxBits < 1 Or maxBits > 32 Then maxBits = 32
     
     For i = maxBits To 1 Step -1
-        j = j + 1
+        J = J + 1
         ret = ret & IIf(bitTest(val, i), "1", "0")
-        If j Mod 8 = 0 Then ret = ret & " "
-        If j Mod 16 = 0 Then ret = ret & " "
+        If J Mod 8 = 0 Then ret = ret & " "
+        If J Mod 16 = 0 Then ret = ret & " "
     Next
     
     toBinary = ret

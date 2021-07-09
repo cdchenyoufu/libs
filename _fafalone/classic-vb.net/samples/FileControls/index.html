@@ -1,0 +1,373 @@
+
+<!-- ************************************************************* -->
+
+<!-- ************************************************************* -->
+<html>
+
+
+<!-- Mirrored from vb.mvps.org/samples/FileControls/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 17 May 2015 12:10:07 GMT -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Karl E. Peterson's Classic VB Code: FileControls</title>
+<meta name="description" content="Classic VB: FileControls: Combines the native file controls into a single-file, easy-to-use, no-dependency UserControl.">
+<meta name="keywords" content="Classic VB, Karl E. Peterson, VB5, VB6, Visual Basic, FileControls">
+<link rel="stylesheet" href="http://vb.mvps.org/_includes/main.css" type="text/css">
+</head>
+
+<body>
+
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" width=160 rowspan="2"><img border="0" src="http://vb.mvps.org/images/ClassicVB-150-vb.gif" width="150" height="130"></td>
+    <td align="right"><a href="http://classicvb.org/petition" title="Sign the petition!"><img src="http://vb.mvps.org/images/petitionbanner12f.gif" border="0"></a></td>
+    <td align="right">
+    <a href="../index.html" title="Click here to go straight to the Classic VB Code Samples!"><img border="0" src="http://vb.mvps.org/images/ClassicVB-100-of.gif" width="100" height="89"></a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+    <table border="0" width="100%" cellspacing="5">
+  <tr>
+    <td align="right" class="navtop">
+      <a href="../../index.html">Home</a> |
+      <a href="../../news.html" title="Recent updates and changes.">News</a> |
+      <a href="../index.html" title="Downloads!">Code&nbsp;Samples</a> | 
+      <a href="../../tools/index.html" title="Some tools I've built for my own use, that you might also enjoy.">Tools</a> |
+      <a href="../../articles/index.html" title="Many of the programming articles I've written over the years.">Articles</a> |
+      <a href="../../tips/index.html" title="A few random tips, some good whitepapers, and an occassional rant.">Tips</a> |
+      <a href="../../feedback.html" title="Lay it on me!">Feedback</a> |
+      <a href="../../links.html">Links</a> |
+      <a href="../../donate.html">Donations</a>&nbsp;&nbsp;
+    </td>
+  </tr>
+</table>
+
+
+    </td>
+  </tr>
+</table>
+
+
+
+<table border="0" width="100%" cellspacing="15">
+	<tr>
+		<td class="headline">FileControls</td>
+	</tr>
+	<tr>
+		<td class="padded">
+			<table border="0" align="right">
+
+    
+				<tr><td>
+					<table cellpadding="10" cellspacing="0" align="right">
+  <tr>
+    <td>
+    <table border="0">
+      <tr>
+        <td width=30>&nbsp;</td>
+        <td>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 125;
+google_ad_height = 125;
+google_ad_format = "125x125_as_rimg";
+google_cpa_choice = "CAAQo-aZzgEaCM3CU97Siy5UKK2293M";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+
+
+<br><br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 120;
+google_ad_height = 90;
+google_ad_format = "120x90_0ads_al";
+google_ad_channel ="";
+google_color_border = "FDFFCA";
+google_color_bg = "FDFFCA";
+google_color_link = "0000CC";
+google_color_url = "008000.html";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt"></script>
+
+
+<br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 120;
+google_ad_height = 600;
+google_ad_format = "120x600_as";
+google_ad_type = "text";
+google_ad_channel ="";
+google_color_border = "FDFFCA";
+google_color_bg = "FDFFCA";
+google_color_link = "0000CC";
+google_color_url = "008000.html";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+
+
+<br><br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 125;
+google_ad_height = 125;
+google_ad_format = "125x125_as_rimg";
+google_cpa_choice = "CAAQh7yazgEaCCMiotM2K7TZKJ_D93M";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+</table>
+
+
+				</td></tr>
+			</table>
+
+
+<h3>Description</h3>
+<blockquote>
+<table border="0">
+  <tr>
+    <td valign="top">
+<p>Yes, 
+it's true, the VB file controls are outdated, weak, finicky, blah, blah,
+blah. They also <i>work fairly well</i>, when you just need a simple pick list.
+The problem has always been, they're very tedious to set up properly. This
+project solves that, by providing a drop-in ready UserControl module for use in
+either VB5 or VB6. The UserControl contains a DriveListBox, a DirListBix and an
+ordinary ListBox, stacked vertically:</p>
+
+<p>The image control (thin dashed rectangle) you see near the bottom is used at
+runtime as a sliding window
+splitter, to adjust the size of the DirListBox and ListBox controls.</p>
+      You might notice the two radio buttons on the test form? Those toggle the
+control's Style property, which determines whether the DriveList is shown on top
+or bottom. In all cases, the DirListBox is in the middle.
+
+<p>Other properties of interest include:</p>
+<ul>
+  <li>BackColor: sets/returns the color used for the bars between constituent controls.</li>
+  <li>Drive: sets/returns currently selected drive.</li>
+  <li>FileCount: returns the number of files found in current Path that match Pattern.</li>
+  <li>FileName: returns name of currently selected file.</li>
+  <li>Files: psuedo-array of all the files in the currently selected folder.</li>
+  <li>FullFileName: returns full name, including path, of currently selected file.</li>
+  <li>Path: sets/returns currently selected folder.</li>
+  <li>Pattern: sets/returns the (optionally multipart) file specification.</li>
+  <li>Spacing: sets/returns the number of pixels between constituent controls.</li>
+</ul>
+<p><b>Note:</b> There are two string functions, Replace and Split, coded up
+for use in VB5 which really ought to be commented out if used in VB6! The demo,
+as packaged, has them so commented just to be safe. If you try running the demo
+and an error is generated in one of these two places, you are running VB5 and
+need to uncomment these two functions. They may be found at the bottom of the
+CTL file.</p>
+
+<blockquote>
+<table border="0" align="right"><tr><td><a href="../../tools/vbMarkUp/index.html" title="Color-coded with vbMarkUp - try it today!"><img border="0" src="http://vb.mvps.org/images/vbMarkUp2.gif" width="98" height="29" alt="Color-coded with vbMarkUp - try it today!"></a></td></tr></table>
+<pre><span class="key">Public Property Let</span> Pattern<span class="par">( _</span>
+   <span class="key">ByVal</span> NewValue <span class="key">As String</span><span class="par">)</span>
+   <span class="rem">' Assign delimited list to child control,</span>
+   <span class="rem">' replacing all commas with semi-colons, </span>
+   <span class="rem">' and eliminating spaces.</span>
+   m_Pattern = <b>Replace$</b><span class="par">( _
+      </span><b>Replace$</b><span class="par">(</span>NewValue, <span class="str">&quot; &quot;</span>, <span class="str">&quot;&quot;</span><span class="par">)</span>, <span class="str">&quot;,&quot;</span>, <span class="str">&quot;;&quot;</span><span class="par">)</span>
+   <span class="key">Call</span> UpdateFileList
+   PropertyChanged <span class="str">&quot;Pattern&quot;</span>
+<span class="key">End Property</span>
+<span class="key">Private Sub</span> UpdateFileList<span class="par">()</span>
+   <span class="key">Dim</span> Specs <span class="key">As Variant</span>
+   <span class="key">Dim</span> FileName <span class="key">As String</span>
+   <span class="key">Dim</span> FilePath <span class="key">As String</span>
+   <span class="key">Dim</span> Attr <span class="key">As Long</span>
+   <span class="key">Dim</span> i <span class="key">As Long</span>
+
+   <span class="rem">' Clear current settings.</span>
+   File1.Clear
+   m_FullFileName = <span class="str">&quot;&quot;</span>
+
+   <span class="rem">' Parse out current pattern specifications.</span>
+   Specs = <span class="key"><b>Split</b></span><span class="par">(</span>m_Pattern, <span class="str">&quot;;&quot;</span><span class="par">)</span>
+   FilePath = Me.Path
+
+   <span class="rem">' Find all matching files and add to list.</span>
+   <span class="key">For</span> i = <span class="key">LBound</span><span class="par">(</span>Specs<span class="par">)</span> To <span class="key">UBound</span><span class="par">(</span>Specs<span class="par">)</span>
+      FileName = <span class="key">Dir</span><span class="par">(</span>FilePath &amp; Specs<span class="par">(</span>i<span class="par">))</span>
+      <span class="key">Do While Len</span><span class="par">(</span>FileName<span class="par">)</span>
+         <span class="rem">' Make sure this isn't a directory.</span>
+         Attr = <span class="key">GetAttr</span><span class="par">(</span>FilePath &amp; FileName<span class="par">)</span>
+         <span class="key">If</span> <span class="par">(</span>Attr <span class="key">And</span> vbDirectory<span class="par">)</span> = 0 <span class="key">Then</span>
+            File1.AddItem FileName
+         <span class="key">End If</span>
+         FileName = <span class="key">Dir</span><span class="par">()</span>
+      <span class="key">Loop</span>
+   <span class="key">Next</span> i
+<span class="key">End Sub</span></pre>
+</blockquote>
+<p>That native ListBox control was chosen over the FileListBox for several
+reasons. Principle among them being its support for the IntegralHeight property.
+Setting that to False allows us to far more cleanly adjust the vertical
+dimensions of the overall UserControl. Of course, this design means that we need
+to replicate the Pattern property (basic idea shown above) the FileListBox
+brings to the game. The side-benefit of this design is that we are free to
+inject any other criteria we wish into the UpdateFileList routine. Perhaps you
+only want to show files of a certain size or age? This is where'd you do that!</p>
+<p>This control isn't necessarily meant for industrial usage, but I think you'll
+find it really useful in all those quick knock-offs you no doubt toss together
+&quot;just to get the job done!&quot; Enjoy.</p>
+    </td>
+    <td width="15">&nbsp;</td>
+    <td valign="top">
+      <img border="0" src="filecontrols1b.gif">
+      <br><br>
+      <img border="0" src="filecontrols2.gif">
+      <br><br>
+      <img border="0" src="filecontrols3.gif">
+      <br><br>
+      <img border="0" src="filecontrols4.gif">
+    </td>
+  </tr>
+</table>
+
+</blockquote>
+
+<a name="Published"></a>
+<h3>Published</h3>
+<blockquote>
+
+  <p>This sample hasn't been published anywhere except here on this website, but first rights to such publication are jealously guarded - you <i>have</i> been warned. &lt;g&gt;</p>
+
+</blockquote>
+
+
+
+
+<a name="APIs"></a>
+<h3>APIs Usage</h3>
+<blockquote>
+
+	<p><i>No APIs were harmed in the making of this sample.</i></p>
+
+</blockquote>
+
+
+
+
+<a name="Download"></a>
+<h3>Download</h3>
+<blockquote>
+
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			
+			<td valign="top">
+				<a href="../FileControlsabcf.zip?id=FileControls">
+				<img border="0" src="http://vb.mvps.org/images/download-zip.gif" alt="Download FileControls.zip" width="66" height="78"></a>
+			</td>
+			<td valign="top" width="10">&nbsp;</td>
+			<td valign="top">Please, enjoy and learn from this sample. Include its code within your own projects, if you wish. But, in order to insure only the most recent code is available to all, I ask that you 
+				<a href="../../license.html">don't share</a> the sample by any form of mass distribution.
+				<p><a href="../FileControlsabcf.zip?id=FileControls">Download FileControls.zip</a>,
+				<i>7Kb, Last Updated: Tuesday, July 11, 2006</i></p>
+			</td>
+		</tr>
+	</table>
+
+</blockquote>
+
+
+
+
+<a name="SeeAlso"></a>
+
+<h3>See Also</h3>
+<blockquote>
+	<p>The following resources may also be of interest:</p>
+	<ul>
+  
+		<li><b><a href="../DrvInfo/index.html">DrvInfo</a></b> - Provides all kinds of information about any drive in the system.</li>
+  
+		<li><b><a href="../FileInfo/index.html">FileInfo</a></b> - Provides all kinds of information about any file in the system or network, by replicating the General and Version tabs of Windows' File Properties dialogs.</li>
+
+	</ul>
+</blockquote>
+
+
+
+
+<p align="center"><a href="../index.html" class="img"><img border="0" src="http://vb.mvps.org/images/ClassicVB-150-ofw.gif" width="150" height="138" title="Click here to return to the full list of Classic VB Code Samples!"></a></p>
+
+    </td>
+  </tr>
+</table>
+<div class="footer">
+<table border="0" width="100%" cellspacing="0" cellpadding="5">
+	<tr><td class="copyright"><p align="center">Copyright ©1995-2015, 
+<a href="mailto:karl@mvps.org?subject=Copyright%20Permission">Karl E. Peterson</a>, All Rights Reserved Worldwide.<br>
+Nothing on this web site may be reproduced, in any form,<br>
+without express written permission.</p>
+<p align="center"><a href="../../license.html">Complete Licensing and Redistribution Information</a></p>
+</td></tr>
+	<tr><td align="center" class="footer">&nbsp;</td></tr>
+	<tr><td align="center" class="footer"><div align="center">
+	<table border="0" cellpadding="10">
+	<tr>
+		<td align="right" valign="middle" class="footer">
+			<a href='http://www.mozilla.com/?from=sfx&amp;uid=0&amp;t=554' target="_blank"><img src='../../../sfx-images.mozilla.org/firefox/3.6/110x32_best_orange.html' alt='Spread Firefox Affiliate Button' border='0' /></a>
+		</td>
+		<td valign="middle" class="footer">      
+			This site has been designed for <a target="_blank" href="http://www.mozilla.com/?from=sfx&amp;uid=261538&amp;t=305">Firefox</a>.<br>It may work in Internet Explorer as well.
+		</td>
+	</tr>
+</table>
+</div>
+
+</td></tr>
+	<tr><td align="center" class="footer">&nbsp;</td></tr>
+	<tr><td align="center" class="footer"><table border="0" align="center" cellpadding="5">
+  <tr>
+    <td align="right" valign="middle" class="footer">
+Make a <a href="https://www.paypal.com/xclick/business=karl@mvps.org&amp;item_name=Donation&amp;no_note=1&amp;tax=0&amp;currency_code=USD" target="_blank">donation</a> 
+today, to support more Classic VB Code <br>
+additions and updates to this site. <a href="../../donate.html">  More information...</a>
+    </td>
+    <td valign="middle">
+<!--    
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="karl@mvps.org">
+<input type="hidden" name="item_name" value="Donation">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="tax" value="0"><a href="http://" target="_blank"><input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" width="73" height="44">
+</a>
+</form>
+-->
+<a href="https://www.paypal.com/xclick/business=karl@mvps.org&amp;item_name=Donation&amp;no_note=1&amp;tax=0&amp;currency_code=USD" target="_blank">
+<img src="../../../www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" alt="Make payments with PayPal - it's fast, free and secure!" width="73" height="44">
+</a>
+    </td>
+  </tr>
+</table>
+</td></tr>
+	<tr><td align="center"><img border="0" src="http://vb.mvps.org/images/ClassicVB-600.gif" width="600" height="290"></td></tr>
+</table>
+</div>
+
+
+</body>
+
+
+<!-- Mirrored from vb.mvps.org/samples/FileControls/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 17 May 2015 12:10:11 GMT -->
+</html>

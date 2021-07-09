@@ -1,0 +1,544 @@
+
+<!-- ************************************************************* -->
+
+<!-- ************************************************************* -->
+<html>
+
+
+<!-- Mirrored from vb.mvps.org/samples/SysInfo/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 17 May 2015 12:07:22 GMT -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Karl E. Peterson's Classic VB Code: SysInfo</title>
+<meta name="description" content="Classic VB: SysInfo: Catch Windows device notifications, system settings updates, and power status.">
+<meta name="keywords" content="Classic VB, Karl E. Peterson, VB5, VB6, Visual Basic, SysInfo, CloseHandle, CreateFile, DefSubclassProc (#413), EnumThreadWindows, GetClassName, GetSystemPowerStatus, GetWindowLong, GetWindowSubclass (#411), lstrlen, OutputDebugString, RegisterDeviceNotification, RemoveWindowSubclass (#412), RtlMoveMemory, SetWindowSubclass (#410), UnregisterDeviceNotification">
+<link rel="stylesheet" href="http://vb.mvps.org/_includes/main.css" type="text/css">
+</head>
+
+<body>
+
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" width=160 rowspan="2"><img border="0" src="http://vb.mvps.org/images/ClassicVB-150-vb.gif" width="150" height="130"></td>
+    <td align="right"><a href="http://classicvb.org/petition" title="Sign the petition!"><img src="http://vb.mvps.org/images/petitionbanner17a.gif" border="0"></a></td>
+    <td align="right">
+    <a href="../index.html" title="Click here to go straight to the Classic VB Code Samples!"><img border="0" src="http://vb.mvps.org/images/ClassicVB-100-of.gif" width="100" height="89"></a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+    <table border="0" width="100%" cellspacing="5">
+  <tr>
+    <td align="right" class="navtop">
+      <a href="../../index.html">Home</a> |
+      <a href="../../news.html" title="Recent updates and changes.">News</a> |
+      <a href="../index.html" title="Downloads!">Code&nbsp;Samples</a> | 
+      <a href="../../tools/index.html" title="Some tools I've built for my own use, that you might also enjoy.">Tools</a> |
+      <a href="../../articles/index.html" title="Many of the programming articles I've written over the years.">Articles</a> |
+      <a href="../../tips/index.html" title="A few random tips, some good whitepapers, and an occassional rant.">Tips</a> |
+      <a href="../../feedback.html" title="Lay it on me!">Feedback</a> |
+      <a href="../../links.html">Links</a> |
+      <a href="../../donate.html">Donations</a>&nbsp;&nbsp;
+    </td>
+  </tr>
+</table>
+
+
+    </td>
+  </tr>
+</table>
+
+
+
+<table border="0" width="100%" cellspacing="15">
+	<tr>
+		<td class="headline">SysInfo</td>
+	</tr>
+	<tr>
+		<td class="padded">
+			<table border="0" align="right">
+
+    
+				<tr><td>
+					<table cellpadding="10" cellspacing="0" align="right">
+  <tr>
+    <td>
+    <table border="0">
+      <tr>
+        <td width=30>&nbsp;</td>
+        <td>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 125;
+google_ad_height = 125;
+google_ad_format = "125x125_as_rimg";
+google_cpa_choice = "CAAQo-aZzgEaCM3CU97Siy5UKK2293M";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+
+
+<br><br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 120;
+google_ad_height = 90;
+google_ad_format = "120x90_0ads_al";
+google_ad_channel ="";
+google_color_border = "FDFFCA";
+google_color_bg = "FDFFCA";
+google_color_link = "0000CC";
+google_color_url = "008000.html";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt"></script>
+
+
+<br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 120;
+google_ad_height = 600;
+google_ad_format = "120x600_as";
+google_ad_type = "text";
+google_ad_channel ="";
+google_color_border = "FDFFCA";
+google_color_bg = "FDFFCA";
+google_color_link = "0000CC";
+google_color_url = "008000.html";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+
+
+<br><br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0907803058020512";
+google_ad_width = 125;
+google_ad_height = 125;
+google_ad_format = "125x125_as_rimg";
+google_cpa_choice = "CAAQh7yazgEaCCMiotM2K7TZKJ_D93M";
+//--></script>
+<script type="text/javascript" src="../../../pagead2.googlesyndication.com/pagead/f.txt">
+</script>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+</table>
+
+
+				</td></tr>
+			</table>
+
+<h3>Description</h3>
+<blockquote>
+<p>Okay, this is definitely a work in progress! The editors at VSM online caught 
+me off-guard with the publication of an article that riffed on this theme, so 
+the code you'll find below is still being polished up, I must admit. That 
+said...</p>
+<p>There probably aren't a lot of folks out there that remember the old 
+SysInfo.ocx ActiveX control that shipped with VB4? Most of the properties 
+offered by the SysInfo control were easily reproduced using simple API calls. 
+But the SysInfo control also offered a number of events that require monitoring 
+the message stream of a top-level window to receive. Windows provides nearly all 
+of them as a matter of course, but Microsoft propagates very few, none actually, 
+to VB forms.</p>
+<p>This project remedies that, by showing you how to hook into the message 
+stream of the hidden top-level window that exists in every Classic VB project, 
+and monitoring window messages that offer these very interesting system status 
+updates. The overall design was a tough one to decide. Presently, the 
+functionality is broken into three class modules, on the theory that most folks 
+wouldn't want all of it in any given project. I may still rethink that and 
+recombine them all into one. And I would encourage that, if you actually do want 
+to have all these features in a single app.</p>
+<p>Here's the rough breakdown of class module, and what properties, methods, and 
+events they offer:</p>
+<blockquote>
+	<table border="1" rules="rows" frame="below">
+		<tr>
+			<th colspan="3" align="left"><br>
+			CSysInfoDevice</th>
+		</tr>
+		<tr>
+			<td valign="top">DeviceArrival event</td>
+			<td width="10" valign="top">&nbsp;</td>
+			<td valign="top">Fires whenever a new device is attached to the system.</td>
+		</tr>
+		<tr>
+			<td valign="top">DeviceQueryRemove event</td>
+			<td> </td>
+			<td valign="top">Fires when the user has requested that a device be detached from 
+			the system. Offers an opportunity to cancel the device removal.</td>
+		</tr>
+		<tr>
+			<td valign="top">DeviceQueryRemoveFailed&nbsp;event</td>
+			<td> </td>
+			<td valign="top">Fires to signal that device removal was cancelled.</td>
+		</tr>
+		<tr>
+			<td valign="top">DeviceRemovePending event</td>
+			<td> </td>
+			<td valign="top">Fires to signal device removal is imminent and that it's time to 
+			close any open handles on device.</td>
+		</tr>
+		<tr>
+			<td valign="top">DeviceRemoveComplete event</td>
+			<td> </td>
+			<td valign="top">Fires to signal device is fully disconnected.</td>
+		</tr>
+		<tr>
+			<td valign="top">GetDeviceFlags method</td>
+			<td> </td>
+			<td valign="top">Provides flags offered in DEV_BROADCAST_VOLUME structure, which 
+			indicate whether device is removable or network based.</td>
+		</tr>
+		<tr>
+			<td valign="top">GetDeviceInterfaceName method</td>
+			<td> </td>
+			<td valign="top">Provides name of device arriving. Not very useful.</td>
+		</tr>
+		<tr>
+			<td valign="top">GetDeviceType method</td>
+			<td> </td>
+			<td valign="top">Provides type of device arriving.</td>
+		</tr>
+		<tr>
+			<td valign="top">GetDeviceVolume method</td>
+			<td> </td>
+			<td valign="top">Provides volume label of device arriving or being removed, if 
+			device type is DBT_DEVTYP_VOLUME.</td>
+		</tr>
+		<tr>
+			<td valign="top">SetQueryHook method</td>
+			<td> </td>
+			<td valign="top">Registers request with Windows to monitor the removal of 
+			specified device, and offer a chance to cancel removal. This is 
+			called automatically for devices that are added while application is 
+			running, but needs to be called (if desired) for devices already 
+			present when application starts-up.</td>
+		</tr>
+		<tr>
+			<th colspan="3" align="left"><br>
+			CSysInfoGeneral</th>
+		</tr>
+		<tr>
+			<td valign="top">ActivateApp event</td>
+			<td> </td>
+			<td valign="top">Fires when application is either activated or deactivated, and 
+			indicates which.</td>
+		</tr>
+		<tr>
+			<td valign="top">DisplayChange event</td>
+			<td> </td>
+			<td valign="top">Fires when the display resolution or color depth changes.</td>
+		</tr>
+		<tr>
+			<td valign="top">EndSession event</td>
+			<td> </td>
+			<td valign="top">Fires when Windows is shutting down.</td>
+		</tr>
+		<tr>
+			<td valign="top">FontChange event</td>
+			<td> </td>
+			<td valign="top">Fires when fonts are added or removed from the system font 
+			table.</td>
+		</tr>
+		<tr>
+			<td valign="top">QueryEndSession event</td>
+			<td> </td>
+			<td valign="top">Fires when Windows wants to shutdown. Offers an opportunity to 
+			cancel shutdown.</td>
+		</tr>
+		<tr>
+			<td valign="top">SettingChange event</td>
+			<td> </td>
+			<td valign="top">Fires when some other unspecified system setting changes, either 
+			in WIN.INI or through SystemParametersInfo. If a string indicating 
+			what setting was changed is available, it is provided with the 
+			event.</td>
+		</tr>
+		<tr>
+			<td valign="top">SysColorChanged event</td>
+			<td> </td>
+			<td valign="top">Fires when the system color table changes.</td>
+		</tr>
+		<tr>
+			<td valign="top">ThemeChanged event</td>
+			<td> </td>
+			<td valign="top">Fires when the system theme changes.</td>
+		</tr>
+		<tr>
+			<td valign="top">TimeChanged event</td>
+			<td> </td>
+			<td valign="top">Fires when the system clock changes.</td>
+		</tr>
+		<tr>
+			<th colspan="3" align="left"><br>
+			CSysInfoPower</th>
+		</tr>
+		<tr>
+			<td valign="top">PowerBatteryLow event</td>
+			<td> </td>
+			<td valign="top">Fires when battery life reaches a user-defined &quot;low&quot; state.</td>
+		</tr>
+		<tr>
+			<td valign="top">PowerResume event</td>
+			<td> </td>
+			<td valign="top">Fires when system is resumed after being suspended.</td>
+		</tr>
+		<tr>
+			<td valign="top">PowerResumeAutomatic event</td>
+			<td> </td>
+			<td valign="top">Fires when system resumes automatically in response to an event.</td>
+		</tr>
+		<tr>
+			<td valign="top">PowerResumeCritical event</td>
+			<td> </td>
+			<td valign="top">Fires when system resumes after a critical suspension caused by, 
+			for example, a failing battery.</td>
+		</tr>
+		<tr>
+			<td valign="top">PowerSettingChange event</td>
+			<td> </td>
+			<td valign="top">Fires when the system's power settings have changed.</td>
+		</tr>
+		<tr>
+			<td valign="top">PowerStatusChange event</td>
+			<td> </td>
+			<td valign="top">Fires when the system's power status has changed, such as a 
+			switch from battery to A/C, or when the battery percentage slips 
+			below a specified threshold.</td>
+		</tr>
+		<tr>
+			<td valign="top">PowerSuspend event</td>
+			<td> </td>
+			<td valign="top">Fires when the system is about to enter a suspended state.</td>
+		</tr>
+		<tr>
+			<td valign="top">PowerSuspendQuery event</td>
+			<td> </td>
+			<td valign="top">Fires to request permission to suspend the system's power.</td>
+		</tr>
+		<tr>
+			<td valign="top">PowerSuspendQueryFailed event</td>
+			<td> </td>
+			<td valign="top">Fires to alert applications that the power suspension was 
+			cancelled.</td>
+		</tr>
+		<tr>
+			<td valign="top">ACLineStatus method</td>
+			<td> </td>
+			<td valign="top">Indicates whether or not the system is running under A/C power.</td>
+		</tr>
+		<tr>
+			<td valign="top">BatteryFlags method</td>
+			<td> </td>
+			<td valign="top">Provides system battery status via call to GetSystemPowerStatus 
+			API.</td>
+		</tr>
+		<tr>
+			<td valign="top">BatteryLifePercent method</td>
+			<td> </td>
+			<td valign="top">Returns a value between 0 and 100 indicating battery charge 
+			remaining, or 255 if unknown.</td>
+		</tr>
+		<tr>
+			<td valign="top">BatteryLifeTime method</td>
+			<td> </td>
+			<td valign="top">Returns number of seconds estimated to remain in battery charge, 
+			or -1 if unknown.</td>
+		</tr>
+		<tr>
+			<td valign="top">BatteryFullLifeTime method</td>
+			<td> </td>
+			<td valign="top">Returns number of seconds estimated to be in a full battery 
+			charge, or -1 if unknown.</td>
+		</tr>
+	</table>
+</blockquote>
+<p>Well, that's the quick rundown of what's available in this sample. As I said, 
+it's a work in progress, and very well may evolve over the next month or two, so 
+you may want to stay tuned.</p>
+</blockquote>
+
+<a name="Published"></a>
+<h3>Published</h3>
+<blockquote>
+
+  <p>This sample, or the one from which it originally derived, was published (or at least 
+	peripherally mentioned) in the following article(s):</p>
+  <ul>
+
+    <li><b><a href="../../articles/vsm20091116.pdf">No Such Thing as a Windowless VB App</a></b>, Classic VB Corner, <cite>VSM Online</cite>, November 2009</li>
+
+    <li><b><a href="../../articles/vsm20091217.pdf">Listening to ThunderMain</a></b>, Classic VB Corner, <cite>VSM Online</cite>, December 2009</li>
+
+    <li><b><a href="../../articles/vsm20100105.pdf">Monitoring System Power Status</a></b>, Classic VB Corner, <cite>VSM Online</cite>, January 2010</li>
+  
+  </ul>
+
+</blockquote>
+
+
+
+
+<a name="APIs"></a>
+<h3>APIs Usage</h3>
+<blockquote>
+
+	<p>This sample uses the following API calls:</p>
+	<table border="1" cellpadding="5" width="80%" rules="rows" frame="below" bordercolor="#C00000">
+		<tr>
+			<th width="34%" align="left">Module</th>
+			<th width="33%" align="left">Library</th>
+			<th width="33%" align="left">Function</th>
+		</tr>
+        
+		<tr>
+			<td valign="top"><b>CSysInfoDevice.cls</b></td>
+			<td valign="top">kernel32<br><br><br>user32<br></td>
+			<td>CloseHandle<br>CreateFile<br>RtlMoveMemory<br>RegisterDeviceNotification<br>UnregisterDeviceNotification</td>
+		</tr>
+        
+		<tr>
+			<td valign="top"><b>CSysInfoGeneral.cls</b></td>
+			<td valign="top">kernel32</td>
+			<td>RtlMoveMemory</td>
+		</tr>
+        
+		<tr>
+			<td valign="top"><b>CSysInfoPower.cls</b></td>
+			<td valign="top">kernel32<br></td>
+			<td>GetSystemPowerStatus<br>RtlMoveMemory</td>
+		</tr>
+        
+		<tr>
+			<td valign="top"><b>MHookXP.bas</b></td>
+			<td valign="top">comctl32<br><br><br><br>kernel32<br><br></td>
+			<td>DefSubclassProc (#413)<br>GetWindowSubclass (#411)<br>RemoveWindowSubclass (#412)<br>SetWindowSubclass (#410)<br>lstrlen<br>OutputDebugString<br>RtlMoveMemory</td>
+		</tr>
+    
+		<tr>
+			<td valign="top"><b>MSysInfo.bas</b></td>
+			<td valign="top">kernel32<br>user32<br><br></td>
+			<td>RtlMoveMemory<br>EnumThreadWindows<br>GetClassName<br>GetWindowLong</td>
+		</tr>
+  
+	</table>
+	<p align="center">Don't see what you're looking for? Here's a
+	<a href="../apixref.html">complete API cross-reference</a>.</p>
+
+</blockquote>
+
+
+
+
+<a name="Download"></a>
+<h3>Download</h3>
+<blockquote>
+
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			
+			<td valign="top">
+				<a href="../SysInfodd4c.zip?id=SysInfo">
+				<img border="0" src="http://vb.mvps.org/images/download-zip.gif" alt="Download SysInfo.zip" width="66" height="78"></a>
+			</td>
+			<td valign="top" width="10">&nbsp;</td>
+			<td valign="top">Please, enjoy and learn from this sample. Include its code within your own projects, if you wish. But, in order to insure only the most recent code is available to all, I ask that you 
+				<a href="../../license.html">don't share</a> the sample by any form of mass distribution.
+				<p><a href="../SysInfodd4c.zip?id=SysInfo">Download SysInfo.zip</a>,
+				<i>24Kb, Last Updated: Tuesday, November 17, 2009</i></p>
+			</td>
+		</tr>
+	</table>
+
+</blockquote>
+
+
+
+
+<a name="SeeAlso"></a>
+
+<h3>See Also</h3>
+<blockquote>
+	<p>The following resources may also be of interest:</p>
+	<ul>
+  
+		<li><b><a href="../HookXP/index.html">HookXP</a></b> - Demonstrates native Windows subclassing method with no risk of improper teardown. Very flexible!</li>
+
+	</ul>
+</blockquote>
+
+
+
+
+<p align="center"><a href="../index.html" class="img"><img border="0" src="http://vb.mvps.org/images/ClassicVB-150-ofw.gif" width="150" height="138" title="Click here to return to the full list of Classic VB Code Samples!"></a></p>
+
+    </td>
+  </tr>
+</table>
+<div class="footer">
+<table border="0" width="100%" cellspacing="0" cellpadding="5">
+	<tr><td class="copyright"><p align="center">Copyright ©1995-2015, 
+<a href="mailto:karl@mvps.org?subject=Copyright%20Permission">Karl E. Peterson</a>, All Rights Reserved Worldwide.<br>
+Nothing on this web site may be reproduced, in any form,<br>
+without express written permission.</p>
+<p align="center"><a href="../../license.html">Complete Licensing and Redistribution Information</a></p>
+</td></tr>
+	<tr><td align="center" class="footer">&nbsp;</td></tr>
+	<tr><td align="center" class="footer"><div align="center">
+	<table border="0" cellpadding="10">
+	<tr>
+		<td align="right" valign="middle" class="footer">
+			<a href='http://www.mozilla.com/?from=sfx&amp;uid=0&amp;t=554' target="_blank"><img src='../../../sfx-images.mozilla.org/firefox/3.6/110x32_best_orange.html' alt='Spread Firefox Affiliate Button' border='0' /></a>
+		</td>
+		<td valign="middle" class="footer">      
+			This site has been designed for <a target="_blank" href="http://www.mozilla.com/?from=sfx&amp;uid=261538&amp;t=305">Firefox</a>.<br>It may work in Internet Explorer as well.
+		</td>
+	</tr>
+</table>
+</div>
+
+</td></tr>
+	<tr><td align="center" class="footer">&nbsp;</td></tr>
+	<tr><td align="center" class="footer"><table border="0" align="center" cellpadding="5">
+  <tr>
+    <td align="right" valign="middle" class="footer">
+Make a <a href="https://www.paypal.com/xclick/business=karl@mvps.org&amp;item_name=Donation&amp;no_note=1&amp;tax=0&amp;currency_code=USD" target="_blank">donation</a> 
+today, to support more Classic VB Code <br>
+additions and updates to this site. <a href="../../donate.html">  More information...</a>
+    </td>
+    <td valign="middle">
+<!--    
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="karl@mvps.org">
+<input type="hidden" name="item_name" value="Donation">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="tax" value="0"><a href="http://" target="_blank"><input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" width="73" height="44">
+</a>
+</form>
+-->
+<a href="https://www.paypal.com/xclick/business=karl@mvps.org&amp;item_name=Donation&amp;no_note=1&amp;tax=0&amp;currency_code=USD" target="_blank">
+<img src="../../../www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" alt="Make payments with PayPal - it's fast, free and secure!" width="73" height="44">
+</a>
+    </td>
+  </tr>
+</table>
+</td></tr>
+	<tr><td align="center"><img border="0" src="http://vb.mvps.org/images/ClassicVB-600.gif" width="600" height="290"></td></tr>
+</table>
+</div>
+
+
+</body>
+
+
+<!-- Mirrored from vb.mvps.org/samples/SysInfo/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 17 May 2015 12:07:32 GMT -->
+</html>
