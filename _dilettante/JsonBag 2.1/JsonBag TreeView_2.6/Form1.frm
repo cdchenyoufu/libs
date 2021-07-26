@@ -142,8 +142,8 @@ Private Sub Form_Load()
     Dim F As Integer
 
     F = FreeFile(0)
-    'Open "sample.json" For Input As #F
-    Open "D:\_ftp_root_2\pcode\json.js" For Input As #F
+    Open "sample.json" For Input As #F
+'    Open "D:\_ftp_root_2\pcode\json.js" For Input As #F
     Set JsonBag = New JsonBag
     JsonBag.JSON = Replace(Replace(Input$(LOF(F), #F), "'", """"), "none,", """""", , , vbTextCompare)
     Close #F

@@ -178,7 +178,7 @@ Function getPath(path As String, ByRef outVar As Variant) As Boolean 'or throws 
     End If
     
     Set o2 = Me
-    tmp = Split(path, ".")
+    tmp = split(path, ".")
     For i = 0 To UBound(tmp)
         If i = UBound(tmp) Then isLast = True
         If o2.ItemIsJSON(tmp(i)) Then
@@ -426,18 +426,18 @@ Public Property Let Item(Optional ByVal Key As Variant, ByVal RHS As Variant)
             If VarType(Key) = vbString Then Error990E
             
             If IsNull(Key) Then
-                .Add RHS 'Add at end.
-                Names.Add .Count, CStr(.Count)
+                .add RHS 'Add at end.
+                Names.add .Count, CStr(.Count)
             Else
                 If Key > .Count Then
-                    .Add RHS 'Add at end.
-                    Names.Add .Count, CStr(.Count)
+                    .add RHS 'Add at end.
+                    Names.add .Count, CStr(.Count)
                 Else
                     .Remove Key
                     If Key > .Count Then
-                        .Add RHS 'Add at end.
+                        .add RHS 'Add at end.
                     Else
-                        .Add RHS, , Key 'Insert into position.
+                        .add RHS, , Key 'Insert into position.
                     End If
                 End If
             End If
@@ -446,13 +446,13 @@ Public Property Let Item(Optional ByVal Key As Variant, ByVal RHS As Variant)
             
             If ExistsStr(Key) Then
                 .Remove PrefixedKey
-                .Add RHS, PrefixedKey
+                .add RHS, PrefixedKey
                 Names.Remove PrefixedKey
             Else
-                .Add RHS, PrefixedKey
+                .add RHS, PrefixedKey
             End If
             'Add Name.
-            Names.Add Key, PrefixedKey
+            Names.add Key, PrefixedKey
         End If
     End With
 End Property
@@ -578,7 +578,7 @@ End Property
 
 Public Property Get Version() As String()
 Attribute Version.VB_Description = "Returns the Class version as a two-element String array."
-    Version = Split(CLASS_VERSION, ".")
+    Version = split(CLASS_VERSION, ".")
 End Property
 
 Public Property Get Whitespace() As Boolean
@@ -730,7 +730,7 @@ Attribute Exists.VB_Description = "Returns True if item specified by Key or Inde
     Dim Name As String
     
     If VarType(Key) = vbString Then
-        HashData strPtr(Key), Len(Key) * 2, VarPtr(Hash), 4
+        HashData StrPtr(Key), Len(Key) * 2, VarPtr(Hash), 4
         PrefixedKey = Right$("0000000" & Hex$(Hash), 8) & Key
         On Error Resume Next
         Name = Names.Item(PrefixedKey)
@@ -772,7 +772,7 @@ Attribute Remove.VB_Description = "Removes Item specified by Key or Index."
                     Names.Remove i
                 Next
                 For i = Key To Values.Count
-                    Names.Add i, CStr(i)
+                    Names.add i, CStr(i)
                 Next
             Else
                 Names.Remove Key
@@ -809,8 +809,8 @@ Friend Sub ParseArray( _
                 Exit Do
             Case Else
                 ParseValue Text, ArrayValue
-                Values.Add ArrayValue
-                Names.Add Values.Count
+                Values.add ArrayValue
+                Names.add Values.Count
                 FoundValue = True
         End Select
     Loop
@@ -918,7 +918,7 @@ Private Function ExistsStr(ByVal Key As String) As Boolean
     Dim Hash As Long
     Dim Name As String
     
-    HashData strPtr(Key), Len(Key) * 2, VarPtr(Hash), 4
+    HashData StrPtr(Key), Len(Key) * 2, VarPtr(Hash), 4
     PrefixedKey = Right$("0000000" & Hex$(Hash), 8) & Key 'Sets global PrefixedKey as side-effect!
     On Error Resume Next
     Name = Names.Item(PrefixedKey)
@@ -1191,7 +1191,7 @@ Private Sub SerializeItem( _
         Indent = Space$(mWhitespaceIndent * Level)
     End If
     
-    Anonymous = strPtr(ItemName) = 0 'Check for vbNullString.
+    Anonymous = StrPtr(ItemName) = 0 'Check for vbNullString.
     If Not Anonymous Then
         'Not vbNullString so we have a named Item.
         If mWhitespace Then Cat Indent
@@ -1322,11 +1322,11 @@ End Function
 Private Sub SkipWhitespace(ByRef Text As String)
     'Original code:
 #If Win64 Then
-       CursorIn = CursorIn + StrSpn(strPtr(Text) + 2 * (CursorIn - 1), PtrWhiteSpace)
+       CursorIn = CursorIn + StrSpn(StrPtr(Text) + 2 * (CursorIn - 1), PtrWhiteSpace)
 #Else
     'Now make sure we do an "unsigned add" in case we're in a LARGEADDRESSAWARE program:
     CursorIn = CursorIn _
-             + StrSpn((strPtr(Text) Xor &H80000000) + 2 * (CursorIn - 1) Xor &H80000000, _
+             + StrSpn((StrPtr(Text) Xor &H80000000) + 2 * (CursorIn - 1) Xor &H80000000, _
                       PtrWhiteSpace)
 #End If
 End Sub
@@ -1353,7 +1353,7 @@ End Sub
 
 Private Sub Class_Initialize()
     TypeNameOfMe = TypeName(Me)
-    PtrWhiteSpace = strPtr(WHITE_SPACE)
+    PtrWhiteSpace = StrPtr(WHITE_SPACE)
     Clear 'Creates Collections.
     DecimalMode = False 'Default
     Whitespace = False 'Default
