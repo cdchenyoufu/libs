@@ -16,6 +16,7 @@ Attribute VB_Exposed = True
 'and encode routine from
 'http://pscode.com/xq/ASP/txtCodeId.4174/lngWId.1/qx/vb/scripts/ShowCode.htm
 'which in turn was based on fx from Sebastian...true power of open source :)
+Option Explicit
 
 Private Alphabet() As Byte
 Private decodeTable(255) As Byte
@@ -30,10 +31,15 @@ Sub DefaultAlphabet()
 End Sub
 
 Function SetCustomAlphabet(ByVal string65 As String) As Boolean
-
+    Dim i As Long
+    
     If Len(string65) <> 65 Then
-        MsgBox "Base64 Custom alphabet must be 65 characters long", vbInformation
-        Exit Function
+        If Len(string65) = 64 And Right(string65, 1) <> "=" Then
+            string65 = string65 & "="
+        Else
+            MsgBox "Base64 Custom alphabet must be 65 characters long", vbInformation
+            Exit Function
+        End If
     End If
     
     Alphabet = StrConv(string65, vbFromUnicode, LANG_US)
@@ -56,7 +62,6 @@ Function Encode(bArrayStringOrFile, Optional retAsString As Boolean = True) As V
     
     Dim b() As Byte
     Dim b2() As Byte
-    Dim cb As New CBase64
     
     On Error Resume Next
     
@@ -69,7 +74,7 @@ Function Encode(bArrayStringOrFile, Optional retAsString As Boolean = True) As V
         b() = StrConv(CStr(bArrayStringOrFile), vbFromUnicode, LANG_US)
     End If
     
-    b2 = cb.EncodeBytes(b)
+    b2 = EncodeBytes(b)
     
     If retAsString Then
         Encode = StrConv(b2, vbUnicode, LANG_US)
@@ -84,7 +89,6 @@ Function Decode(bArrayStringOrFile, ByRef dataOut As Variant, Optional retAsStri
     
     Dim b() As Byte
     Dim b2() As Byte
-    Dim cb As New CBase64
     Dim ok As Boolean
     
     On Error GoTo hell
@@ -98,7 +102,7 @@ Function Decode(bArrayStringOrFile, ByRef dataOut As Variant, Optional retAsStri
         b() = StrConv(CStr(bArrayStringOrFile), vbFromUnicode, LANG_US)
     End If
     
-    ok = cb.DecodeBytes(b, b2)
+    ok = DecodeBytes(b, b2)
     
     If retAsString Then
         dataOut = StrConv(b2, vbUnicode, LANG_US)
@@ -170,6 +174,8 @@ End Function
 Public Function DecodeBytes(ByRef data() As Byte, ByRef out() As Byte) As Boolean
     Dim inp(3) As Byte
     Dim fileIn() As Byte
+    Dim pad As Long, Lenght As Long, BytesOut As Long, i As Long, iTemp As Long
+    
     
     On Error Resume Next
     
@@ -183,17 +189,17 @@ Public Function DecodeBytes(ByRef data() As Byte, ByRef out() As Byte) As Boolea
     Wend
         
     If fileIn(UBound(fileIn) - 1) = Asc("=") Then
-        Pad = 2
+        pad = 2
     ElseIf fileIn(UBound(fileIn)) = Asc("=") Then
-        Pad = 1
+        pad = 1
     Else
-        Pad = 0
+        pad = 0
     End If
 
     'MsgBox pad
     
     Lenght = UBound(fileIn) ' + 1    'lenght of the string
-    BytesOut = ((Lenght / 4) * 3) - Pad ' how many bytes will the b64Decoded string have
+    BytesOut = ((Lenght / 4) * 3) - pad ' how many bytes will the b64Decoded string have
     ReDim out(BytesOut)
 
     For i = 0 To Lenght Step 4
@@ -417,7 +423,8 @@ Private Function ByteArrayToString(ByRef pbArrayInput() As Byte) As String
 End Function
 
 Private Sub LoadFile(fpath, ByRef out() As Byte)
-  
+   Dim fsize As Long, f As Long
+   
    fsize = FileLen(fpath) - 1
    f = FreeFile
    ReDim out(fsize)
@@ -429,6 +436,7 @@ Private Sub LoadFile(fpath, ByRef out() As Byte)
 End Sub
 
 Private Sub WriteFile(fpath, bAry() As Byte)
+    Dim f As Long
     f = FreeFile
     Open fpath For Binary As f
     Put f, , bAry()
