@@ -59,7 +59,7 @@ Private Declare Function toU64 Lib "utypes.dll" (ByVal v1 As Long, ByVal v2 As L
 Private Declare Function Str264 Lib "utypes.dll" (ByVal s As String, Optional ByVal base As Long = 10) As Currency
 
 'convert a 64 bit number to string in specified format
-Private Declare Function U642Str Lib "utypes.dll" (ByVal v1 As Currency, ByVal buf As String, ByVal cBufferSize As Long, ByVal mode As modes) As Long
+Private Declare Function U642Str Lib "utypes.dll" (ByVal v1 As Currency, ByVal Buf As String, ByVal cBufferSize As Long, ByVal mode As modes) As Long
 
 'get hi and lo longs from 64 numbers
 Private Declare Sub fromU64 Lib "utypes.dll" (ByVal v0 As Currency, ByRef v1 As Long, ByRef v2 As Long)
@@ -135,20 +135,20 @@ Property Get hi() As Long
     GetLongs hi
 End Property
 
-Property Let hi(x As Long)
+Property Let hi(X As Long)
     Dim a As Long, b As Long
     GetLongs a, b
-    SetLongs x, b
+    SetLongs X, b
 End Property
 
 Property Get lo() As Long
     GetLongs , lo
 End Property
 
-Property Let lo(x As Long)
+Property Let lo(X As Long)
     Dim a As Long, b As Long
     GetLongs a, b
-    SetLongs a, x
+    SetLongs a, X
 End Property
 
 Function toString(Optional m As modes = mHex) As String
@@ -224,7 +224,7 @@ Function raw_op(operand2, operation As op) As ULong64
     End If
     
     ret.mode = Me.mode
-    ret.use0x = Me.useTick
+    ret.useTick = Me.useTick
     ret.use0x = Me.use0x
     ret.padLeft = Me.padLeft
     

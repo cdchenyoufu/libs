@@ -225,7 +225,7 @@ Function raw_op(operand2, operation As op) As ULong64
     End If
     
     ret.mode = Me.mode
-    ret.use0x = Me.useTick
+    ret.useTick = Me.useTick
     ret.use0x = Me.use0x
     ret.padLeft = Me.padLeft
     
