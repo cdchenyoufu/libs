@@ -245,3 +245,21 @@ End Function
 Function rol32(operand2) As UInt
     Set rol32 = raw_op(operand2, op_rol32)
 End Function
+
+''bit operations
+'Function setBit(operand2) As UInt
+'    Set setBit = raw_op(operand2, op_setBit)
+'End Function
+'
+'Function clearBit(operand2) As UInt
+'    Set clearBit = raw_op(operand2, op_clearBit)
+'End Function
+'
+'Function toggleBit(operand2) As UInt
+'    Set toggleBit = raw_op(operand2, op_toggleBit)
+'End Function
+'
+'Function testBit(operand2) As UInt
+'    Set testBit = raw_op(operand2, op_testBit)
+'End Function
+

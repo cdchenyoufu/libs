@@ -162,6 +162,22 @@ Function lshift(operand2) As UByte
     Set lshift = raw_op(operand2, op_lsh)
 End Function
 
+''bit operations
+'Function setBit(operand2) As UByte
+'    Set setBit = raw_op(operand2, op_setBit)
+'End Function
+'
+'Function clearBit(operand2) As UByte
+'    Set clearBit = raw_op(operand2, op_clearBit)
+'End Function
+'
+'Function toggleBit(operand2) As UByte
+'    Set toggleBit = raw_op(operand2, op_toggleBit)
+'End Function
+'
+'Function testBit(operand2) As UByte
+'    Set testBit = raw_op(operand2, op_testBit)
+'End Function
 
 Function greaterThan(operand2) As Boolean
     Dim a As ULong

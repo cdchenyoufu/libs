@@ -4,6 +4,8 @@
 #include <math.h>
 #include <cstdlib>
 
+#define CHECK_BIT(var,pos) (((var)>>(pos)) & 1)
+
 enum op{
 	op_add = 0,
 	op_sub = 1,
@@ -19,7 +21,11 @@ enum op{
 	op_lt  = 11,
 	op_gteq = 12,
 	op_lteq = 13,
-	op_rol32 = 14
+	op_rol32 = 14,
+	op_setBit = 15,
+	op_clearBit = 16,
+	op_toggleBit = 17,
+	op_testBit = 18
 };
 
 enum modes{
@@ -74,6 +80,10 @@ unsigned int __stdcall ULong(unsigned int v1, unsigned int v2, int operation){
 		case op_gteq: return (v1 >= v2 ? 1 : 0);
 		case op_lteq: return (v1 <= v2 ? 1 : 0);
 		case op_rol32: return _rotl(v1,v2);
+		case op_setBit: v1 |= 1 << v2; return v1;
+		case op_clearBit: v1 &= ~(1 << v2); return v1; 
+		case op_toggleBit: v1 ^= 1 << v2; return v1;
+		case op_testBit: return CHECK_BIT(v1,v2);
 	}
 
 	return -1;
@@ -98,6 +108,10 @@ unsigned short __stdcall UInt(unsigned short v1, unsigned short v2, int operatio
 		case op_gteq: return (v1 >= v2 ? 1 : 0);
 		case op_lteq: return (v1 <= v2 ? 1 : 0);
 		case op_rol32: return _rotl(v1,v2);
+		case op_setBit: v1 |= 1 << v2; return v1;
+		case op_clearBit: v1 &= ~(1 << v2); return v1; 
+		case op_toggleBit: v1 ^= 1 << v2; return v1;
+		case op_testBit: return CHECK_BIT(v1,v2);
 	}
 
 	return -1;
@@ -123,9 +137,13 @@ unsigned char __stdcall UByte(unsigned char v1, unsigned char v2, int operation)
 		case op_gteq: return (v1 >= v2 ? 1 : 0);
 		case op_lteq: return (v1 <= v2 ? 1 : 0);
 		case op_rol32: return _rotl(v1,v2);
+		case op_setBit: v1 |= 1 << v2; return v1;
+		case op_clearBit: v1 &= ~(1 << v2); return v1; 
+		case op_toggleBit: v1 ^= 1 << v2; return v1;
+		case op_testBit: return CHECK_BIT(v1,v2);
 	}
 
-	return -1;
+	return -0;
 
 }  
 
@@ -147,6 +165,10 @@ unsigned __int64 __stdcall U64(unsigned __int64 v1, unsigned __int64 v2, int ope
 		case op_gteq: return (v1 >= v2 ? 1 : 0);
 		case op_lteq: return (v1 <= v2 ? 1 : 0);
 		case op_rol32: return _rotl(v1,v2);
+		case op_setBit: v1 |= 1 << v2; return v1;
+		case op_clearBit: v1 &= ~(1 << v2); return v1; 
+		case op_toggleBit: v1 ^= 1 << v2; return v1;
+		case op_testBit: return CHECK_BIT(v1,v2);
 	}
 
 	return -1;
@@ -171,6 +193,10 @@ __int64 __stdcall S64(__int64 v1, __int64 v2, int operation){
 		case op_gteq: return (v1 >= v2 ? 1 : 0);
 		case op_lteq: return (v1 <= v2 ? 1 : 0);
 		case op_rol32: return _rotl(v1,v2);
+		case op_setBit: v1 |= 1 << v2; return v1;
+		case op_clearBit: v1 &= ~(1 << v2); return v1; 
+		case op_toggleBit: v1 ^= 1 << v2; return v1;
+		case op_testBit: return CHECK_BIT(v1,v2);
 	}
 
 	return -1;

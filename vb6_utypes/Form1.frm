@@ -9,6 +9,14 @@ Begin VB.Form Form1
    ScaleHeight     =   3855
    ScaleWidth      =   7980
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton cmdBitTest 
+      Caption         =   "Bit test"
+      Height          =   315
+      Left            =   4680
+      TabIndex        =   4
+      Top             =   3420
+      Width           =   915
+   End
    Begin VB.CommandButton Command3 
       Caption         =   "Command3"
       Height          =   375
@@ -73,6 +81,10 @@ Enum op
     op_gteq = 12
     op_lteq = 13
     op_rol32 = 14
+    op_setBit = 15
+    op_clearBit = 16
+    op_toggleBit = 17
+    op_testBit = 18
 End Enum
 
 Enum modes
@@ -80,6 +92,11 @@ Enum modes
     mSigned = 1
     mHex = 2
 End Enum
+
+
+Private hLib As Long 'for IDE release
+Private Declare Function LoadLibrary Lib "kernel32" Alias "LoadLibraryA" (ByVal lpLibFileName As String) As Long
+Private Declare Function FreeLibrary Lib "kernel32" (ByVal hLibModule As Long) As Long
 
 'unsigned math operations
 Private Declare Function ULong Lib "utypes.dll" (ByVal v1 As Long, ByVal v2 As Long, ByVal operation As Long) As Long
@@ -113,6 +130,64 @@ Private Declare Function crc64 Lib "utypes.dll" (ByRef stream As Byte, ByVal sz 
 
 Private Declare Function entropy Lib "utypes.dll" (ByRef stream As Byte, ByVal sz As Long) As Double
 
+Sub showBits(v As Variant)
+    
+    Dim max As Long, i As Long
+    Dim tmp As String
+    
+    If TypeName(v) = "Byte" Then max = 7
+    If TypeName(v) = "Integer" Then max = 15
+    If TypeName(v) = "Long" Then max = 32
+    If TypeName(v) = "Currency" Then max = 63
+    
+    If max = 0 Then
+        List1.AddItem "showBits Unsupported type " & TypeName(v)
+        Exit Sub
+    End If
+    
+    tmp = "Bits set in " & TypeName(v) & " " & Hex(v) & ": "
+    
+    For i = 0 To max
+        If max = 7 Then tmp = tmp & UByte(CByte(v), i, op_testBit) & " "
+        If max = 15 Then tmp = tmp & UInt(CInt(v), i, op_testBit) & " "
+        If max = 32 Then tmp = tmp & ULong(CLng(v), i, op_testBit) & " "
+        If max = 63 Then tmp = tmp & ULong(CCur(v), i, op_testBit) & " "
+    Next
+    
+    List1.AddItem tmp
+    
+End Sub
+
+Private Sub cmdBitTest_Click()
+    
+    Dim b As Byte, b2 As Byte, tmp As String, i As Long
+    List1.Clear
+    
+    b = 0
+    For i = 0 To 7
+        b = UByte(b, i, op_setBit)
+        tmp = tmp & b & " "
+    Next
+    
+    List1.AddItem tmp
+    tmp = ""
+    
+    b = 255
+    For i = 7 To 0 Step -1
+        b = UByte(b, i, op_clearBit)
+        tmp = tmp & b & " "
+    Next
+    
+    List1.AddItem tmp
+    showBits CByte(127)
+    showBits CInt(&HFF00)
+    showBits CLng(&HF0F0F0)
+    
+    List1.AddItem "1.ToggleBit(0) = " & UByte(1, 0, op_toggleBit)
+    List1.AddItem "0.ToggleBit(0) = " & UByte(0, 0, op_toggleBit)
+    
+    
+End Sub
 
 Private Sub Command1_Click()
     On Error Resume Next
@@ -172,7 +247,12 @@ Private Sub Command3_Click()
 End Sub
 
 Private Sub Form_Load()
-
+    
+    Dim pth As String
+    pth = App.Path & "\UTypes.dll"
+    hLib = LoadLibrary(pth)
+    List1.AddItem Hex(hLib) & " = " & pth
+    
     testLong 2147483647, 1, op_add
     testLong -2147483648#, 1, op_sub
     
@@ -273,3 +353,6 @@ Sub testInt(a As Integer, b As Integer, opp As op)
     
 End Sub
 
+Private Sub Form_Unload(Cancel As Integer)
+    FreeLibrary hLib
+End Sub

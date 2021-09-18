@@ -42,7 +42,7 @@ Public padLeft As Boolean
 Private Declare Function uiop Lib "utypes.dll" Alias "UInt" (ByVal v1 As Integer, ByVal v2 As Integer, ByVal operation As Long) As Integer
 
 'convert an unsigned long (or int) to unsigned string (vb6 hex and signed displays are fine so ommited..)
-Private Declare Function UShortStr Lib "utypes.dll" (ByVal v1 As Integer, ByVal buf As String, ByVal cBufferSize As Long) As Long
+Private Declare Function UShortStr Lib "utypes.dll" (ByVal v1 As Integer, ByVal Buf As String, ByVal cBufferSize As Long) As Long
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (pDest As Any, pSrc As Any, ByVal ByteLen As Long)
 
 'create a 32 bit number from a string in specified base (16 for a hex string)
@@ -243,5 +243,22 @@ Function lessThanEqual(operand2) As Boolean
     Dim a As UInt
     Set a = raw_op(operand2, op_lteq)
     lessThanEqual = (a.Value = 1)
+End Function
+
+'bit operations
+Function setBit(operand2) As UInt
+    Set setBit = raw_op(operand2, op_setBit)
+End Function
+
+Function clearBit(operand2) As UInt
+    Set clearBit = raw_op(operand2, op_clearBit)
+End Function
+
+Function toggleBit(operand2) As UInt
+    Set toggleBit = raw_op(operand2, op_toggleBit)
+End Function
+
+Function testBit(operand2) As UInt
+    Set testBit = raw_op(operand2, op_testBit)
 End Function
 

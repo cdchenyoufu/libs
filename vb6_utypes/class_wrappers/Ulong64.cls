@@ -11,6 +11,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
+'this ActX dll has binary compatability set. used in: MAP and yara_workbench
+'the standard C dll (only) is additionally used in: IDA_JScript, dzrt,pe_lib3, vbdec2
+'the bit* ops are new cant include here..included in dzrt
+
 Enum op
     op_add = 0
     op_sub = 1
@@ -27,6 +31,10 @@ Enum op
     op_gteq = 12
     op_lteq = 13
     op_rol32 = 14
+'    op_setBit = 15
+'    op_clearBit = 16
+'    op_toggleBit = 17
+'    op_testBit = 18
 End Enum
 
 Enum modes
@@ -308,4 +316,21 @@ End Function
 Function rol32(operand2) As ULong64
     Set rol32 = raw_op(operand2, op_rol32)
 End Function
+
+''bit operations
+'Function setBit(operand2) As ULong64
+'    Set setBit = raw_op(operand2, op_setBit)
+'End Function
+'
+'Function clearBit(operand2) As ULong64
+'    Set clearBit = raw_op(operand2, op_clearBit)
+'End Function
+'
+'Function toggleBit(operand2) As ULong64
+'    Set toggleBit = raw_op(operand2, op_toggleBit)
+'End Function
+'
+'Function testBit(operand2) As ULong64
+'    Set testBit = raw_op(operand2, op_testBit)
+'End Function
 

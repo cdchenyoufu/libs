@@ -15,11 +15,11 @@ Declare Function ut_crc32w Lib "utypes.dll" Alias "crc32w" (ByVal b As Long, ByV
  
 Private Declare Function CryptBinaryToString Lib "Crypt32" Alias "CryptBinaryToStringW" (ByRef pbBinary As Byte, ByVal cbBinary As Long, ByVal dwFlags As Long, ByVal pszString As Long, ByRef pcchString As Long) As Long
 Private Declare Function CryptStringToBinary Lib "Crypt32" Alias "CryptStringToBinaryW" (ByVal pszString As Long, ByVal cchString As Long, ByVal dwFlags As Long, ByVal pbBinary As Long, ByRef pcbBinary As Long, ByRef pdwSkip As Long, ByRef pdwFlags As Long) As Long
-Private Declare Function RtlGetCompressionWorkSpaceSize Lib "NTDLL" (ByVal flags As Integer, WorkSpaceSize As Long, UNKNOWN_PARAMETER As Long) As Long
-Private Declare Function NtAllocateVirtualMemory Lib "ntdll.dll" (ByVal ProcHandle As Long, BaseAddress As Long, ByVal NumBits As Long, regionsize As Long, ByVal flags As Long, ByVal ProtectMode As Long) As Long
-Private Declare Function RtlCompressBuffer Lib "NTDLL" (ByVal flags As Integer, ByVal BuffUnCompressed As Long, ByVal UnCompSize As Long, ByVal BuffCompressed As Long, ByVal CompBuffSize As Long, ByVal UNKNOWN_PARAMETER As Long, OutputSize As Long, ByVal WorkSpace As Long) As Long
-Private Declare Function RtlDecompressBuffer Lib "NTDLL" (ByVal flags As Integer, ByVal BuffUnCompressed As Long, ByVal UnCompSize As Long, ByVal BuffCompressed As Long, ByVal CompBuffSize As Long, OutputSize As Long) As Long
-Private Declare Function NtFreeVirtualMemory Lib "ntdll.dll" (ByVal ProcHandle As Long, BaseAddress As Long, regionsize As Long, ByVal flags As Long) As Long
+Private Declare Function RtlGetCompressionWorkSpaceSize Lib "NTDLL" (ByVal Flags As Integer, WorkSpaceSize As Long, UNKNOWN_PARAMETER As Long) As Long
+Private Declare Function NtAllocateVirtualMemory Lib "ntdll.dll" (ByVal ProcHandle As Long, BaseAddress As Long, ByVal NumBits As Long, regionsize As Long, ByVal Flags As Long, ByVal ProtectMode As Long) As Long
+Private Declare Function RtlCompressBuffer Lib "NTDLL" (ByVal Flags As Integer, ByVal BuffUnCompressed As Long, ByVal UnCompSize As Long, ByVal BuffCompressed As Long, ByVal CompBuffSize As Long, ByVal UNKNOWN_PARAMETER As Long, OutputSize As Long, ByVal WorkSpace As Long) As Long
+Private Declare Function RtlDecompressBuffer Lib "NTDLL" (ByVal Flags As Integer, ByVal BuffUnCompressed As Long, ByVal UnCompSize As Long, ByVal BuffCompressed As Long, ByVal CompBuffSize As Long, OutputSize As Long) As Long
+Private Declare Function NtFreeVirtualMemory Lib "ntdll.dll" (ByVal ProcHandle As Long, BaseAddress As Long, regionsize As Long, ByVal Flags As Long) As Long
 Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
 Public Declare Function GetModuleHandle Lib "kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Long
  
@@ -163,9 +163,9 @@ End Function
 
 Function AryIsEmpty(ary) As Boolean
   On Error GoTo oops
-  Dim x
+  Dim X
   
-    x = UBound(ary)
+    X = UBound(ary)
     AryIsEmpty = False
   Exit Function
 oops: AryIsEmpty = True
@@ -202,18 +202,18 @@ Public Function RTLCompress(data() As Byte, bOut() As Byte, Optional max As Bool
     Dim WorkSpaceSize As Long
     Dim WorkSpace As Long
     Dim lCompress As Long
-    Dim flags As Long
+    Dim Flags As Long
     Dim ret As Long
     
     If AryIsEmpty(data) Then Exit Function
 
-    flags = COMPRESSION_FORMAT_LZNT1
-    If max Then flags = flags Or COMPRESSION_ENGINE_MAXIMUM
+    Flags = COMPRESSION_FORMAT_LZNT1
+    If max Then Flags = Flags Or COMPRESSION_ENGINE_MAXIMUM
     
     ReDim bOut(UBound(data) * 1.13 + 4)
     RtlGetCompressionWorkSpaceSize 2, WorkSpaceSize, 0
     NtAllocateVirtualMemory -1, WorkSpace, 0, WorkSpaceSize, 4096, 64
-    ret = RtlCompressBuffer(flags, VarPtr(data(0)), UBound(data) + 1, VarPtr(bOut(0)), (UBound(data) * 1.13 + 4), 0, lCompress, WorkSpace)
+    ret = RtlCompressBuffer(Flags, VarPtr(data(0)), UBound(data) + 1, VarPtr(bOut(0)), (UBound(data) * 1.13 + 4), 0, lCompress, WorkSpace)
     NtFreeVirtualMemory -1, WorkSpace, 0, 16384
     
     If ret = STATUS_SUCCESS Then
@@ -239,15 +239,15 @@ Public Function RTLDeCompress(ByRef bytBuf() As Byte, BitOut() As Byte, Optional
     Dim WorkSpaceSize As Long
     Dim dwActualUsed As Long
     Dim ret As Long
-    Dim flags As Long
+    Dim Flags As Long
     
     If AryIsEmpty(bytBuf) Then Exit Function
     
-    flags = COMPRESSION_FORMAT_LZNT1
-    If max Then flags = flags Or COMPRESSION_ENGINE_MAXIMUM
+    Flags = COMPRESSION_FORMAT_LZNT1
+    If max Then Flags = Flags Or COMPRESSION_ENGINE_MAXIMUM
     
     ReDim BitOut(UBound(bytBuf) * 12.5)
-    ret = RtlDecompressBuffer(flags, VarPtr(BitOut(0)), (UBound(bytBuf) * 12.5), VarPtr(bytBuf(0)), UBound(bytBuf), lBufferSize)
+    ret = RtlDecompressBuffer(Flags, VarPtr(BitOut(0)), (UBound(bytBuf) * 12.5), VarPtr(bytBuf(0)), UBound(bytBuf), lBufferSize)
     
     If ret = STATUS_SUCCESS And lBufferSize Then
         ReDim Preserve BitOut(lBufferSize - 1)
@@ -273,7 +273,7 @@ End Function
 Function LoadData(fileStringOrByte, Optional allowFilePaths As Boolean = True) As Byte()
     
     Dim f As Long
-    Dim size As Long
+    Dim Size As Long
     Dim b() As Byte
     Dim L() As Long    ' must cast to specific array type or
     Dim i() As Integer ' else you are reading part of the variant structure..
@@ -314,7 +314,7 @@ Function fileEntropy(pth As String, Optional offset As Long = 0, Optional leng A
     Dim nSize As Long
     Dim nTemp As Long
     Const BUFFER_SIZE = &H1000
-    Dim buf() As Byte
+    Dim Buf() As Byte
     Dim f As Long
     Dim i As Long
     
@@ -339,15 +339,15 @@ Function fileEntropy(pth As String, Optional offset As Long = 0, Optional leng A
     Seek f, offset
     nSize = leng
     fEntropy = 1.44269504088896
-    ReDim buf(BUFFER_SIZE)
+    ReDim Buf(BUFFER_SIZE)
     
     'read the file in chunks and count how many times each byte value occurs
     While (nSize > 0)
         nTemp = IIf(nSize < BUFFER_SIZE, nSize, BUFFER_SIZE)
-        If nTemp <> BUFFER_SIZE Then ReDim buf(nTemp) 'last chunk, partial buffer
-        Get f, , buf()
-        For i = 0 To UBound(buf)
-            bytes(buf(i)) = bytes(buf(i)) + 1
+        If nTemp <> BUFFER_SIZE Then ReDim Buf(nTemp) 'last chunk, partial buffer
+        Get f, , Buf()
+        For i = 0 To UBound(Buf)
+            bytes(Buf(i)) = bytes(Buf(i)) + 1
         Next
         nSize = nSize - nTemp
     Wend
@@ -368,7 +368,7 @@ ret0:
 End Function
 
 
-Function memEntropy(buf() As Byte, Optional offset As Long = 0, Optional leng As Long = -1) As Single
+Function memEntropy(Buf() As Byte, Optional offset As Long = 0, Optional leng As Long = -1) As Single
     
     Dim sz As Long
     Dim fEntropy As Single
@@ -377,7 +377,7 @@ Function memEntropy(buf() As Byte, Optional offset As Long = 0, Optional leng As
     Const BUFFER_SIZE = &H1000
     Dim i As Long
     
-    sz = UBound(buf)
+    sz = UBound(Buf)
     
     If leng = 0 Then GoTo ret0
     If leng = -1 Then
@@ -392,7 +392,7 @@ Function memEntropy(buf() As Byte, Optional offset As Long = 0, Optional leng As
     
     While (offset < sz)
         'count each byte value occurance
-        bytes(buf(offset)) = bytes(buf(offset)) + 1
+        bytes(Buf(offset)) = bytes(Buf(offset)) + 1
         offset = offset + 1
     Wend
     
@@ -450,7 +450,7 @@ Private Function HandleMarker(base, ByVal marker, var) As String
     Dim nVal As String
     Dim spacer As String
     Dim prefix As String
-    Dim count As Long
+    Dim Count As Long
     Dim leftJustify As Boolean
     
     If Len(base) > Len(marker) Then
@@ -482,8 +482,8 @@ Private Function HandleMarker(base, ByVal marker, var) As String
         Else
             spacer = " "
         End If
-        count = CLng(marker) - Len(nVal)
-        If count > 0 Then prefix = String(count, spacer)
+        Count = CLng(marker) - Len(nVal)
+        If Count > 0 Then prefix = String(Count, spacer)
     End If
     
     If leftJustify Then

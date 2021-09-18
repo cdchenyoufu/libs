@@ -29,6 +29,10 @@ Enum op
     op_lt = 11
     op_gteq = 12
     op_lteq = 13
+    op_setBit = 15
+    op_clearBit = 16
+    op_toggleBit = 17
+    op_testBit = 18
 End Enum
 
 Enum modes
@@ -190,4 +194,19 @@ Function lessThanEqual(operand2) As Boolean
     lessThanEqual = (a.Value = 1)
 End Function
 
+''bit operations
+Function setBit(operand2) As ULong64
+    Set setBit = raw_op(operand2, op_setBit)
+End Function
 
+Function clearBit(operand2) As ULong64
+    Set clearBit = raw_op(operand2, op_clearBit)
+End Function
+
+Function toggleBit(operand2) As ULong64
+    Set toggleBit = raw_op(operand2, op_toggleBit)
+End Function
+
+Function testBit(operand2) As ULong64
+    Set testBit = raw_op(operand2, op_testBit)
+End Function

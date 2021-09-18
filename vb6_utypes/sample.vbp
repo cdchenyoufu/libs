@@ -37,4 +37,4 @@ MaxNumberOfThreads=1
 AutoRefresh=1
 
 [fastBuild]
-fullPath=.\Project1.exe
+fullPath=%ap%\Project1.exe

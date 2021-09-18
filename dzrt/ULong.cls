@@ -42,7 +42,7 @@ Public padLeft As Boolean
 Private Declare Function ULong Lib "utypes.dll" (ByVal v1 As Long, ByVal v2 As Long, ByVal operation As Long) As Long
 
 'convert an unsigned long (or int) to unsigned string (vb6 hex and signed displays are fine so ommited..)
-Private Declare Function U2Str Lib "utypes.dll" (ByVal v1 As Long, ByVal buf As String, ByVal cBufferSize As Long) As Long
+Private Declare Function U2Str Lib "utypes.dll" (ByVal v1 As Long, ByVal Buf As String, ByVal cBufferSize As Long) As Long
 
 'create a 32 bit number from a string in specified base (16 for a hex string)
 Private Declare Function Str2Long Lib "utypes.dll" (ByVal s As String, Optional ByVal base As Long = 10) As Long
@@ -122,7 +122,7 @@ Function fromString(ByVal s As String, Optional forceHex As Boolean = True) As B
     On Error GoTo hell
     Dim tmp As Long
     
-    s = Trim(s)
+    s = trim(s)
     If Left(s, 1) = "-" Then forceHex = False
     
     If LCase(Left(s, 2)) = "0x" Or LCase(Left(s, 2)) = "&h" Or LCase(Left(s, 2)) = "\x" Then
@@ -167,7 +167,7 @@ Private Sub Class_Initialize()
     If hLib = 0 Then hLib = LoadLibrary(App.path & "\UTypes.dll")
     If hLib = 0 Then hLib = LoadLibrary(App.path & "\..\UTypes.dll")
     If hLib = 0 Then hLib = LoadLibrary(App.path & "\..\..\UTypes.dll")
-'    If ensureUTypes() Then hLib = modGeneral.hUTypes
+    If ensureUTypes() Then hLib = modGeneral.hUTypes
     padLeft = True
 End Sub
 
@@ -235,3 +235,21 @@ Function lessThanEqual(operand2) As Boolean
     Set a = raw_op(operand2, op_lteq)
     lessThanEqual = (a.rawValue = 1)
 End Function
+
+'bit operations
+Function setBit(operand2) As ULong
+    Set setBit = raw_op(operand2, op_setBit)
+End Function
+
+Function clearBit(operand2) As ULong
+    Set clearBit = raw_op(operand2, op_clearBit)
+End Function
+
+Function toggleBit(operand2) As ULong
+    Set toggleBit = raw_op(operand2, op_toggleBit)
+End Function
+
+Function testBit(operand2) As ULong
+    Set testBit = raw_op(operand2, op_testBit)
+End Function
+
