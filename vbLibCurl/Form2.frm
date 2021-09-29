@@ -215,6 +215,7 @@ Private Sub Command1_Click()
             Wend
             List1.AddItem "Downloading: " & u & " -> " & fname
             Set resp = curl.Download(CStr(u), txtSave2 & "\" & fname)
+            List1.List(List1.ListCount) = List1.List(List1.ListCount) & " -> " & resp.ResponseCode & " Bytes: " & resp.BytesReceived
         End If
         If abort Then Exit For
         pb.value = pb.value + 1

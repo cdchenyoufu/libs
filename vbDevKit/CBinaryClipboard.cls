@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-Private Declare Function OpenClipboard Lib "user32" (ByVal hwnd As Long) As Long
+Private Declare Function OpenClipboard Lib "user32" (ByVal hWnd As Long) As Long
 Private Declare Function CloseClipboard Lib "user32" () As Long
 Private Declare Function GetClipboardData Lib "user32" (ByVal wFormat As Long) As Long
 Private Declare Function SetClipboardData Lib "user32" (ByVal wFormat As Long, ByVal hMem As Long) As Long
@@ -37,7 +37,7 @@ Private ClipboardIsOpen As Boolean
 Private mHwnd As Long
 
 
-Property Let hwnd(h As Long)
+Property Let hWnd(h As Long)
     mHwnd = h
 End Property
 
@@ -109,6 +109,8 @@ Public Function SetData(ByRef buf() As Byte) As Boolean
                 
         If (SetClipboardData(formatID, hMem) <> 0) Then
             SetData = True
+        Else
+            GlobalFree hMem 'wqweto bugfix 9.29.21
         End If
     End If
     
@@ -173,7 +175,7 @@ Private Sub Class_Initialize()
     On Error Resume Next
     Dim f As Form
     For Each f In Forms
-        mHwnd = f.hwnd
+        mHwnd = f.hWnd
         Exit Sub
     Next
 End Sub
