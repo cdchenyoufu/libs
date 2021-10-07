@@ -140,7 +140,7 @@ Attribute VB_Exposed = False
 'site:    http://sandsprite.com
 'License: free for any use
 '
-'note this version is not synced with the newest!
+Option Explicit
 
 Public AllowDelete As Boolean
 Private abortFilter As Boolean
@@ -157,7 +157,7 @@ Event Click()
 'Event ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
 Event DblClick()
 Event ItemClick(ByVal Item As MSComctlLib.ListItem)
-Event MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Event MouseUp(Button As Integer, Shift As Integer, X As Single, y As Single)
 
 Const LVM_FIRST = &H1000
 Const LVM_GETSELECTEDCOUNT = (LVM_FIRST + 50)
@@ -167,7 +167,7 @@ Private Declare Function LockWindowUpdate Lib "user32" (ByVal hwndLock As Long) 
 
 
 #If 0 Then
-    Dim x, y, Column, nextone 'force lowercase so ide doesnt switch around on its own whim...
+    Dim X, y, Column, nextone 'force lowercase so ide doesnt switch around on its own whim...
 #End If
 
 'use this instead of usercontrol.setfocus which may cause bug..(you can see the bug lvFiltered will be greyed)
@@ -180,10 +180,10 @@ Property Get Locked() As Boolean
     Locked = m_Locked
 End Property
 
-Property Let Locked(x As Boolean)
-    m_Locked = x
-    txtFilter.BackColor = IIf(x, &HC0C0C0, vbWhite)
-    txtFilter.Enabled = Not x
+Property Let Locked(X As Boolean)
+    m_Locked = X
+    txtFilter.BackColor = IIf(X, &HC0C0C0, vbWhite)
+    txtFilter.Enabled = Not X
 End Property
     
 Property Get SelCount() As Long
@@ -219,20 +219,20 @@ Property Get FilterColumn() As Long
     FilterColumn = m_FilterColumn
 End Property
 
-Property Let FilterColumn(x As Long)
+Property Let FilterColumn(X As Long)
     On Error Resume Next
     Dim tmp As String
     Dim ch As ColumnHeader
     
     If lv.ColumnHeaders.Count = 0 Then
-        m_FilterColumnPreset = x
+        m_FilterColumnPreset = X
         Exit Property
     End If
     
-    If x <= 0 Then x = 1
+    If X <= 0 Then X = 1
     
-    If x > lv.ColumnHeaders.Count Then
-        x = lv.ColumnHeaders.Count
+    If X > lv.ColumnHeaders.Count Then
+        X = lv.ColumnHeaders.Count
     End If
     
     'remove the visual marker that this is the filter column
@@ -243,13 +243,13 @@ Property Let FilterColumn(x As Long)
     ch.Text = Trim(Replace(ch.Text, "*", Empty))
 
     'add the visual marker to the new column
-    Set ch = lv.ColumnHeaders(x)
+    Set ch = lv.ColumnHeaders(X)
     ch.Text = ch.Text & " *"
     
-    Set ch = lvFilter.ColumnHeaders(x)
+    Set ch = lvFilter.ColumnHeaders(X)
     ch.Text = ch.Text & " *"
 
-    m_FilterColumn = x
+    m_FilterColumn = X
     
 End Property
 
@@ -264,29 +264,29 @@ Property Get MultiSelect() As Boolean
     MultiSelect = lv.MultiSelect
 End Property
 
-Property Let MultiSelect(x As Boolean)
-    lv.MultiSelect = x
-    lvFilter.MultiSelect = x
-    mnuToggleMulti.Checked = x
+Property Let MultiSelect(X As Boolean)
+    lv.MultiSelect = X
+    lvFilter.MultiSelect = X
+    mnuToggleMulti.Checked = X
 End Property
 
 Property Get HideSelection() As Boolean
     HideSelection = lv.MultiSelect
 End Property
 
-Property Let HideSelection(x As Boolean)
-    lv.HideSelection = x
-    lvFilter.HideSelection = x
-    mnuHideSel.Checked = x
+Property Let HideSelection(X As Boolean)
+    lv.HideSelection = X
+    lvFilter.HideSelection = X
+    mnuHideSel.Checked = X
 End Property
 
 Property Get GridLines() As Boolean
     GridLines = lv.GridLines
 End Property
 
-Property Let GridLines(x As Boolean)
-    lv.GridLines = x
-    lvFilter.GridLines = x
+Property Let GridLines(X As Boolean)
+    lv.GridLines = X
+    lvFilter.GridLines = X
 End Property
 
 'which ever one is currently displayed
@@ -329,7 +329,7 @@ End Property
 Function AddItem(txt, ParamArray subItems()) As ListItem
     On Error Resume Next
     
-    Dim i As Integer
+    Dim i As Integer, si
     
     If m_Locked Then Exit Function
     
@@ -407,7 +407,7 @@ End Sub
 Sub SetColumnHeaders(csvList As String, Optional csvWidths As String)
     
     On Error Resume Next
-    Dim i As Long, fc As Long, ch As ColumnHeader
+    Dim i As Long, fc As Long, ch As ColumnHeader, tmp() As String, t
     
     fc = -1
     lv.ColumnHeaders.Clear
@@ -456,7 +456,7 @@ Private Sub imgX_Click()
     txtFilter.Text = Empty
 End Sub
 
-Private Sub Label1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Label1_MouseMove(Button As Integer, Shift As Integer, X As Single, y As Single)
     Label1.ToolTipText = currentLV.ListItems.Count
 End Sub
 
@@ -534,12 +534,15 @@ End Sub
 
 Private Sub mnuCopyColumn_Click()
     On Error Resume Next
-    Dim x As Long
-    x = InputBox("Enter column index to copy", , 1)
-    If Len(x) = 0 Then Exit Sub
-    x = CLng(x) - 1 'we are 0 based internally..
+    Dim X, c As Long
+    X = InputBox("Enter column index or name to copy", , 1)
+    If Len(X) = 0 Then Exit Sub
+    c = CLng(X) - 1 'we are 0 based internally..
+    If Err.Number <> 0 Then
+        c = ColIndexForName(X)
+    End If
     Clipboard.Clear
-    Clipboard.SetText Me.GetAllText(x)
+    Clipboard.SetText Me.GetAllText(c)
 End Sub
 
 Private Sub mnuCopySel_Click()
@@ -595,11 +598,11 @@ End Sub
 
 Private Sub mnuSetFilterCol_Click()
     On Error Resume Next
-    Dim x As Long
-    x = InputBox("Enter column that filter searches", , FilterColumn)
-    If Len(x) = 0 Then Exit Sub
-    x = CLng(x)
-    FilterColumn = x
+    Dim X As Long
+    X = InputBox("Enter column that filter searches", , FilterColumn)
+    If Len(X) = 0 Then Exit Sub
+    X = CLng(X)
+    FilterColumn = X
 End Sub
 
 Private Sub mnuToggleMulti_Click()
@@ -629,10 +632,12 @@ End Function
 Private Sub mnuTotalCol_Click()
     Dim i As Long, tmp As String, b As Boolean, tot As Long
     On Error Resume Next
-    tmp = InputBox("Enter column index to total (1-" & (lv.ColumnHeaders.Count) & ")")
+    tmp = InputBox("Enter column name or index to total (1-" & (lv.ColumnHeaders.Count) & ")")
     If Len(tmp) = 0 Then Exit Sub
     i = CLng(tmp)
-    If Err.Number <> 0 Then Exit Sub
+    If Err.Number <> 0 Then
+        i = ColIndexForName(tmp) + 1
+    End If
     tot = totalColumn(i, b)
     MsgBox "Total for " & lv.ColumnHeaders(i).Text & " = " & tot & IIf(b, " An error was generated", ""), vbInformation
 End Sub
@@ -656,6 +661,8 @@ End Sub
 Function distinctFilter()
     Dim vals As New Collection, v As String
     Dim li As ListItem
+    
+    On Error Resume Next
     
     If m_FilterColumn = -1 Then Exit Function
     
@@ -783,7 +790,7 @@ Sub ApplyFilter()
     Dim li As ListItem
     Dim t As String
     Dim useSubtractiveFilter As Boolean
-    Dim tmp() As String, addIt As Boolean, x
+    Dim tmp() As String, addIt As Boolean, X
     Dim gtMode As Boolean, ltMode As Boolean, eqMode As Boolean, notMode As Boolean
     Dim uv As Long, v As Long
     
@@ -909,9 +916,9 @@ Sub ApplyFilter()
                push tmp, sMatch
             End If
             
-            For Each x In tmp
-                If Len(x) > 0 Then
-                    If InStr(1, t, x, vbTextCompare) > 0 Then
+            For Each X In tmp
+                If Len(X) > 0 Then
+                    If InStr(1, t, X, vbTextCompare) > 0 Then
                         addIt = Not addIt
                         Exit For
                     End If
@@ -923,7 +930,7 @@ Sub ApplyFilter()
              CloneListItemTo li, lvFilter
          End If
       
-        DoEvents
+         If lvFilter.ListItems.Count Mod 20 = 0 Then DoEvents
      Next
 
      LockWindowUpdate 0
@@ -998,9 +1005,9 @@ Private Sub lv_ItemClick(ByVal Item As MSComctlLib.ListItem)
     RaiseEvent ItemClick(Item)
 End Sub
 
-Private Sub lv_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub lv_MouseUp(Button As Integer, Shift As Integer, X As Single, y As Single)
     If m_Locked Then Exit Sub
-    RaiseEvent MouseUp(Button, Shift, x, y)
+    RaiseEvent MouseUp(Button, Shift, X, y)
 End Sub
 
 Private Sub lvFilter_Click()
@@ -1025,9 +1032,9 @@ Private Sub lvFilter_ItemClick(ByVal Item As MSComctlLib.ListItem)
     RaiseEvent ItemClick(Item)
 End Sub
 
-Private Sub lvFilter_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub lvFilter_MouseUp(Button As Integer, Shift As Integer, X As Single, y As Single)
     If m_Locked Then Exit Sub
-    RaiseEvent MouseUp(Button, Shift, x, y)
+    RaiseEvent MouseUp(Button, Shift, X, y)
 End Sub
 
 Private Sub txtFilter_KeyPress(KeyAscii As Integer)
@@ -1271,7 +1278,7 @@ End Function
 
 Function GetAllText(Optional subItemRow As Long = 0, Optional selectedOnly As Boolean = False) As String
     Dim i As Long
-    Dim tmp() As String, x As String
+    Dim tmp() As String, X As String
     Dim ListViewControl As ListView
     
     On Error Resume Next
@@ -1281,16 +1288,16 @@ Function GetAllText(Optional subItemRow As Long = 0, Optional selectedOnly As Bo
     
     For i = 1 To ListViewControl.ListItems.Count
         If subItemRow = 0 Then
-            x = ListViewControl.ListItems(i).Text
-            If selectedOnly And Not ListViewControl.ListItems(i).selected Then x = Empty
-            If Len(x) > 0 Then
-                push tmp, x
+            X = ListViewControl.ListItems(i).Text
+            If selectedOnly And Not ListViewControl.ListItems(i).selected Then X = Empty
+            If Len(X) > 0 Then
+                push tmp, X
             End If
         Else
-            x = ListViewControl.ListItems(i).subItems(subItemRow)
-            If selectedOnly And Not ListViewControl.ListItems(i).selected Then x = Empty
-            If Len(x) > 0 Then
-                push tmp, x
+            X = ListViewControl.ListItems(i).subItems(subItemRow)
+            If selectedOnly And Not ListViewControl.ListItems(i).selected Then X = Empty
+            If Len(X) > 0 Then
+                push tmp, X
             End If
         End If
     Next
@@ -1300,8 +1307,8 @@ End Function
 
 Private Sub push(ary, value) 'this modifies parent ary object
     On Error GoTo init
-    Dim x As Integer
-    x = UBound(ary) '<-throws Error If Not initalized
+    Dim X As Integer
+    X = UBound(ary) '<-throws Error If Not initalized
     ReDim Preserve ary(UBound(ary) + 1)
     ary(UBound(ary)) = value
     Exit Sub
@@ -1320,4 +1327,33 @@ Private Sub UserControl_Terminate()
     Me.Clear
 End Sub
 
+Private Function AryIsEmpty(ary) As Boolean
+  On Error GoTo oops
+    Dim i As Long
+    i = UBound(ary)  '<- throws error if not initalized
+    AryIsEmpty = False
+  Exit Function
+oops: AryIsEmpty = True
+End Function
+
+Private Function lpad(v, Optional L As Long = 8, Optional char As String = " ")
+    On Error GoTo hell
+    Dim X As Long
+    X = Len(v)
+    If X < L Then
+        lpad = String(L - X, char) & v
+    Else
+hell:
+        lpad = v
+    End If
+End Function
+
+Private Function KeyExistsInCollection(c As Collection, val As String) As Boolean
+    On Error GoTo nope
+    Dim t
+    t = c(val)
+    KeyExistsInCollection = True
+ Exit Function
+nope: KeyExistsInCollection = False
+End Function
 
